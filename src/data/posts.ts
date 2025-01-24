@@ -9,6 +9,22 @@ const createPost = (post: Omit<Post, 'slug'>): Post => ({
 });
 
 const POST_CONTENTS = {
+  androiddeuygulamalar: `
+  # Androidde Uygulamalar
+  
+  Bu kısımda Android uygulamaları ile ilgili temel bilgiler verilecektir.
+  
+  ## Android Studio
+  
+  Android uygulamaları geliştirmek için Android Studio IDE'si kullanılır.
+  
+  ## Temel Bileşenler
+  
+  - Activities: Kullanıcı arayüzü
+  - Services: Arka plan işlemleri
+  - Broadcast Receivers: Sistem olayları
+  - Content Providers: Veri paylaşımı
+    `,
   android: `
 # Androide Giriş
 
@@ -499,6 +515,14 @@ var camelCase = "Camel Case yazım örneği"
 };
 
 export const posts: Post[] = [
+  createPost({
+    id: 7,
+    title: "Androidde Uygulamalar",
+    content: POST_CONTENTS.androiddeuygulamalar,
+    date: "2024-01-25",
+    summary: "Bu kısımda Android uygulamaları ile ilgili temel bilgiler verilecektir.",
+    category: "Android"
+  }),
   createPost({
     id: 6,
     title: "Androide Giriş",
