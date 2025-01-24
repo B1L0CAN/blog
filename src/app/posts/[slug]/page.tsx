@@ -6,12 +6,17 @@ import remarkGfm from 'remark-gfm';
 import rehypeRaw from 'rehype-raw';
 import rehypeHighlight from 'rehype-highlight';
 import 'highlight.js/styles/github-dark.css';
-import { ComponentPropsWithoutRef } from 'react';
 
-type CodeProps = ComponentPropsWithoutRef<'code'>;
+interface CodeProps extends React.HTMLAttributes<HTMLElement> {
+  node?: any;
+  inline?: boolean;
+  className?: string;
+  children?: React.ReactNode;
+}
 
 export default async function BlogPost({ params }: { params: { slug: string } }) {
-  const post = posts.find((p) => p.slug === params.slug);
+  const slug = await Promise.resolve(params.slug);
+  const post = posts.find((p) => p.slug === slug);
 
   if (!post) {
     notFound();
@@ -43,24 +48,22 @@ export default async function BlogPost({ params }: { params: { slug: string } })
           <span>{formattedDate}</span>
         </div>
         <div className="prose prose-invert prose-pre:bg-gray-800 prose-pre:border prose-pre:border-gray-700 prose-headings:text-white prose-a:text-blue-400 max-w-none">
-          <ReactMarkdown 
+          <ReactMarkdown
             remarkPlugins={[remarkGfm]}
-            rehypePlugins={[rehypeRaw, rehypeHighlight]}
+            rehypePlugins={[rehypeRaw, [rehypeHighlight, { ignoreMissing: true }]]}
             components={{
-              code: function Code({ className, children, ...props }: CodeProps) {
+              code: ({ node, inline, className, children, ...props }: CodeProps) => {
                 const match = /language-(\w+)/.exec(className || '');
-                return match ? (
-                  <pre className="not-prose">
-                    <code className={className} {...props}>
-                      {children}
-                    </code>
-                  </pre>
+                return !inline && match ? (
+                  <code className={className} {...props}>
+                    {children}
+                  </code>
                 ) : (
                   <code className={className} {...props}>
                     {children}
                   </code>
                 );
-              }
+              },
             }}
           >
             {post.content}
