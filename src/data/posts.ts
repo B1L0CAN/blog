@@ -10,7 +10,7 @@ const createPost = (post: Omit<Post, 'slug'>): Post => ({
 
 const POST_CONTENTS = {
   sondenemeler: `
-  # Androidde Son Denemeler
+  # Androidde Son Denemelerrr
   
   Bu kısımda Android ile ilgili son denemeler verilecektir.
   `,
