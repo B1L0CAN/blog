@@ -9,6 +9,11 @@ const createPost = (post: Omit<Post, 'slug'>): Post => ({
 });
 
 const POST_CONTENTS = {
+  android: `
+# Androide Giriş
+
+Bu kısımda Andorid ile ilgili temel bilgiler verilecektir.
+  `,
   oop: `
 # Kotlin'de Sınıflar ve OOP'ye Giriş
 
@@ -493,8 +498,15 @@ var camelCase = "Camel Case yazım örneği"
   `
 };
 
-// Blog yazılarını oluşturalım
 export const posts: Post[] = [
+  createPost({
+    id: 6,
+    title: "Androide Giriş",
+    content: POST_CONTENTS.android,
+    date: "2024-01-25",
+    summary: "Bu kısımda Andorid ile ilgili temel bilgiler verilecektir.",
+    category: "Android"
+  }),
   createPost({
     id: 5,
     title: "Kotlin'de Sınıflara ve OOP'ye Giriş",
