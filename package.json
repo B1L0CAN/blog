@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@tailwindcss/typography": "^0.5.16",
+    "highlight.js": "^11.11.1",
     "marked": "^15.0.6",
     "next": "15.1.5",
     "react": "^19.0.0",
