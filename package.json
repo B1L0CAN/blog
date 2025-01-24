@@ -10,9 +10,12 @@
   },
   "dependencies": {
     "@tailwindcss/typography": "^0.5.16",
+    "@types/highlight.js": "^9.12.4",
+    "@types/prismjs": "^1.26.5",
     "highlight.js": "^11.11.1",
     "marked": "^15.0.6",
     "next": "15.1.5",
+    "prismjs": "^1.29.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-markdown": "^9.0.3",
