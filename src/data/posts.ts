@@ -9,6 +9,11 @@ const createPost = (post: Omit<Post, 'slug'>): Post => ({
 });
 
 const POST_CONTENTS = {
+  sondenemeler: `
+  # Androidde Son Denemeler
+  
+  Bu kısımda Android ile ilgili son denemeler verilecektir.
+  `,
   androiddeuygulamalar: `
   # Androidde Uygulamalar
   
@@ -515,6 +520,14 @@ var camelCase = "Camel Case yazım örneği"
 };
 
 export const posts: Post[] = [
+  createPost({
+    id: 8,
+    title: "Androidde Son Denemeler",
+    content: POST_CONTENTS.sondenemeler,
+    date: "2024-01-25",
+    summary: "Bu kısımda Android ile ilgili son denemeler verilecektir.",
+    category: "Android"
+  }),
   createPost({
     id: 7,
     title: "Androidde Uygulamalar",
