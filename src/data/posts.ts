@@ -18,7 +18,9 @@ Bu kısımda Andorid ile ilgili temel bilgiler verilecektir.
   ## Hata Yakalama
 
 Kotlin'de, hata ayıklama yaparken genellikle try-catch bloklarını kullanırız.
+
 Bu bloklar, programın çalışırken hata meydana gelmesi durumunda, hatayı yakalamamıza ve uygun bir şekilde işlem yapmamıza olanak tanır. 
+
 Aşağıdaki örnekte, bir string değerini integer'a dönüştürmeye çalışacağız ve dönüşüm başarılı olursa sonucu döndüreceğiz, başarısız olursa hata mesajı basacağız.
 
 \`\`\`kotlin
@@ -49,13 +51,16 @@ fun main() {
 \`\`\`
 
 \`try-catch\` blokları ile hata yakalama işlemi bu şekilde yapılır. try ile işlemi başlatırız ve eğer bir sorun oluşursa catch bloğu ile bu hatayı yakalarız.
+
 \`toInt()\` fonksiyonu geçerli bir sayı ile karşılaşmadığında \`NumberFormatException\` hatası fırlatır. Biz de bu hatayı özel olarak yakalayıp kullanıcıyı bilgilendiriyoruz.
 
 
 > Not: If-else blok yapısı gibi hangi tür hata olduğunu anlamak için birden fazla catch bloğu kullanılabilir.
 
 ### Throw Kullanımı
+
 Kotlin'de, hata oluştuğunda \`throw\` ile exception fırlatılabilir. 
+
 Genellikle try-catch blokları ile birlikte kullanılır, ancak throw fonksiyonu hatayı kendimiz fırlatmak için de kullanılabilir.
 
 \`\`\`kotlin
@@ -693,15 +698,24 @@ Dizi elemanlarına index ile erişilir. Index 0'dan başlar.
 
 \`val dizi = arrayOf(1, 2, 3, 4, 5)\`
 
-// Dizi elemanlarına erişmek için:
-\`println(dizi[0])\` // 1, çünkü ilk eleman 0. index'te ve 1'e eşittir.
-\`println(dizi[1])\` // 2, çünkü ikinci eleman 1. index'te ve 2'ye eşittir.
+- Dizi elemanlarına erişmek için:
 
-// Dizi elemanlarını değiştirmek için:
-\`dizi[0] = 10\`
+\`\`\`kotlin
+println(dizi[0]) // 1, çünkü ilk eleman 0. index'te ve 1'e eşittir.
+println(dizi[1]) // 2, çünkü ikinci eleman 1. index'te ve 2'ye eşittir.
+\`\`\`
 
-// Dizi eleman sayısını öğrenmek için:
-\`println(dizi.size)\`
+- Dizi elemanlarını değiştirmek için:
+
+\`\`\`kotlin
+dizi[0] = 10
+\`\`\`
+
+- Dizi eleman sayısını öğrenmek için:
+
+\`\`\`kotlin
+println(dizi.size)
+\`\`\`
 
 
 > Not: Diziler karışık tiplerde değişkenler içerebilir.
@@ -747,10 +761,11 @@ println(immutableList[2])       // Çıktı: Mehmet
 -Elemanların sırasını garanti etmez
 -Index mantığı yoktur
 
-\`val set = setOf(10, 10, 10, 20, 30)\`
+\`\`\`kotlin
+val set = setOf(10, 10, 10, 20, 30)
 
-\`println(set.size)\` // Çıktı: 3, çünkü 10 tekrar ediyor
-
+println(set.size) // Çıktı: 3, çünkü 10 tekrar ediyor
+\`\`\`
 > Setlerde eleman ekleme ve silme için HashSet kullanılır
 \`\`\`kotlin
 val hashSet = hashSetOf(10, 10, 10, 20, 30)
@@ -848,7 +863,7 @@ val isim = "Bilal"
 | Int |   32-bit | -2³¹ ile 2³¹-1 |
 | Long |  64-bit | -2⁶³ ile 2⁶³-1 |
 
-
+\`\`\`kotlin
 val kucuk: Byte = 120
 
 val kisa: Short = 30000
@@ -856,31 +871,39 @@ val kisa: Short = 30000
 val normal: Int = 2000000
 
 val buyuk: Long = 9000000000000L
-
+\`\`\`
 
 > Not: Eğer hiçbir şey belirtmezsek değişkenler int olarak tanımlanır. Örneğin: \`var sayi = 25\`
 
 ### 3. Float Değişkenler
 Ondalıklı sayıları tutar.
 
+\`\`\`kotlin
 val pi = 3.14f    // 'f' harfi Float olduğunu belirtir
+\`\`\`
 
 
 ### 4. Double Değişkenler
 Daha hassas ondalıklı sayıları tutar.
 
+\`\`\`kotlin
 val pi = 3.14159
+\`\`\`
 
 
 ### 5. Boolean Değişkenler
 \`true\` veya \`false\` değerlerini tutar.
 
+\`\`\`kotlin
 val cinsiyet = true
+\`\`\`
 
 ### 6. Char Değişkenler
 Tek bir karakteri tutar.
 
+\`\`\`kotlin
 val harf = 'A'
+\`\`\`
 
 
 ## Önemli Notlar
@@ -900,14 +923,17 @@ var maas: UInt = 50000u    // Maaş negatif olamaz
 
 Explicit değişken tanımlama, değişken tipini kodu yazan kişi özel olarak belirler.
 
-\`var sayi: Int = 10\`
+\`\`\`kotlin
+var sayi: Int = 10
+\`\`\`
 
 > Implicit değişken tanımlama:
 
 Implicit değişken tanımlama, değişken tipini otomatik olarak belirler.
 
-\`var sayi = 10\`
-
+\`\`\`kotlin
+var sayi = 10
+\`\`\`
 Sayı değişkeni otomatik olarak Int tanımlanır. 
 
 ### Yazım Stilleri
