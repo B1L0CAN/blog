@@ -142,6 +142,13 @@ fun main() {
 - sifre değişkeni private olduğu için doğrudan erişilemez. println(kisi.sifre) yazmaya çalıştığında hata alırsın.
 - Şifreye sadece setSifre ve getSifre metotlarıyla erişim sağlanabilir.
 
+#### Visibility Modifiers
+
+- public: Varsayılan erişim seviyesidir; her yerden erişilebilir.
+- private: Yalnızca tanımlandığı sınıf içinde erişilebilir. Dışarıdan erişime kapalıdır.
+- protected: Yalnızca tanımlandığı sınıf ve bu sınıftan türetilen alt sınıflarda erişilebilir.
+- internal: Aynı modül içerisindeki tüm dosyalardan erişilebilir, modül dışına kapalıdır.
+
 ## Çok Biçimlilik (Polymorphism)
 
 Kotlin'de iki tür çok biçimlilik vardır, Static Polymorphism ve Dynamic Polymorphism.
@@ -212,6 +219,13 @@ val gelişmişIslemler = GelişmişIslemler()
 gelişmişIslemler.carpma(1,2)
 \`\`\`
 
+## Özet
+
+- Kotlin'de sınıflar, nesneleri modellemek için kullanılır ve class anahtar kelimesiyle tanımlanır. Bir sınıf, değişkenler ve fonksiyonlar içerebilir.
+- Primary constructor, sınıfın başında tanımlanır ve temel özelliklerin başlatılmasını sağlar. Secondary constructor ise ek ihtiyaçlar için kullanılabilir ve daha esnek başlatma imkânı sunar.
+- Kotlin'de bir sınıf, başka bir sınıfın özelliklerini ve davranışlarını \`:\` ile devralabilir. Bu, kodun yeniden kullanılabilirliğini artırır ve daha düzenli bir yapı sağlar.
+- Kapsülleme, sınıfın içindeki verileri gizleyerek sadece belirli metotlarla erişime izin verir. private, public, internal ve protected gibi erişim belirleyiciler kullanılarak veri kontrol edilir.
+- Çok biçimlilik, aynı metot veya sınıfın farklı şekillerde çalışmasını sağlar. Statik ve dinamik olarak iki türü vardır.
 `,
   conversion: `
 Bu kısımda Kotlin'de değişken türlerini değiştirmek için kullanılan conversion ve nullability hakkında detaylı bilgiler verilecektir.
