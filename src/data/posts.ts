@@ -128,19 +128,19 @@ fun main() {
     kisi.setSifre("ruhicenet123") // Setter metodu ile yeni değer atama
     println("Yeni Şifre: {kisi.getSifre()}")
 }
-//Süslü parantezlerden önce gelmesi gereken $ işareti silinmiştir.
+//Süslü parantezlerden önce gelmesi gereken $ işareti formatın bozulmaması için silinmiştir.
 
 \`\`\`
 
 >Erişilebilen Değişken:
 
--ad değişkeni public olduğu için doğrudan erişilebilir.
--kisi.ad = "Ayşe" satırı ile değer atanabilir ve println(kisi.ad) ile okunabilir.
+- ad değişkeni public olduğu için doğrudan erişilebilir.
+- kisi.ad = "Ayşe" satırı ile değer atanabilir ve println(kisi.ad) ile okunabilir.
 
 >Erişilemeyen Değişken:
 
--sifre değişkeni private olduğu için doğrudan erişilemez. println(kisi.sifre) yazmaya çalıştığında hata alırsın.
--Şifreye sadece setSifre ve getSifre metotlarıyla erişim sağlanabilir.
+- sifre değişkeni private olduğu için doğrudan erişilemez. println(kisi.sifre) yazmaya çalıştığında hata alırsın.
+- Şifreye sadece setSifre ve getSifre metotlarıyla erişim sağlanabilir.
 
 ## Çok Biçimlilik (Polymorphism)
 
