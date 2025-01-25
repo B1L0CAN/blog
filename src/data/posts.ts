@@ -696,7 +696,9 @@ Diziler sabit boyutludur ve sonradan eleman eklenemez.
 
 Dizi elemanlarına index ile erişilir. Index 0'dan başlar.
 
-\`val dizi = arrayOf(1, 2, 3, 4, 5)\`
+\`\`\`kotlin
+val dizi = arrayOf(1, 2, 3, 4, 5)
+\`\`\`
 
 - Dizi elemanlarına erişmek için:
 
@@ -720,7 +722,9 @@ println(dizi.size)
 
 > Not: Diziler karışık tiplerde değişkenler içerebilir.
 
-\`val karisik = arrayOf(5, 3.14, true, "bilo")\`
+\`\`\`kotlin 
+val karisik = arrayOf(5, 3.14, true, "bilo")
+\`\`\`
 
 ## Listeler (Lists)
 
@@ -934,6 +938,7 @@ Implicit değişken tanımlama, değişken tipini otomatik olarak belirler.
 \`\`\`kotlin
 var sayi = 10
 \`\`\`
+
 Sayı değişkeni otomatik olarak Int tanımlanır. 
 
 ### Yazım Stilleri
