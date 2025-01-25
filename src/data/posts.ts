@@ -14,6 +14,151 @@ const POST_CONTENTS = {
 
 Bu kısımda Andorid ile ilgili temel bilgiler verilecektir.
   `,
+  fonksiyonelProgramlama: `
+## Lambda
+
+Kotlinde böyle bir kullanım var:
+\`\`\`kotlin
+fun yazdigimiYazdir(metin: String){
+            println(metin)
+        }
+
+yazdigimiYazdir("bilocan")
+\`\`\`
+
+Bu kodda yazdigimiYazdir fonksiyonu bir String parametresi alır ve bu parametreyi ekrana yazdırır.
+
+Lambda ise işimizi kolaylaştırır.
+
+\`\`\`kotlin
+val yazdigimiYazdir = { metin: String -> println(metin) }
+yazdigimiYazdir("bilocan")
+\`\`\`
+
+Bu kodda yazdigimiYazdir fonksiyonu bir String parametresi alır ve bu parametreyi ekrana yazdırır.
+Lambda kullanımı bu şekilde olur ve işimizi kolaylaştırır.
+
+>Not: Lambda kullanımı için \`->\` operatörü kullanılır.
+
+\`\`\`kotlin
+val carpLambda = {a:Int, b:Int -> a*b}
+ val sonuc = carpLambda(3,5)
+  println(sonuc)
+
+val carpLambdaDigerTurlu : ( Int , Int) -> Int = {a,b -> a*b}
+ println(carpLambdaDigerTurlu(3,4))
+\`\`\`
+
+## Filter
+
+Filter, bir liste içerisindeki elemanları filtrelemek için kullanılır.
+
+\`\`\`kotlin
+val numaraDizisi = arrayOf(2,4,6,8,9,15,20,36,69)
+ val filtrelemeListem = numaraDizisi.filter { it <15}
+  println(filtrelemeListem)
+\`\`\`
+
+Eğer filter olmasa if x<10 falan yapıp diziyi döngüye sokacaktık.
+
+>Not: Filter işlemi için \`filter\` fonksiyonu kullanılır.
+
+## Map
+
+Map, bir liste içerisindeki elemanları değiştirmek için kullanılır.
+
+\`\`\`kotlin
+val numaraDizisi = arrayOf(2,4,6,8,9,15,20,36,69)
+val kareListesi = numaraDizisi.map { it * it }
+println(kareListesi)
+\`\`\`
+
+>Not: Map işlemi için \`map\` fonksiyonu kullanılır.
+
+### Ortak Kullanımı (Map ve Filter)
+
+\`\`\`kotlin
+val numaraDizisi = arrayOf(2,4,6,8,9,15,20,36,69)
+val kareListesi = numaraDizisi.map { it * it }.filter { it < 100 }
+println(kareListesi)
+
+//Dizi içerisindeki elemanların karelerini alıp 100'den küçük olanları filtreleyerek ekrana yazdırır.
+\`\`\`
+
+## Sınıflarda Map ve Filter Kullanımı
+
+\`\`\`kotlin
+class Sanatci (val isim: String, val yas: Int, val enstruman: String) {
+}
+\`\`\` 
+Böyle bir Sanatci sınıfı tanımlayalım.
+Şimdi bu sınıftan bazı nesneler üretip bunları bir listeye atarak map ve filter işlemlerini yapalım.
+
+\`\`\`kotlin
+val sanatci1= Sanatci("bilo",25,"Gitar")
+val sanatci2= Sanatci("aleko",35,"Flut")
+val sanatci3= Sanatci("ramo", 45, "Keman")
+val sanatciListesi = arrayListOf<Sanatci>(sanatci1,sanatci2,sanatci3)
+
+val otuzdanBuyuklerinIsimleri = sanatciListesi.filter { it.yas >30 }. map { it.isim }
+        for (i in otuzdanBuyuklerinIsimleri)
+        {
+            println(i)
+        }
+            //Bu kodda sanatciListesi içerisindeki yas değeri 30'dan büyük olan nesnelerin isimlerini ekrana yazdırır.
+
+val kirktanBuyuklerinEnstrumanlari = sanatciListesi.filter { it.yas>40 }.map { it.enstruman }
+        kirktanBuyuklerinEnstrumanlari.forEach { println(it) }
+        //Bu kodda sanatciListesi içerisindeki yas değeri 40'dan büyük olan nesnelerin enstrumanlarını ekrana yazdırır.
+\`\`\`
+
+## Scope 
+
+Kotlin'deki scope fonksiyonları, belirli bir nesnenin içine kod bloğu yerleştirerek, o nesneye kolayca erişim sağlar.
+
+\`let\` fonksiyonu, genellikle null olmayan nesnelerle çalışmak için kullanılır ve bir lambda bloğu içinde nesneye erişim sağlar.
+
+\`\`\`kotlin
+var benimInteger: Int? = null
+benimInteger = 5
+benimInteger?.let { println(it) } // 5 yazdırır çünkü null değil
+\`\`\`
+Bu örnekte, benimInteger başlangıçta null değerini alır ve daha sonra 5 olarak değiştirilir. let fonksiyonu, benimInteger null değilse çalışır. 
+Bu durumda, benimInteger değeri 5 olduğu için let fonksiyonu çalışır ve it (yani benimInteger) değeri ekrana yazdırılır.
+
+\`\`\`kotlin
+var yeniInteger = benimInteger.let { it + 1 } ?: 0
+println(yeniInteger) // 6 döner çünkü benimInteger 5'e eşit, eğer null olsaydı 0 dönerdi
+\`\`\`
+
+Burada, benimInteger?.let { it + 1 } ?: 0 ifadesi, eğer benimInteger null değilse, let fonksiyonu içindeki işlemi (yani 5 + 1) yapar ve yeniInteger'a atar. 
+Eğer benimInteger null olsaydı, ?: operatörü devreye girer ve 0 dönerdi.
+
+### Also Kullanımı
+
+Also fonksiyonu, şu işi yaptın, bir de bunu yap, şeklinde kullanılır.
+
+\`\`\`kotlin
+var alsoSanatci = sanatciListesi.filter { it.yas <30 }.also { it.forEach { println(it.isim)}}
+//Bu kodda sanatciListesi içerisindeki yas değeri 30'dan küçük olan nesneler filtrelenir.
+//Filtrelenen nesnelerin isimleri also fonksiyonu ile ekrana yazdırılır.
+\`\`\`
+
+>Not: Also fonksiyonu için \`also\` anahtar kelimesi kullanılır.
+
+## Özet
+
+- Kotlin'deki lambda ifadeleri, anonim fonksiyonlardır ve fonksiyonel programlamayı destekler. Bir fonksiyonun parametresi olarak kullanılabilirler.
+
+- map fonksiyonu, map fonksiyonu, bir koleksiyondaki her öğe üzerinde işlem yapar ve yeni bir koleksiyon oluşturur.
+
+- filter fonksiyonu, filter, koleksiyon içerisindeki belirli bir koşulu sağlayan öğeleri filtreleyerek seçip yeni bir koleksiyon döndürür.
+
+- Scope fonksiyonları, bir nesne üzerinde işlem yaparken bağlam sağlar. let, ve yazımızda bahsetmesek de apply, run, with gibi fonksiyonlar da scope fonksiyonlarıdır.
+
+- also fonksiyonu, nesne üzerinde bir işlem yaparken, nesneyi değiştirmeden yan etki oluşturur ve orijinal nesneyi geri döndürür.
+
+`,
   oop: `
 
 ## Sınıf Tanımlama
@@ -700,12 +845,20 @@ var camelCase = "Camel Case yazım örneği"
 
 export const posts: Post[] = [
   createPost({
-    id: 6,
+    id: 7,
     title: "Androide Giriş",
     content: POST_CONTENTS.android,
     date: "2024-01-25",
     summary: "Bu kısımda Andorid ile ilgili temel bilgiler verilecektir.",
     category: "Android"
+  }),
+  createPost({
+    id: 6,
+    title: "Kotlinde Fonksiyonel Programlama",
+    content: POST_CONTENTS.fonksiyonelProgramlama,
+    date: "2024-01-25",
+    summary: "Bu kısımda Kotlinde Lambda, Map ve Filter, Scope Fonksiyonları gibi fonksiyonel programlama kavramları hakkında detaylı bilgiler verilecektir.",
+    category: "Kotlin"
   }),
   createPost({
     id: 5,
