@@ -30,6 +30,75 @@ class Person {
 Görüleceği üzere Person sınıfı içinde name ve age değişkenleri tanımlanmıştır. 
 > Person sınıfından tanımlanan nesnelerin name ve age değişkenleri olur ve bu değişkenlerin değeri her nesne için farklı belirlenebilir.
 
+ Person sınıfından nesne oluşturmak için:
+
+\`\`\`kotlin
+val person = Person()
+person.name = "Bilocan"
+person.age = 22
+\`\`\`
+
+## Abstract Class
+
+Abstract class'lar, sınıfların genel özelliklerini ve davranışlarını tanımlamak için kullanılır. 
+
+Kendileri başlı başına bir nesne oluşturamaz, alt sınıflar için temel işlevsellik ve özellikler sunar. İçinde hem somut (tamamlanmış) hem de soyut (tamamlanmamış, override edilmesi gereken) metodlar bulunabilir.
+
+\`\`\`kotlin
+abstract class Hayvan {
+    abstract fun sesCikar() // Soyut metod, alt sınıfta override edilmeli
+
+    fun hareketEt() { // Somut metod
+        println("Hareket ediyorum!")
+    }
+}
+
+class Kedi : Hayvan() {
+    override fun sesCikar() {
+        println("Miyav!")
+    }
+}
+
+fun main() {
+    val kedi = Kedi()
+    kedi.sesCikar() // Çıktı: Miyav!
+    kedi.hareketEt() // Çıktı: Hareket ediyorum!
+}
+\`\`\`
+
+## Interface
+
+Interface'ler bir sınıf değildir fakat sınıfların belirli davranışlarını zorunlu kılmak için kullanılır.
+
+Tüm metodları varsayılan olarak soyuttur ve override edilmelidir. Ancak, Kotlin’de default bir implementasyon (varsayılan metodlar) da tanımlanabilir. 
+
+Bir sınıf birden fazla interface'i implement edebilir.
+
+\`\`\`kotlin
+interface Ucan {
+    fun uc() // Soyut metod
+}
+
+interface Yuzebilen {
+    fun yuz() { // Varsayılan metod
+        println("Suda yüzüyorum!")
+    }
+}
+
+class Marti : Ucan, Yuzebilen {
+    override fun uc() {
+        println("Gökyüzünde uçuyorum!")
+    }
+}
+
+fun main() {
+    val marti = Marti()
+    marti.uc() // Çıktı: Gökyüzünde uçuyorum!
+    marti.yuz() // Çıktı: Suda yüzüyorum!
+}
+\`\`\`
+
+
 ## Constructor 
 
 Kotlin'de birincil (primary) ve ikincil (secondary) constructor'lar bulunur:
@@ -221,6 +290,7 @@ gelişmişIslemler.carpma(1,2)
 
 ## Özet
 
+- Bir sınıf yalnızca bir adet abstract sınıfı miras alabilir. Ancak bir sınıf birden fazla interface'i implement edebilir.
 - Kotlin'de sınıflar, nesneleri modellemek için kullanılır ve class anahtar kelimesiyle tanımlanır. Bir sınıf, değişkenler ve fonksiyonlar içerebilir.
 - Primary constructor, sınıfın başında tanımlanır ve temel özelliklerin başlatılmasını sağlar. Secondary constructor ise ek ihtiyaçlar için kullanılabilir ve daha esnek başlatma imkânı sunar.
 - Kotlin'de bir sınıf, başka bir sınıfın özelliklerini ve davranışlarını \`:\` ile devralabilir. Bu, kodun yeniden kullanılabilirliğini artırır ve daha düzenli bir yapı sağlar.
@@ -639,7 +709,7 @@ export const posts: Post[] = [
   }),
   createPost({
     id: 5,
-    title: "Kotlin'de Sınıflara ve OOP'ye Giriş",
+    title: "Kotlin'de Sınıflara ve OOP",
     content: POST_CONTENTS.oop,
     date: "2024-01-24",
     summary: "Kotlin'de nesne yönelimli programlama kavramlarını ve sınıfların nasıl kullanıldığını öğrenelim.",
