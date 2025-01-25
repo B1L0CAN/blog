@@ -9,36 +9,12 @@ const createPost = (post: Omit<Post, 'slug'>): Post => ({
 });
 
 const POST_CONTENTS = {
-  sondenemeler: `
-  # Androidde Son Denemelerrr
-  
-  Bu kısımda Android ile ilgili son denemeler verilecektir.
-  `,
-  androiddeuygulamalar: `
-  # Androidde Uygulamalar
-  
-  Bu kısımda Android uygulamaları ile ilgili temel bilgiler verilecektir.
-  
-  ## Android Studio
-  
-  Android uygulamaları geliştirmek için Android Studio IDE'si kullanılır.
-  
-  ## Temel Bileşenler
-  
-  - Activities: Kullanıcı arayüzü
-  - Services: Arka plan işlemleri
-  - Broadcast Receivers: Sistem olayları
-  - Content Providers: Veri paylaşımı
-    `,
   android: `
 # Androide Giriş
 
 Bu kısımda Andorid ile ilgili temel bilgiler verilecektir.
   `,
   oop: `
-# Kotlin'de Sınıflar ve OOP'ye Giriş
-
-Kotlin'de nesne yönelimli programlama (OOP) kavramlarını ve sınıfların nasıl kullanıldığını öğrenelim.
 
 ## Sınıf Tanımlama
 
@@ -51,19 +27,43 @@ class Person {
 }
 \`\`\`
 
-## Constructor (Yapıcı) Kullanımı
+Görüleceği üzere Person sınıfı içinde name ve age değişkenleri tanımlanmıştır. 
+> Person sınıfından tanımlanan nesnelerin name ve age değişkenleri olur ve bu değişkenlerin değeri her nesne için farklı belirlenebilir.
+
+## Constructor 
 
 Kotlin'de birincil (primary) ve ikincil (secondary) constructor'lar bulunur:
 
+### Primary Constructor
+
 \`\`\`kotlin
-class Person(val name: String, var age: Int) {
-    // Primary constructor
-    
-    constructor(name: String) : this(name, 0) {
-        // Secondary constructor
-    }
+class SuperKahraman(val isim: String, var yas: Int, var meslek: String) {
+  
 }
 \`\`\`
+
+Primary constructor bu şekilde tanımlanır, daha basit ve temiz bir yapıdır.
+
+### Secondary Constructor
+
+\`\`\`kotlin
+class SuperKahraman {
+    var isim = ""
+    var yas =0
+    var meslek =""
+
+    constructor(isim:String, yas: Int, meslek: String){
+        this.yas=yas
+        this.meslek=meslek
+        this.isim=isim
+    }
+
+}
+\`\`\`
+
+Bu şekilde tanımlanan constructor'a secondary constructor denir. Bu yapı da kabul edilebilir ama primary constructor'dan daha karmaşık ve uğraştırıcıdır.
+
+Bu yüzden primary constructor kullanılır.
 
 ## Kalıtım (Inheritance)
 
@@ -72,7 +72,7 @@ Kotlin'de kalıtım için \`:\` operatörü kullanılır:
 \`\`\`kotlin
 open class Animal {
     open fun makeSound() {
-        println("Some sound")
+        println("Animal sound")
     }
 }
 
@@ -83,40 +83,135 @@ class Dog : Animal() {
 }
 \`\`\`
 
+Verilen örnekte Animal sınıfından kalıtım alan Dog sınıfında makeSound fonksiyonu override edilerek Dog sınıfının içinde kendisine göre çalıştırılmıştır.
+
+>Not: \`open\` anahtar kelimesi ile ana sınıftaki fonksiyonların override edilebilir olması sağlanır.
+
 ## Kapsülleme (Encapsulation)
 
-Kotlin'de özellikleri (properties) kapsüllemek için getter ve setter'lar kullanılır:
+Kapsülleme sınıf içerisindeki verilerin sadece izin verildiği derecede erişebilir olmasını sağlar.
 
 \`\`\`kotlin
-class BankAccount {
-    var balance = 0.0
-        private set
-    
-    fun deposit(amount: Double) {
-        if (amount > 0) {
-            balance += amount
-        }
+class Kisi {
+    // Erişilemeyen özel değişken (private)
+    private var sifre: String = "ruhi123"
+
+    // Erişilebilen genel değişken (public)
+    var ad: String = "Bilinmeyen Kişi"
+
+    // Getter ve Setter metotları (şifreye erişim için)
+    fun setSifre(yeniSifre: String) {
+        sifre = yeniSifre
+    }
+
+    fun getSifre(): String {
+        return sifre
     }
 }
 \`\`\`
 
-## Çok Biçimlilik (Polymorphism)
-
-Kotlin'de çok biçimlilik, arayüzler (interfaces) ve abstract sınıflar ile sağlanır:
+Şimdi bu sınıfın içinden kapsülleme'yi kullanmak için:
 
 \`\`\`kotlin
-interface Shape {
-    fun area(): Double
+fun main() {
+    val kisi = Kisi()
+
+    // Erişilebilen değişken
+    kisi.ad = "Ayşe"
+    println("Ad: {kisi.ad}")
+
+    // Erişilemeyen değişken
+    // println(kisi.sifre) // HATA: 'sifre' özelliği private olduğu için erişilemez.
+
+    // Şifreye erişim için metotlar kullanılmalı
+    println("Şifre: {kisi.getSifre()}") // Getter metodu ile erişim
+    kisi.setSifre("ruhicenet123") // Setter metodu ile yeni değer atama
+    println("Yeni Şifre: {kisi.getSifre()}")
+}
+//Süslü parantezlerden önce gelmesi gereken $ işareti silinmiştir.
+
+\`\`\`
+
+>Erişilebilen Değişken:
+
+-ad değişkeni public olduğu için doğrudan erişilebilir.
+-kisi.ad = "Ayşe" satırı ile değer atanabilir ve println(kisi.ad) ile okunabilir.
+
+>Erişilemeyen Değişken:
+
+-sifre değişkeni private olduğu için doğrudan erişilemez. println(kisi.sifre) yazmaya çalıştığında hata alırsın.
+-Şifreye sadece setSifre ve getSifre metotlarıyla erişim sağlanabilir.
+
+## Çok Biçimlilik (Polymorphism)
+
+Kotlin'de iki tür çok biçimlilik vardır, Static Polymorphism ve Dynamic Polymorphism.
+
+Static Polymorphism, compile time'da belirlenir.
+
+Dynamic Polymorphism, runtime'da belirlenir.
+
+### Static Polymorphism
+
+Static polymorphism, compile time'da belirlenir.
+
+\`\`\`kotlin
+open class Islemler {
+
+    // Statik Polymorphism: Method Overloading
+    fun toplama(x: Int, y: Int): Int {
+        return x + y
+    }
+
+    fun toplama(x: Int, y: Int, z: Int): Int {
+        return x + y + z
+    }
+
+    fun toplama(x: Int, y: Int, z: Int, k: Int): Int {
+        return x + y + z + k
+    }
+
+    // Dinamik Polymorphism: Method Overriding yapma işlemi
+    open fun carpma(x: Int, y: Int): Int {
+        println("Islemler sınıfındaki carpma fonksiyonu çalıştı")
+        return x * y
+    }
 }
 
-class Circle(val radius: Double) : Shape {
-    override fun area(): Double = Math.PI * radius * radius
-}
+\`\`\`
 
-class Rectangle(val width: Double, val height: Double) : Shape {
-    override fun area(): Double = width * height
+Şimdi bu sınıfın içinden statik polymorphism'ı kullanmak için:
+
+\`\`\`kotlin
+val islem = Islemler()
+islem.toplama(1,2)
+islem.toplama(1,2,3)
+islem.toplama(1,2,3,4)
+\`\`\`
+
+### Dinamik Polymorphism
+
+Dinamik polymorphism, runtime'da belirlenir. Dinamik polymorphism'de inheritance yapısı kullanılır.
+
+Aynı işlemler sınıfını kullanarak dinamik polymorphism'ı kullanmak için:
+
+\`\`\`kotlin
+class GelişmişIslemler : Islemler() {
+
+    // carpma metodu override edildi
+    override fun carpma(x: Int, y: Int): Int {
+        println("GelişmişIslemler sınıfındaki carpma fonksiyonu çalıştı")
+        return (x * y) * 2 // Örneğin: Sonuç iki katına çıkarıldı
+    }
 }
 \`\`\`
+
+Şimdi bu sınıfın içinden dinamik polymorphism'ı kullanmak için:
+
+\`\`\`kotlin
+val gelişmişIslemler = GelişmişIslemler()
+gelişmişIslemler.carpma(1,2)
+\`\`\`
+
 `,
   conversion: `
 Bu kısımda Kotlin'de değişken türlerini değiştirmek için kullanılan conversion ve nullability hakkında detaylı bilgiler verilecektir.
@@ -520,22 +615,6 @@ var camelCase = "Camel Case yazım örneği"
 };
 
 export const posts: Post[] = [
-  createPost({
-    id: 8,
-    title: "Androidde Son Denemeler",
-    content: POST_CONTENTS.sondenemeler,
-    date: "2024-01-25",
-    summary: "Bu kısımda Android ile ilgili son denemeler verilecektir.",
-    category: "Android"
-  }),
-  createPost({
-    id: 7,
-    title: "Androidde Uygulamalar",
-    content: POST_CONTENTS.androiddeuygulamalar,
-    date: "2024-01-25",
-    summary: "Bu kısımda Android uygulamaları ile ilgili temel bilgiler verilecektir.",
-    category: "Android"
-  }),
   createPost({
     id: 6,
     title: "Androide Giriş",
