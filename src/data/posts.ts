@@ -10,10 +10,82 @@ const createPost = (post: Omit<Post, 'slug'>): Post => ({
 
 const POST_CONTENTS = {
   android: `
-# Androide Giriş
+# Android
 
 Bu kısımda Andorid ile ilgili temel bilgiler verilecektir.
   `,
+  hata: `
+  ## Hata Yakalama
+
+Kotlin'de, hata ayıklama yaparken genellikle try-catch bloklarını kullanırız.
+Bu bloklar, programın çalışırken hata meydana gelmesi durumunda, hatayı yakalamamıza ve uygun bir şekilde işlem yapmamıza olanak tanır. 
+Aşağıdaki örnekte, bir string değerini integer'a dönüştürmeye çalışacağız ve dönüşüm başarılı olursa sonucu döndüreceğiz, başarısız olursa hata mesajı basacağız.
+
+\`\`\`kotlin
+fun intOrNullFonksiyonumuz(str: String): Int? {
+    return try {
+        // String'i Int'e dönüştürmeye çalışıyoruz
+        str.toInt()
+    } catch (e: NumberFormatException) {
+        // Eğer string geçerli bir sayıya dönüşemezse, hata mesajı gösteriyoruz
+        println("Geçersiz giriş: $str sayıya dönüştürülemedi.")
+        null
+    } catch (e: Exception) {
+        // Diğer beklenmedik hatalar için genel bir catch bloğu
+        e.printStackTrace()
+        null
+    }
+}
+
+fun main() {
+    // Geçerli bir sayı ile test
+    val sonuc = intOrNullFonksiyonumuz("10")
+    println("Sonuç 1: $sonuc") // 10 döner
+
+    // Geçersiz bir değer ile test
+    val sonuc2 = intOrNullFonksiyonumuz("bilo")
+    println("Sonuç 2: $sonuc2") // null döner
+}
+\`\`\`
+
+\`try-catch\` blokları ile hata yakalama işlemi bu şekilde yapılır. try ile işlemi başlatırız ve eğer bir sorun oluşursa catch bloğu ile bu hatayı yakalarız.
+\`toInt()\` fonksiyonu geçerli bir sayı ile karşılaşmadığında \`NumberFormatException\` hatası fırlatır. Biz de bu hatayı özel olarak yakalayıp kullanıcıyı bilgilendiriyoruz.
+
+
+> Not: If-else blok yapısı gibi hangi tür hata olduğunu anlamak için birden fazla catch bloğu kullanılabilir.
+
+### Throw Kullanımı
+Kotlin'de, hata oluştuğunda \`throw\` ile exception fırlatılabilir. 
+Genellikle try-catch blokları ile birlikte kullanılır, ancak throw fonksiyonu hatayı kendimiz fırlatmak için de kullanılabilir.
+
+\`\`\`kotlin
+fun kontrolEt(numara: Int) {
+    if (numara < 0) {
+        throw IllegalArgumentException("Negatif sayı geçersiz!")
+    } else {
+        println("Geçerli sayı: $numara")
+    }
+}
+
+fun main() {
+    try {
+        kontrolEt(-5) // Burada exception fırlatılır
+    } catch (e: IllegalArgumentException) {
+        println("Hata: {e.message}") //Süslü parantezden önce $ işareti var.
+    }
+}
+\`\`\`
+
+> Not: throw ile fırlatılan hata, catch bloğu ile yakalanır ve ilgili mesaj ekrana yazdırılır.
+
+## Özet
+
+- Kotlin'de hata yakalama için try-catch blokları kullanılır.
+- try bloğu ile işlem başlatılır, eğer hata oluşursa catch bloğu ile hata yakalanır.
+- throw ile hata kendimiz de hatayı fırlatabiliriz.
+- catch bloğu ile hata yakalanır ve ilgili mesaj ekrana yazdırılır.
+
+    `,
   fonksiyonelProgramlama: `
 ## Lambda
 
@@ -738,11 +810,15 @@ Kotlin'de iki tür değişken tanımlama yöntemi vardır:
 
 ### Örnekler:
 
-// Değiştirilemez değişken örneği
+- Değiştirilemez değişken örneği
+\`\`\`kotlin
 val ogrNo = 12345    // Öğrenci numarası değişmez
+\`\`\`
 
-// Değiştirilebilir değişken örneği
+- Değiştirilebilir değişken örneği
+\`\`\`kotlin
 var not = 85         // Öğrencinin notu değişebilir
+\`\`\`
 
 
 ## Değişken Tipleri
@@ -774,8 +850,11 @@ val isim = "Bilal"
 
 
 val kucuk: Byte = 120
+
 val kisa: Short = 30000
+
 val normal: Int = 2000000
+
 val buyuk: Long = 9000000000000L
 
 
@@ -834,8 +913,11 @@ Sayı değişkeni otomatik olarak Int tanımlanır.
 ### Yazım Stilleri
 Değişken tanımlamada genellikle iki tür yazım şekli vardır:
 
+\`\`\`kotlin
 var snake_case = "Snake Case yazım örneği"
+
 var camelCase = "Camel Case yazım örneği"
+\`\`\`
   `,
   blogunAmaci: `
 
@@ -845,7 +927,7 @@ var camelCase = "Camel Case yazım örneği"
 
 export const posts: Post[] = [
   createPost({
-    id: 7,
+    id: 8,
     title: "Androide Giriş",
     content: POST_CONTENTS.android,
     date: "2024-01-25",
@@ -853,10 +935,18 @@ export const posts: Post[] = [
     category: "Android"
   }),
   createPost({
+    id: 7,
+    title: "Kotlinde Hata Yakalama",
+    content: POST_CONTENTS.hata,
+    date: "2024-01-24",
+    summary: "Bu kısımda Andorid ile ilgili temel bilgiler verilecektir.",
+    category: "Kotlin"
+  }),
+  createPost({
     id: 6,
     title: "Kotlinde Fonksiyonel Programlama",
     content: POST_CONTENTS.fonksiyonelProgramlama,
-    date: "2024-01-25",
+    date: "2024-01-23",
     summary: "Bu kısımda Kotlinde Lambda, Map ve Filter, Scope Fonksiyonları gibi fonksiyonel programlama kavramları hakkında detaylı bilgiler verilecektir.",
     category: "Kotlin"
   }),
@@ -864,7 +954,7 @@ export const posts: Post[] = [
     id: 5,
     title: "Kotlin'de Sınıflara ve OOP",
     content: POST_CONTENTS.oop,
-    date: "2024-01-24",
+    date: "2024-01-22",
     summary: "Kotlin'de nesne yönelimli programlama kavramlarını ve sınıfların nasıl kullanıldığını öğrenelim.",
     category: "Kotlin"
   }),
