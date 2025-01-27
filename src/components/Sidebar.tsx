@@ -2,6 +2,7 @@
 import { posts } from '@/data/posts';
 import Link from 'next/link';
 import { useState } from 'react';
+import SearchBar from './SearchBar';
 
 export default function Sidebar() {
   // Benzersiz kategorileri al
@@ -18,6 +19,9 @@ export default function Sidebar() {
 
   return (
     <aside className="w-64 bg-gray-900 p-6 text-gray-100">
+      <div className="mb-6">
+        <SearchBar />
+      </div>
       <h2 className="text-xl font-bold mb-4 text-white">Kategoriler</h2>
       <ul className="space-y-2">
         {categories.map((category) => (
