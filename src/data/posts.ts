@@ -292,7 +292,7 @@ fun main() {
 
 Interface'ler bir sınıf değildir fakat sınıfların belirli davranışlarını zorunlu kılmak için kullanılır.
 
-Tüm metodları varsayılan olarak soyuttur ve override edilmelidir. Ancak, Kotlin’de default bir implementasyon (varsayılan metodlar) da tanımlanabilir. 
+Tüm metodları varsayılan olarak soyuttur ve override edilmelidir. Ancak, Kotlin'de default bir implementasyon (varsayılan metodlar) da tanımlanabilir. 
 
 Bir sınıf birden fazla interface'i implement edebilir.
 
@@ -953,6 +953,9 @@ var camelCase = "Camel Case yazım örneği"
   blogunAmaci: `
 
   Bu blogun amacı yoktur, kendi keyfi zevklerime göre yazıyorum. Sadece bir şeyler denemek istedim nasıl olacak diye o kadar :)
+
+  <img src="/images/resim1.png" width="300" height="300" style="object-fit: cover; display: block; margin: 0 auto;" loading="lazy" alt="Blog Resmi" />
+
   `
 };
 
