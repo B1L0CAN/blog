@@ -117,22 +117,39 @@ export default function BlogPost({ params }: { params: Promise<{ slug: string }>
                   );
                 }
                 
+                if (inline) {
+                  return (
+                    <code className={className} {...props}>
+                      {highlightText(String(children), highlightQuery)}
+                    </code>
+                  );
+                }
+
                 return (
                   <code className={className} {...props}>
-                    {highlightText(String(children), highlightQuery)}
+                    {children}
                   </code>
                 );
               },
-              p: ({ children }) => (
-                <p>{highlightText(String(children), highlightQuery)}</p>
-              ),
+              p: ({ children }) => {
+                if (typeof children === 'string') {
+                  return <p>{highlightText(children, highlightQuery)}</p>;
+                }
+                return <p>{children}</p>;
+              },
               h2: ({ children }) => {
                 const id = children?.toString().toLowerCase().replace(/[^a-z0-9]+/g, '-');
-                return <h2 id={id}>{highlightText(String(children), highlightQuery)}</h2>;
+                if (typeof children === 'string') {
+                  return <h2 id={id}>{highlightText(children, highlightQuery)}</h2>;
+                }
+                return <h2 id={id}>{children}</h2>;
               },
               h3: ({ children }) => {
                 const id = children?.toString().toLowerCase().replace(/[^a-z0-9]+/g, '-');
-                return <h3 id={id}>{highlightText(String(children), highlightQuery)}</h3>;
+                if (typeof children === 'string') {
+                  return <h3 id={id}>{highlightText(children, highlightQuery)}</h3>;
+                }
+                return <h3 id={id}>{children}</h3>;
               },
             }}
           >
