@@ -3,6 +3,7 @@
 import { useSearchParams } from 'next/navigation';
 import { posts } from '@/data/posts';
 import Link from 'next/link';
+import { Suspense } from 'react';
 
 function highlightText(text: string, query: string) {
   if (!query) return text;
@@ -15,7 +16,7 @@ function highlightText(text: string, query: string) {
   );
 }
 
-export default function SearchPage() {
+function SearchResults() {
   const searchParams = useSearchParams();
   const query = searchParams.get('q') || '';
 
@@ -72,5 +73,31 @@ export default function SearchPage() {
         )}
       </div>
     </div>
+  );
+}
+
+export default function SearchPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-gray-900 py-8 px-4">
+        <div className="max-w-3xl mx-auto">
+          <div className="animate-pulse">
+            <div className="h-8 bg-gray-700 rounded w-64 mb-8"></div>
+            <div className="h-12 bg-gray-700 rounded w-full mb-4"></div>
+            <div className="space-y-6">
+              {[1, 2, 3].map((i) => (
+                <div key={i} className="border border-gray-700 rounded-lg p-6 bg-gray-800">
+                  <div className="h-6 bg-gray-700 rounded w-3/4 mb-4"></div>
+                  <div className="h-4 bg-gray-700 rounded w-full mb-4"></div>
+                  <div className="h-4 bg-gray-700 rounded w-1/4"></div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    }>
+      <SearchResults />
+    </Suspense>
   );
 } 
