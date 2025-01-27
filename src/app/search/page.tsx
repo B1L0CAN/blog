@@ -1,11 +1,12 @@
 'use client';
 
+import { Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { posts } from '@/data/posts';
 import BlogCard from '@/components/BlogCard';
 import { Post } from '@/types/post';
 
-export default function SearchPage() {
+function SearchResults() {
   const searchParams = useSearchParams();
   const query = searchParams.get('q')?.toLowerCase() || '';
 
@@ -35,5 +36,13 @@ export default function SearchPage() {
         </div>
       )}
     </div>
+  );
+}
+
+export default function SearchPage() {
+  return (
+    <Suspense fallback={<div>Yükleniyor...</div>}>
+      <SearchResults />
+    </Suspense>
   );
 } 
