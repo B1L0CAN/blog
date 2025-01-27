@@ -6,6 +6,7 @@ import remarkGfm from 'remark-gfm';
 import rehypeRaw from 'rehype-raw';
 import rehypeHighlight from 'rehype-highlight';
 import 'highlight.js/styles/github-dark.css';
+import TableOfContents from '@/components/TableOfContents';
 
 interface CodeProps extends React.HTMLAttributes<HTMLElement> {
   node?: any;
@@ -47,6 +48,9 @@ export default async function BlogPost({ params }: { params: { slug: string } })
           <span>•</span>
           <span>{formattedDate}</span>
         </div>
+        
+        <TableOfContents content={post.content} />
+        
         <div className="prose prose-invert prose-pre:bg-gray-800 prose-pre:border prose-pre:border-gray-700 prose-headings:text-white prose-a:text-blue-400 max-w-none">
           <ReactMarkdown
             remarkPlugins={[remarkGfm]}
@@ -63,6 +67,14 @@ export default async function BlogPost({ params }: { params: { slug: string } })
                     {children}
                   </code>
                 );
+              },
+              h2: ({ children }) => {
+                const id = children?.toString().toLowerCase().replace(/[^a-z0-9]+/g, '-');
+                return <h2 id={id}>{children}</h2>;
+              },
+              h3: ({ children }) => {
+                const id = children?.toString().toLowerCase().replace(/[^a-z0-9]+/g, '-');
+                return <h3 id={id}>{children}</h3>;
               },
             }}
           >
