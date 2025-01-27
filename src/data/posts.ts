@@ -948,7 +948,9 @@ var camelCase = "Camel Case yazım örneği"
 
   Bu blogun amacı yoktur, kendi keyfi zevklerime göre yazıyorum. Sadece bir şeyler denemek istedim nasıl olacak diye o kadar :)
 
-  <img src="/images/resim1.png" width="300" height="300" style="object-fit: cover; display: block; margin: 0 auto;" loading="lazy" alt="Blog Resmi" />
+  <img src="/images/resim1.png" width="200" height="200" style="object-fit: cover; display: block; margin: 0 auto;" loading="lazy" alt="Blog Resmi" />
+
+  <img src="/images/resim2.png" width="700" height="250" style="object-fit: cover; display: block; margin: 0 auto;" loading="lazy" alt="Blog Resmi" />
 
   `
 };
