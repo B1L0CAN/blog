@@ -970,7 +970,7 @@ export const posts: Post[] = [
     title: "Kotlinde Hata Yakalama",
     content: POST_CONTENTS.hata,
     date: "2024-01-24",
-    summary: "Bu kısımda Andorid ile ilgili temel bilgiler verilecektir.",
+    summary: "Bu kısımda Kotlinde hata yakalama hakkında detaylı bilgiler verilecektir.",
     category: "Kotlin"
   }),
   createPost({
