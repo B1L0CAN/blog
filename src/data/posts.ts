@@ -50,9 +50,9 @@ fun main() {
 }
 \`\`\`
 
-\`try-catch\` blokları ile hata yakalama işlemi bu şekilde yapılır. try ile işlemi başlatırız ve eğer bir sorun oluşursa catch bloğu ile bu hatayı yakalarız.
+ \`try-catch\` blokları ile hata yakalama işlemi bu şekilde yapılır. try ile işlemi başlatırız ve eğer bir sorun oluşursa catch bloğu ile bu hatayı yakalarız.
 
-\`toInt()\` fonksiyonu geçerli bir sayı ile karşılaşmadığında \`NumberFormatException\` hatası fırlatır. Biz de bu hatayı özel olarak yakalayıp kullanıcıyı bilgilendiriyoruz.
+ \`toInt()\` fonksiyonu geçerli bir sayı ile karşılaşmadığında \`NumberFormatException\` hatası fırlatır. Biz de bu hatayı özel olarak yakalayıp kullanıcıyı bilgilendiriyoruz.
 
 
 > Not: If-else blok yapısı gibi hangi tür hata olduğunu anlamak için birden fazla catch bloğu kullanılabilir.
