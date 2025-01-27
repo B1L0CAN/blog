@@ -688,7 +688,7 @@ Görüleceği üzere dizi değişkeni içindeki her elemanın değeri numara de�
 - for belirli bir aralıkta veya koleksiyon üzerinde dönerken, while koşul sağlandığı sürece çalışır ve forEach koleksiyonlarda elemanları işler.
   `,
   veriYapilari: `
-  ## Diziler (Arrays)
+## Diziler (Arrays)
 
 Diziler, aynı tipteki verileri tek bir değişkende saklamak için kullanılır.
 
@@ -818,7 +818,7 @@ println(yemekKaloriHesabi["Elma"])    // 500
 - Mapler (Maps): Anahtar-değer çiftleri, anahtarlar benzersizdir.
   `,
   degiskenler: `
-  ## Değişken Tanımlama Yöntemleri
+## Değişken Tanımlama Yöntemleri
 
 Kotlin'de iki tür değişken tanımlama yöntemi vardır:
 
