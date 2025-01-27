@@ -7,6 +7,7 @@ import rehypeRaw from 'rehype-raw';
 import rehypeHighlight from 'rehype-highlight';
 import 'highlight.js/styles/github-dark.css';
 import TableOfContents from '@/components/TableOfContents';
+import PostNavigation from '@/components/PostNavigation';
 
 interface CodeProps extends React.HTMLAttributes<HTMLElement> {
   node?: any;
@@ -81,6 +82,8 @@ export default async function BlogPost({ params }: { params: { slug: string } })
             {post.content}
           </ReactMarkdown>
         </div>
+
+        <PostNavigation currentPost={post} />
       </article>
     </div>
   );

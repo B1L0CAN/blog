@@ -22,6 +22,11 @@ export default function Sidebar() {
     setIsMobileMenuOpen(!isMobileMenuOpen);
   };
 
+  // Her kategori için blog sayısını hesapla
+  const getCategoryCount = (category: string) => {
+    return posts.filter(post => post.category === category).length;
+  };
+
   return (
     <>
       {/* Hamburger menü butonu - sadece mobilde görünür */}
@@ -69,7 +74,10 @@ export default function Sidebar() {
                 onClick={() => toggleCategory(category)}
                 className="flex items-center justify-between w-full py-2 text-left hover:text-blue-400 transition-colors"
               >
-                <span className="font-semibold">{category}</span>
+                <div className="flex items-center gap-2">
+                  <span className="font-semibold">{category}</span>
+                  <span className="text-sm text-gray-400">({getCategoryCount(category)})</span>
+                </div>
                 <svg
                   className={`w-4 h-4 transition-transform ${
                     openCategory === category ? 'transform rotate-180' : ''

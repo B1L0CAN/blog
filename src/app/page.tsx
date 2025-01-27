@@ -29,7 +29,7 @@ export default function Home() {
         {/* Ana İçerik */}
         <main className="flex-1 p-4 md:p-8">
           <h2 className="text-2xl font-semibold mb-8 text-white">Blog Yazıları</h2>
-          <div className="grid gap-6">
+          <div className="grid gap-6 sm:grid-cols-1 lg:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-3">
             {posts.map((post) => (
               <BlogCard key={post.id} post={post} />
             ))}
