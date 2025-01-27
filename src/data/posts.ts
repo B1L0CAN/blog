@@ -590,7 +590,7 @@ Yani \`(inputtt / 2 ? :20)\` yazdigimizda inputt null ise soldaki islem olmayaca
 - Güvenli tip dönüşümü için as? operatörü kullanılır
   `,
   donguler: `
-  ## Karar Yapıları
+## Karar Yapıları
 
 Karar yapıları, programın hangi kod bloğunun çalıştırılacağını belirler.
 
