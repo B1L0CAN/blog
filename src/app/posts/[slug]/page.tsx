@@ -13,6 +13,8 @@ import PostNavigation from '@/components/PostNavigation';
 import CopyButton from '@/components/CopyButton';
 import { useEffect, useRef } from 'react';
 import { use } from 'react';
+import { Components } from 'react-markdown';
+import type { DetailedHTMLProps, ImgHTMLAttributes } from 'react';
 
 interface CodeProps extends React.HTMLAttributes<HTMLElement> {
   node?: any;
@@ -20,6 +22,8 @@ interface CodeProps extends React.HTMLAttributes<HTMLElement> {
   className?: string;
   children?: React.ReactNode;
 }
+
+type ImageProps = DetailedHTMLProps<ImgHTMLAttributes<HTMLImageElement>, HTMLImageElement>;
 
 function highlightText(text: string, query: string) {
   if (!query) return text;
@@ -73,6 +77,85 @@ export default function BlogPost({ params }: { params: Promise<{ slug: string }>
     }
   }, [highlightQuery]);
 
+  const components: Components = {
+    code: ({ node, inline, className, children, ...props }: CodeProps) => {
+      const match = /language-(\w+)/.exec(className || '');
+      const code = String(children).replace(/\n$/, '');
+      
+      if (!inline && match) {
+        return (
+          <div className="relative">
+            <CopyButton code={code} />
+            <code className={className} {...props}>
+              {children}
+            </code>
+          </div>
+        );
+      }
+      
+      if (inline) {
+        return (
+          <code className={className} {...props}>
+            {highlightText(String(children), highlightQuery)}
+          </code>
+        );
+      }
+
+      return (
+        <code className={className} {...props}>
+          {children}
+        </code>
+      );
+    },
+    p: ({ children }) => {
+      if (typeof children === 'string') {
+        return <p>{highlightText(children, highlightQuery)}</p>;
+      }
+      return <p>{children}</p>;
+    },
+    h2: ({ children }) => {
+      const id = children?.toString().toLowerCase().replace(/[^a-z0-9]+/g, '-');
+      if (typeof children === 'string') {
+        return <h2 id={id}>{highlightText(children, highlightQuery)}</h2>;
+      }
+      return <h2 id={id}>{children}</h2>;
+    },
+    h3: ({ children }) => {
+      const id = children?.toString().toLowerCase().replace(/[^a-z0-9]+/g, '-');
+      if (typeof children === 'string') {
+        return <h3 id={id}>{highlightText(children, highlightQuery)}</h3>;
+      }
+      return <h3 id={id}>{children}</h3>;
+    },
+    img: (props: ImageProps) => {
+      if (!props.src) return null;
+
+      const { src, width, height, style, className, alt, ...rest } = props;
+
+      return (
+        <div style={{ 
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          width: '100%',
+          margin: '2rem 0'
+        }}>
+          <img
+            src={src}
+            style={{
+              width: width ? `${width}px` : 'auto',
+              height: height ? `${height}px` : 'auto',
+              borderRadius: '8px',
+              objectFit: 'cover'
+            }}
+            alt={alt ?? ''}
+            {...rest}
+          />
+        </div>
+      );
+    }
+  };
+
   return (
     <div className="flex flex-col min-h-screen bg-gray-900">
       {/* Başlık */}
@@ -101,57 +184,7 @@ export default function BlogPost({ params }: { params: Promise<{ slug: string }>
           <ReactMarkdown
             remarkPlugins={[remarkGfm]}
             rehypePlugins={[rehypeRaw, [rehypeHighlight, { ignoreMissing: true }]]}
-            components={{
-              code: ({ node, inline, className, children, ...props }: CodeProps) => {
-                const match = /language-(\w+)/.exec(className || '');
-                const code = String(children).replace(/\n$/, '');
-                
-                if (!inline && match) {
-                  return (
-                    <div className="relative">
-                      <CopyButton code={code} />
-                      <code className={className} {...props}>
-                        {children}
-                      </code>
-                    </div>
-                  );
-                }
-                
-                if (inline) {
-                  return (
-                    <code className={className} {...props}>
-                      {highlightText(String(children), highlightQuery)}
-                    </code>
-                  );
-                }
-
-                return (
-                  <code className={className} {...props}>
-                    {children}
-                  </code>
-                );
-              },
-              p: ({ children }) => {
-                if (typeof children === 'string') {
-                  return <p>{highlightText(children, highlightQuery)}</p>;
-                }
-                return <p>{children}</p>;
-              },
-              h2: ({ children }) => {
-                const id = children?.toString().toLowerCase().replace(/[^a-z0-9]+/g, '-');
-                if (typeof children === 'string') {
-                  return <h2 id={id}>{highlightText(children, highlightQuery)}</h2>;
-                }
-                return <h2 id={id}>{children}</h2>;
-              },
-              h3: ({ children }) => {
-                const id = children?.toString().toLowerCase().replace(/[^a-z0-9]+/g, '-');
-                if (typeof children === 'string') {
-                  return <h3 id={id}>{highlightText(children, highlightQuery)}</h3>;
-                }
-                return <h3 id={id}>{children}</h3>;
-              },
-            }}
+            components={components}
           >
             {post.content}
           </ReactMarkdown>

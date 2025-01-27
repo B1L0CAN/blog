@@ -50,9 +50,9 @@ fun main() {
 }
 \`\`\`
 
- \`try-catch\` blokları ile hata yakalama işlemi bu şekilde yapılır. try ile işlemi başlatırız ve eğer bir sorun oluşursa catch bloğu ile bu hatayı yakalarız.
+\`try-catch\` blokları ile hata yakalama işlemi bu şekilde yapılır. try ile işlemi başlatırız ve eğer bir sorun oluşursa catch bloğu ile bu hatayı yakalarız.
 
- \`toInt()\` fonksiyonu geçerli bir sayı ile karşılaşmadığında \`NumberFormatException\` hatası fırlatır. Biz de bu hatayı özel olarak yakalayıp kullanıcıyı bilgilendiriyoruz.
+\`toInt()\` fonksiyonu geçerli bir sayı ile karşılaşmadığında \`NumberFormatException\` hatası fırlatır. Biz de bu hatayı özel olarak yakalayıp kullanıcıyı bilgilendiriyoruz.
 
 
 > Not: If-else blok yapısı gibi hangi tür hata olduğunu anlamak için birden fazla catch bloğu kullanılabilir.
@@ -292,7 +292,7 @@ fun main() {
 
 Interface'ler bir sınıf değildir fakat sınıfların belirli davranışlarını zorunlu kılmak için kullanılır.
 
-Tüm metodları varsayılan olarak soyuttur ve override edilmelidir. Ancak, Kotlin’de default bir implementasyon (varsayılan metodlar) da tanımlanabilir. 
+Tüm metodları varsayılan olarak soyuttur ve override edilmelidir. Ancak, Kotlin'de default bir implementasyon (varsayılan metodlar) da tanımlanabilir. 
 
 Bir sınıf birden fazla interface'i implement edebilir.
 
@@ -445,12 +445,6 @@ fun main() {
 Kotlin'de iki tür çok biçimlilik vardır, Static Polymorphism ve Dynamic Polymorphism.
 
 Static Polymorphism, compile time'da belirlenir.
-
-Dynamic Polymorphism, runtime'da belirlenir.
-
-### Static Polymorphism
-
-Static polymorphism, compile time'da belirlenir.
 
 \`\`\`kotlin
 open class Islemler {
@@ -953,6 +947,9 @@ var camelCase = "Camel Case yazım örneği"
   blogunAmaci: `
 
   Bu blogun amacı yoktur, kendi keyfi zevklerime göre yazıyorum. Sadece bir şeyler denemek istedim nasıl olacak diye o kadar :)
+
+  <img src="/images/resim1.png" width="300" height="300" style="object-fit: cover;" />
+
   `
 };
 
