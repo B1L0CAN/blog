@@ -22,12 +22,12 @@ export default function Home() {
       </div>
 
       {/* İçerik */}
-      <div className="flex flex-1">
+      <div className="flex flex-1 relative">
         {/* Sol Sidebar */}
         <Sidebar />
         
         {/* Ana İçerik */}
-        <main className="flex-1 p-8">
+        <main className="flex-1 p-4 md:p-8">
           <h2 className="text-2xl font-semibold mb-8 text-white">Blog Yazıları</h2>
           <div className="grid gap-6">
             {posts.map((post) => (

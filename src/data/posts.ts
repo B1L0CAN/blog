@@ -15,7 +15,7 @@ const POST_CONTENTS = {
 Bu kısımda Andorid ile ilgili temel bilgiler verilecektir.
   `,
   hata: `
-  ## Hata Yakalama
+## Hata Yakalama
 
 Kotlin'de, hata ayıklama yaparken genellikle try-catch bloklarını kullanırız.
 
