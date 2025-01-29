@@ -41,9 +41,10 @@ Bu yöntemi kullanabilmek için şu adımları izlemeliyiz:
 \`\`\`gradle
    android {
     //burada diğer android kodları var, viewBinding kodunu onların altına yazıyoruz.
-    viewBinding {
-        enabled = true
+    buildFeatures {
+        viewBinding true
     }
+}
 \`\`\`
 
 bu kodu ekledikten sonra sync now yapıyoruz.
@@ -116,7 +117,7 @@ fun kotuOyun (view: View) {
 
 Bu fonksiyonların içine istediğimiz kodları yazabiliriz.
 
->Not: İlk yöntem daha kullanışlıdır çünkü çok buton varsa her buton için ayrı ayrı fonksiyon tanımlamak zor olur ve aralarında ikinci yöntem için uğraşmaya değecek bir fark yok.
+>Not: İlk yöntem daha kullanışlıdır çünkü çok buton varsa her buton için ayrı ayrı fonksiyon tanımlamak zor olur ve aralarında ikinci yöntem için uğraşmaya değecek bir fark göremedim.
 ## Özet
 
 - findViewById çok çok basit projelerde belki kullanılabilir, projenin verimliliği ve zaman karmaşası açısından kötüdür.
