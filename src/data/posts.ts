@@ -79,6 +79,8 @@ Ardından OnCreate fonksiyonunda binding'i initialize ediyoruz.
    binding.textView.text = "Red Dead Redemption 2" //Önceki sayfadaki RDR 2 yazısı Red Dead Redemption 2 yazısına dönüşür.
    \`\`\`
 
+   <img src="/images/rdr2.png" width="500" height="250" style="object-fit: cover; display: block; margin: 0;" loading="lazy" alt="Blog Resmi" />
+
    Görüleceği üzere tek satırda iş bitti, diğeri gibi tanımlama falan yapmaya gerek yok. İlk başta gerekli tanımlamaları yapıp sonrasında işi çok daha basite indirgiyoruz.
 
 ## Özet
