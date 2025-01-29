@@ -11,7 +11,7 @@ const createPost = (post: Omit<Post, 'slug'>): Post => ({
 const POST_CONTENTS = {
     yasamDongusu: `
 
-# Yaşam Döngüsü Fonksiyonları
+# Yaşam Döngüsü Fonksiyonları 
 
 Bir android uygulamasının çalıştığı süreçte 6 farklı fonksiyon çalışır. Bu fonksiyonların her biri belirli bir amaçla kullanılır.
 
@@ -99,7 +99,7 @@ override fun onDestroy() {
 }
 \`\`\`
 
-## Ek Notlar
+# Ek Notlar
 
 > Not: onCreate ile onDestroy arasında köprü görevi gören fonksiyonlar da vardır. Bunlar da onRestart() ve onSaveInstanceState() fonksiyonlarıdır.
 

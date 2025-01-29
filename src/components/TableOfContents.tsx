@@ -17,8 +17,8 @@ export default function TableOfContents({ content }: { content: string }) {
     const headings: Heading[] = [];
     
     lines.forEach((line) => {
-      // ## veya ### ile başlayan satırları bul
-      const match = line.match(/^(#{2,3})\s+(.+)$/);
+      // # ile #### arasındaki tüm başlıkları yakala
+      const match = line.match(/^(#{1,4})\s+(.+)$/);
       if (match) {
         const level = match[1].length; // # sayısı
         const text = match[2];
@@ -42,12 +42,13 @@ export default function TableOfContents({ content }: { content: string }) {
           <li
             key={heading.id}
             style={{
-              marginLeft: `${(heading.level - 2) * 1.5}rem`,
+              marginLeft: `${(heading.level - 1) * 0.75}rem`,
+              paddingRight: '1rem'
             }}
           >
             <a
               href={`#${heading.id}`}
-              className="text-blue-400 hover:text-blue-300 transition-colors"
+              className="text-blue-400 hover:text-blue-300 transition-colors inline-block w-full"
             >
               {heading.text}
             </a>
