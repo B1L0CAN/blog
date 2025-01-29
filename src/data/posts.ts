@@ -32,9 +32,7 @@ Constraint Layoutlarda ekrandaki yerlerini belirliyoruz, şuradan şu kadar boş
 
 >Not: Constraint Layout'ta resimleri veya butonları HER cihazda ortada yapmak için sayfanın sağına ve soluna sabitleyip aynı boşluğu bırakıyoruz, ardından boyutları dinamik ayarlamak için width ve height'ı \`0dp (match constraint)\`olarak ayarlıyoruz.
 
-
-
-
+>Not: Infer Constraint ile çok basit düzeydeki sayfalar için hizalama yapabiliriz ama birkaç bileşenden sonra sapıtıyor, manuel yapmak en iyisi :) 
 
 
   `,
@@ -982,7 +980,7 @@ var camelCase = "Camel Case yazım örneği"
 export const posts: Post[] = [
   createPost({
     id: 8,
-    title: "Androide Giriş - Layout",
+    title: "Layout - Constraint Layout",
     content: POST_CONTENTS.android,
     date: "2024-01-25",
     summary: "Bu kısımda Andorid kategorisine Layout ile giriş yapılacaktır.",
