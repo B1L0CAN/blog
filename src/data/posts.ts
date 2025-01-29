@@ -9,6 +9,132 @@ const createPost = (post: Omit<Post, 'slug'>): Post => ({
 });
 
 const POST_CONTENTS = {
+    yasamDongusu: `
+
+# Yaşam Döngüsü Fonksiyonları
+
+Bir android uygulamasının çalıştığı süreçte 6 farklı fonksiyon çalışır. Bu fonksiyonların her biri belirli bir amaçla kullanılır.
+
+- onCreate()
+- onStart()
+- onResume()
+- onPause()
+- onStop()
+- onDestroy()
+
+## onCreate()
+
+Bu fonksiyon, uygulama ilk çalıştığında çalışır. Bu fonksiyon içerisinde uygulamanın başlangıç ayarlarını yaptığımız fonksiyondur.
+
+\`\`\`kotlin
+override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        val view = binding.root
+        setContentView(view)
+        enableEdgeToEdge()
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+            insets
+        }
+    }
+\`\`\`
+
+> Program ilk açılacağı zaman çalışacak kodlar buraya yazılır. Program kapatılıp tekrar açılıncaya kadar çalışmayacağı için başlangıçta lazım olan tüm kodlar buraya yazılır.
+
+## onStart()
+
+Bu fonksiyon, Aktivite ekranda görünmeye başladığı anda çalışır. Bir nevi onCreate ile onResume arasında köprü görevi görür.
+
+\`\`\`kotlin
+override fun onStart() {
+    super.onStart()
+    // Buraya kodlar yazılır.
+}
+\`\`\`
+
+## onResume()
+
+Bu fonksiyon, uygulama kullanıcıyla etkileşime geçmeye hazır olduğunda çağrılır. Kullanıcı genellikle bu fonksiyon çalışırken uygulamayı kullanır.
+
+\`\`\`kotlin
+override fun onResume() {
+    super.onResume()
+    // Buraya kodlar yazılır.
+}
+\`\`\`
+
+## onPause() 
+
+Bu fonksiyon, aktivite başka bir pencere tarafından kısmen kapatıldığında çalışır. Yani çalışan uygulamada sekme menüsüne geçildiğinde çalışır.
+
+\`\`\`kotlin
+override fun onPause() {
+    super.onPause()
+    // Buraya kodlar yazılır.
+}
+\`\`\`
+
+## onStop()
+
+Bu fonksiyon, aktivite tamamen ekrandan kaybolduğunda çağrılır. Yani uygulamayı alta aldığımızda çalışır.
+
+\`\`\`kotlin
+override fun onStop() {
+    super.onStop()
+    // Buraya kodlar yazılır.
+}
+\`\`\`
+
+
+## onDestroy()
+
+Bu fonksiyon, aktivite tamamen kapatıldığında çalışır. Yani uygulamayı tamamen kapattığımızda, uygulamadan çıktığımızda çalışır ve işlemler sonlandırılır.
+
+\`\`\`kotlin
+override fun onDestroy() {
+    super.onDestroy()
+    // Buraya kodlar yazılır.
+}
+\`\`\`
+
+## Ek Notlar
+
+> Not: onCreate ile onDestroy arasında köprü görevi gören fonksiyonlar da vardır. Bunlar da onRestart() ve onSaveInstanceState() fonksiyonlarıdır.
+
+### onRestart()
+
+Bu fonksiyon, aktivite stop edildikten sonra tekrar başlatıldığında çalışır.
+\`\`\`kotlin
+override fun onRestart() {
+    super.onRestart()
+    // Buraya kodlar yazılır.
+}
+\`\`\`
+
+Yani onStop ile onStart arasında köprü görevi görür. Uygulama durdurulduğunda tekrar çalışacak hale getirilmesi için onRestart çalıştırılır.
+
+### onSaveInstanceState()
+
+Bu fonksiyon, uygulamanın durumu değiştiğinde (örneğin, ekran döndüğünde veya sistem bellek boşaltırken aktiviteyi kapattığında) verileri kaydetmek için kullanılan bir fonksiyondur.
+
+\`\`\`kotlin
+override fun onSaveInstanceState(outState: Bundle) {
+    super.onSaveInstanceState(outState) 
+    outState.putString("oyunDurumu", "RDR2 iyi bir oyun") // Veriyi kaydediyoruz
+}
+
+override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+    super.onRestoreInstanceState(savedInstanceState)
+    val durum = savedInstanceState.getString("oyunDurumu")
+    binding.textView2.text = "Sonuç: $durum" // Veriyi geri yüklüyoruz
+}
+\`\`\`
+
+> Not: Bu fonksiyon, bir Bundle içine geçici verileri kaydeder ve uygulama tekrar açıldığında onCreate() veya onRestoreInstanceState() ile geri yüklenir.
+
+    `,
     xmlkotlin: `
 Bu kısımda layouttaki bileşenlerimizin kodlarını kotlinde düzenlemeyi öğreneceğiz
 
@@ -1216,6 +1342,14 @@ var camelCase = "Camel Case yazım örneği"
 };
 
 export const posts: Post[] = [
+    createPost({
+        id: 10,
+        title: "Projede Yaşam Döngüsü",
+        content: POST_CONTENTS.yasamDongusu,
+        date: "2024-01-28",
+        summary: "Bu kısımda Andoriddeki Yaşam Döngüsü hakkında detaylı bilgiler verilecektir.",
+        category: "Android"
+      }),
     createPost({
         id: 9,
         title: "Projede XML ile Kotlin Kodlarını Birleştirme - ViewBinding",
