@@ -99,7 +99,7 @@ override fun onDestroy() {
 }
 \`\`\`
 
-## Ek Notlar
+# Ek Notlar
 
 > Not: onCreate ile onDestroy arasında köprü görevi gören fonksiyonlar da vardır. Bunlar da onRestart() ve onSaveInstanceState() fonksiyonlarıdır.
 
