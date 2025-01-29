@@ -9,7 +9,91 @@ const createPost = (post: Omit<Post, 'slug'>): Post => ({
 });
 
 const POST_CONTENTS = {
+    xmlkotlin: `
+Bu kısımda layouttaki bileşenlerimizin kodlarını kotlinde düzenlemeyi öğreneceğiz
+
+## findViewById Kullanımı
+
+Önceki sayfada yer alan xml kodundaki bileşenlerin özelliklerini kotlinde değiştirebiliriz.
+
+Örneğin:
+
+\`\`\`kotlin
+    var image = findViewById<ImageView>(R.id.imageView)
+        //Bu şekilde projedeki id'si imageView olan bileşene ulaşıp üzerinde değişiklikler yapabiliriz
+        //image. yaparak ilgili fonksiyonlar ile birlikte resmin bilgilerini güncelleyebiliriz. Mesela image.top
+
+    val text = findViewById<TextView>(R.id.textView)
+        //text.text = "Red Dead Redemption 2"  yaparsak önceki sayfadaki RDR 2 yazısı Red Dead Redemption 2 yazısına dönüşür.
+\`\`\`
+
+> Fakat bu yöntem çok kullanışlı değildir çünkü hem karmaşıklık açısından hem de kullanım açısından kötüdür. Her değişecek değişecek bileşen için ayrı değişken tanımlama falan oohooo.
+ 
+Bunun yerine viewBinding kullanılır.
+
+## viewBinding Kullanımı
+
+viewBinding, layouttaki bileşenlerin kodlarını kotlinde düzenlemeyi sağlayan bir yöntemdir ve findViewById kullanımından çok daha kullanışlıdır.
+
+Bu yöntemi kullanabilmek için şu adımları izlemeliyiz:
+1. build.gradle (Module: app) dosyasına aşağıdaki kodu eklemeliyiz:
+
+\`\`\`gradle
+   android {
+    //burada diğer android kodları var, viewBinding kodunu onların altına yazıyoruz.
+    viewBinding {
+        enabled = true
+    }
+\`\`\`
+
+bu kodu ekledikten sonra sync now yapıyoruz.
+
+2. MainActivity.kt dosyasına gelip şu değişiklikleri yapıyoruz:
+
+\`\`\`kotlin
+   //MainActivity sınıfının içerisinde
+  private lateinit var binding: ActivityMainBinding //xml ismi mainbinding diye böyle
+  \`\`\`
+
+
+Ardından OnCreate fonksiyonunda binding'i initialize ediyoruz.
+
+   \`\`\`kotlin
+   override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
+    binding = ActivityMainBinding.inflate(layoutInflater)
+    val view = binding.root
+    setContentView(view)
+   }
+\`\`\`
+
+   Bu kodda binding'i initialize ediyoruz ve view'i set ediyoruz.
+
+   Sonrasında OnCreate fonksiyonundan \`setContentView(R.layout.activity_main)\` kodunu kaldırıyoruz çünkü view artık set edildi.
+
+   Ardından layout dosyasında kullanılan bileşenlerin id'lerini kotlinde değiştirebiliriz.
+   
+   Örneğin:
+
+   \`\`\`kotlin
+   binding.textView.text = "Red Dead Redemption 2" //Önceki sayfadaki RDR 2 yazısı Red Dead Redemption 2 yazısına dönüşür.
+   \`\`\`
+
+   Görüleceği üzere tek satırda iş bitti, diğeri gibi tanımlama falan yapmaya gerek yok. İlk başta gerekli tanımlamaları yapıp sonrasında işi çok daha basite indirgiyoruz.
+
+## Özet
+
+- findViewById çok çok basit projelerde belki kullanılabilir, projenin verimliliği ve zaman karmaşası açısından kötüdür.
+
+- ViewBinding ise çok daha kullanışlıdır ve projenin verimliliğini arttırır. Kod yazmamızı kolaylaştırır.
+
+- ViewBinding kullanmadan önce kotlinde gerekli tanımlamaları yapmayı unutmamalıyız.
+   
+   
+    `,
+
   android: `
+
 
 ## Layout
  
@@ -1095,6 +1179,14 @@ var camelCase = "Camel Case yazım örneği"
 };
 
 export const posts: Post[] = [
+    createPost({
+        id: 9,
+        title: "Projede XML ile Kotlin Kodlarını Birleştirme - ViewBinding",
+        content: POST_CONTENTS.xmlkotlin,
+        date: "2024-01-27",
+        summary: "Bu kısımda layouttaki bileşenlerimizin kodlarını kotlinde düzenlemeyi öğreneceğiz.",
+        category: "Android"
+      }),
   createPost({
     id: 8,
     title: "Layoutlar ve Çeşitleri - XML",
