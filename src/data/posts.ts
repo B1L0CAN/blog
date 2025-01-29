@@ -19,8 +19,6 @@ Layout, bir uygulamanın genel yapısını oluşturan temel bileşenlerdir. Kull
 
 Layout kısmı ile ilgili notlar sürekli güncellenecektir.
 
-\`TextAlignment\` ile metin hizalaması yapılır.
-
 Fotoğraf ekleyeceğinde png, jpg, jpeg gibi formatları kullan ve kaydettiğin resmi kopyalayıp \`drawable klasörüne\` yapıştır.
 
 ## Constraint Layout
@@ -34,10 +32,115 @@ Constraint Layoutlarda ekrandaki yerlerini belirliyoruz, şuradan şu kadar boş
 
 >Not: Infer Constraint ile çok basit düzeydeki sayfalar için hizalama yapabiliriz ama birkaç bileşenden sonra sapıtıyor, manuel yapmak en iyisi :) 
 
+## Linear Layout
 
+Linear Layout, bir düz çizgi üzerinde elemanları hizalama yapmak için kullanılır.
+
+- Linear Layout'ta elemanları yatay veya dikey olarak hizalama yapabiliriz. \`andorid:orientation\` komutu ile belirtilir.
+
+- Linear Layout'ta da elemanların boyutlarını ayarlayabiliriz.
+
+- Komponentler xml dosyasındaki sıralarına göre hizalanır. Yani resim üstte dursun istersen kodda da üstte olmalı.
+
+- Layout_gravity ile komponentlerin hizalanmasını ayarlayabiliriz, center vs..
+
+
+## XML Layout
+
+XML, yaptığımız arayüzün kodlarını yazdığımız dosyadır.  
+
+XML kodlarını ezberleye gerek yok, çalışılan komponentin üstüne tıklayınca kodlarını görebiliriz.
+
+XML Layout kısmı da sürekli güncellenecektir.
+- \`activity_main.xml\` dosyası, uygulamanın ana sayfasını temsil eden XML dosyasıdır. Bu dosya, uygulamanın ana ekranını oluşturmak için kullanılır.
+
+- \`andorid:layout_width = "match_parent"\` ilgili komponenti yayıyor, daha büyük bir şey geldiğinde mesela uzun bir metin, bunun taşmaması için daha fazla  alan sağlamış oluyor.
+
+- Benzer şekilde ilgili komponentin rengini, boyutunu, vs. ayarlayabiliriz.
+
+- Constraint Layout'ta ise \`layout_constraintTop_toTopOf\`,  End_ToEndOf gibi kısımlar da kullanılır. Bunlar da hizalama için kullanılır.
+
+- \`"match_parent"\` ilgili komponentin ebeveyninin boyutunu alır. Yani üzerinde çalıştığı cihazın boyutunu alır. 
+
+- \`"wrap_content"\` daha çok metin içeren komponentlerde kullanılır ve içeriğine göre boyutunu dinamik olarak belirler.
+
+## İç İçe Layoutlar 
+
+Bir layout içerisinde başka bir layout kullanmak istersek, bu işlem iç içe layoutlar olarak adlandırılır. 
+
+Constraint Layout içerisinde Linear Layout, Linear Layout içerisinde de Constraint Layout kullanılabilir. Herhangi bir sınırlama veya şart yok.
+
+\`\`\`xml
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="match_parent"
+        android:layout_height="176dp"
+        android:layout_marginTop="50dp"
+        android:layout_gravity="center"
+        app:srcCompat="@drawable/rdr" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_marginTop="24dp"
+        android:text="RDR-2"
+        android:textAlignment="center"
+        android:textColor="#CC1612"
+        android:textColorLink="#D31D1D"
+        android:textSize="18sp"
+     android:layout_gravity="center"
+        />
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:layout_marginTop="24dp"
+    android:gravity="center"> <!-- Duz gravity yapiyoruz buraya dikkat -->
+
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="15dp"
+        android:text="Iyi Oyun" />
+    <!-- Margin top end falan degil sade margin ise her tarafa ayni, mesela burda her tarafa 15dp -->
+
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="15dp"
+        android:text="Kotu Oyun" />
+    </LinearLayout>
+
+</LinearLayout>
+\`\`\`
+
+Bu kodda Linear Layout içerisinde Linear Layout kullanılmıştır. 
+
+Vertical tanımlanan bir layoutta yan yana butonlar koymak istersek, horizontal bir layout kullanırız ve bu layoutu da ilgili layoutun içerisinde tanımlarız.
+
+Yazdığımız kodun resmi:
+
+<img src="/images/rdrss.png" width="250" height="450" style="object-fit: cover; display: block; margin: 0;" loading="lazy" alt="Blog Resmi" />
   `,
   hata: `
 ## Hata Yakalama
+
 
 Kotlin'de, hata ayıklama yaparken genellikle try-catch bloklarını kullanırız.
 
