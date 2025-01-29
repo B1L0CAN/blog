@@ -83,6 +83,40 @@ Ardından OnCreate fonksiyonunda binding'i initialize ediyoruz.
 
    Görüleceği üzere tek satırda iş bitti, diğeri gibi tanımlama falan yapmaya gerek yok. İlk başta gerekli tanımlamaları yapıp sonrasında işi çok daha basite indirgiyoruz.
 
+### viewBinding Kullanımı (Butonlar İle)
+
+Bu kısımda iki farklı yöntemle butonların kodlarını kotlinde düzenlemeyi öğreneceğiz.
+
+- 1. Yöntem setOnClickListener ile düz bir şekilde kod yazmak.
+
+\`\`\`kotlin
+
+binding.button.setOnClickListener {
+            binding.textView2.text = "Sonuç: RDR2 iyi bir oyun"
+        }
+binding.button2.setOnClickListener {
+            binding.textView2.text = "Sonuç: RDR2 kötü bir oyun"
+        }
+
+\`\`\`
+
+- 2. Yöntem ise butonun onClick fonksiyonunu kotlinde tanımlamak.
+
+Bunun için butonun xml kısmından \`android:onClick="iyiOyun"\` veya \`android:onClick="kotuOyun"\` şeklinde tanımlarız.
+
+Veya butonun üstüne tıklayıp attribute kısmından onClick kısmını bulup \`iyiOyun\` veya \`kotuOyun\` şeklinde tanımlarız.
+\`\`\`kotlin
+fun iyiOyun (view: View) {
+        binding.textView2.text = "Sonuç: RDR2 iyi bir oyun"
+    }
+fun kotuOyun (view: View) {
+        binding.textView2.text = "Sonuç: RDR2 kötü bir oyun"
+    }   
+\`\`\`
+
+Bu fonksiyonların içine istediğimiz kodları yazabiliriz.
+
+>Not: İlk yöntem daha kullanışlıdır çünkü çok buton varsa her buton için ayrı ayrı fonksiyon tanımlamak zor olur ve aralarında ikinci yöntem için uğraşmaya değecek bir fark yok.
 ## Özet
 
 - findViewById çok çok basit projelerde belki kullanılabilir, projenin verimliliği ve zaman karmaşası açısından kötüdür.
