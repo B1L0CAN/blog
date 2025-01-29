@@ -22,6 +22,8 @@ Bir android uygulamasının çalıştığı süreçte 6 farklı fonksiyon çalı
 - onStop()
 - onDestroy()
 
+> Burada yazan açıklamaların hepsini kendi hatırlayacağım şekilde yazdığımı hatırlatmak isterim :)
+ 
 ## onCreate()
 
 Bu fonksiyon, uygulama ilk çalıştığında çalışır. Bu fonksiyon içerisinde uygulamanın başlangıç ayarlarını yaptığımız fonksiyondur.

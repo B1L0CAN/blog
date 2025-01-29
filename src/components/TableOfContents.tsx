@@ -35,7 +35,7 @@ export default function TableOfContents({ content }: { content: string }) {
   }
 
   return (
-    <nav className="bg-gray-800 p-4 rounded-lg mb-8">
+    <nav className="bg-gray-800 p-4 rounded-lg mb-8 max-w-full">
       <h2 className="text-xl font-bold mb-4 text-white">İçindekiler</h2>
       <ul className="space-y-2">
         {headings.map((heading) => (
@@ -43,12 +43,12 @@ export default function TableOfContents({ content }: { content: string }) {
             key={heading.id}
             style={{
               marginLeft: `${(heading.level - 1) * 0.75}rem`,
-              paddingRight: '1rem'
             }}
           >
             <a
               href={`#${heading.id}`}
-              className="text-blue-400 hover:text-blue-300 transition-colors inline-block w-full"
+              className="text-blue-400 hover:text-blue-300 transition-colors block overflow-hidden text-ellipsis"
+              style={{ maxWidth: `calc(100% - ${(heading.level - 1) * 0.75}rem)` }}
             >
               {heading.text}
             </a>
