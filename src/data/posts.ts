@@ -44,6 +44,21 @@ Linear Layout, bir düz çizgi üzerinde elemanları hizalama yapmak için kulla
 
 - Layout_gravity ile komponentlerin hizalanmasını ayarlayabiliriz, center vs..
 
+## Frame Layout
+
+Frame Layout sayfanın tamamını kaplayacak şekilde çalışır, mesela bir harita uygulamasında harita kısmını kaplamak için kullanılır.
+
+## Relative Layout 
+
+Relative Layout, sayfadaki elemanların birbirlerine göre konumlarını belirlemek için kullanılır.
+
+Constraint Layout çıktıktan sonra pek kullanılmıyor, constraintten devam.
+
+## Grid Layout
+
+Grid Layout, ızgara görünümü gibi bir görünüm oluşturmak için kullanılır.
+
+Constraint Layout çıktıktan sonra pek kullanılmıyor, constraintten devam.
 
 ## XML Layout
 
@@ -1033,9 +1048,9 @@ val harf = 'A'
 
 ## Önemli Notlar
 
-- ⚠️ Eğer bir değişkenin değeri değiştirilmeyecekse \`val\` kullanılmalıdır.
-- ⚠️ Eğer değişkenin değeri değiştirilecekse \`var\` kullanılmalıdır.
-- 💡 Kotlin, değişken tipini otomatik olarak belirler (Type Inference).
+- Eğer bir değişkenin değeri değiştirilmeyecekse \`val\` kullanılmalıdır.
+- Eğer değişkenin değeri değiştirilecekse \`var\` kullanılmalıdır.
+- Kotlin, değişken tipini otomatik olarak belirler (Type Inference).
 
 ### Unsigned Değişkenler
 Negatif değer almayan değişkenlerdir (UByte, UShort, UInt, ULong).
@@ -1076,16 +1091,13 @@ var camelCase = "Camel Case yazım örneği"
   Bu blogun amacı yoktur, kendi keyfi zevklerime göre yazıyorum. Sadece bir şeyler denemek istedim nasıl olacak diye o kadar :)
 
   <img src="/images/resim1.png" width="200" height="200" style="object-fit: cover; display: block; margin: 0 auto;" loading="lazy" alt="Blog Resmi" />
-
-  <img src="/images/resim2.png" width="700" height="250" style="object-fit: cover; display: block; margin: 0 auto;" loading="lazy" alt="Blog Resmi" />
-
   `
 };
 
 export const posts: Post[] = [
   createPost({
     id: 8,
-    title: "Constraint Ve Linear Layout - XML",
+    title: "Layoutlar ve Çeşitleri - XML",
     content: POST_CONTENTS.android,
     date: "2024-01-26",
     summary: "Bu kısımda Andorid kategorisine Layoutlar ve XML ile giriş yapılacaktır.",
