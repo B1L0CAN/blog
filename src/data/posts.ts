@@ -15,7 +15,7 @@ const POST_CONTENTS = {
  
 Layout, bir uygulamanın genel yapısını oluşturan temel bileşenlerdir. Kullanıcının uygulamayı görüntülemesi için gerekli olan tüm bileşenleri içerir.
 
-###Layout Notları
+### Layout Notları
 
 Layout kısmı ile ilgili notlar sürekli güncellenecektir.
 
@@ -23,7 +23,7 @@ Layout kısmı ile ilgili notlar sürekli güncellenecektir.
 
 Fotoğraf ekleyeceğinde png, jpg, jpeg gibi formatları kullan ve kaydettiğin resmi kopyalayıp \`drawable klasörüne\` yapıştır.
 
-##Constraint Layout
+## Constraint Layout
 
 Constraint Layoutlarda ekrandaki yerlerini belirliyoruz, şuradan şu kadar boşluk var gibi.
 
