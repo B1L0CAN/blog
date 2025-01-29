@@ -137,6 +137,8 @@ Vertical tanımlanan bir layoutta yan yana butonlar koymak istersek, horizontal 
 Yazdığımız kodun resmi:
 
 <img src="/images/rdrss.png" width="250" height="450" style="object-fit: cover; display: block; margin: 0;" loading="lazy" alt="Blog Resmi" />
+
+>Not: Kötü diyen bir anca önce sayfayı terk ederse sevinirim tşk.
   `,
   hata: `
 ## Hata Yakalama
@@ -1083,10 +1085,10 @@ var camelCase = "Camel Case yazım örneği"
 export const posts: Post[] = [
   createPost({
     id: 8,
-    title: "Layout - Constraint Layout",
+    title: "Constraint Ve Linear Layout - XML",
     content: POST_CONTENTS.android,
-    date: "2024-01-25",
-    summary: "Bu kısımda Andorid kategorisine Layout ile giriş yapılacaktır.",
+    date: "2024-01-26",
+    summary: "Bu kısımda Andorid kategorisine Layoutlar ve XML ile giriş yapılacaktır.",
     category: "Android"
   }),
   createPost({
