@@ -160,9 +160,11 @@ export default function BlogPost({ params }: { params: Promise<{ slug: string }>
     <div className="flex flex-col min-h-screen bg-gray-900">
       {/* Başlık */}
       <header className="w-full py-6 border-b border-gray-800">
-        <h1 className="text-4xl font-bold text-white text-center">
-          Bilo&apos;nun Not Defteri
-        </h1>
+        <Link href="/" className="hover:text-blue-400 transition-colors">
+          <h1 className="text-4xl font-bold text-white text-center">
+            Bilo&apos;nun Not Defteri
+          </h1>
+        </Link>
       </header>
 
       <article className="max-w-3xl mx-auto py-8 px-4 flex-1">
