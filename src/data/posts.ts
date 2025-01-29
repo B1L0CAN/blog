@@ -10,9 +10,33 @@ const createPost = (post: Omit<Post, 'slug'>): Post => ({
 
 const POST_CONTENTS = {
   android: `
-# Android
 
-Bu kısımda Andorid ile ilgili temel bilgiler verilecektir.
+## Layout
+ 
+Layout, bir uygulamanın genel yapısını oluşturan temel bileşenlerdir. Kullanıcının uygulamayı görüntülemesi için gerekli olan tüm bileşenleri içerir.
+
+###Layout Notları
+
+Layout kısmı ile ilgili notlar sürekli güncellenecektir.
+
+\`TextAlignment\` ile metin hizalaması yapılır.
+
+Fotoğraf ekleyeceğinde png, jpg, jpeg gibi formatları kullan ve kaydettiğin resmi kopyalayıp \`drawable klasörüne\` yapıştır.
+
+##Constraint Layout
+
+Constraint Layoutlarda ekrandaki yerlerini belirliyoruz, şuradan şu kadar boşluk var gibi.
+
+- Constrait ayarlarken resmin, yazının, butonun üzerine tıklayarak çıkan daireler ile sayfada hizalamasını yapıyoruz.
+- Constraint Layout'ta resimleri veya butonları sürekli yeniden boyutlandırabiliriz.
+
+>Not: Constraint Layout'ta resimleri veya butonları HER cihazda ortada yapmak için sayfanın sağına ve soluna sabitleyip aynı boşluğu bırakıyoruz, ardından boyutları dinamik ayarlamak için width ve height'ı \`0dp (match constraint)\`olarak ayarlıyoruz.
+
+
+
+
+
+
   `,
   hata: `
 ## Hata Yakalama
@@ -958,10 +982,10 @@ var camelCase = "Camel Case yazım örneği"
 export const posts: Post[] = [
   createPost({
     id: 8,
-    title: "Androide Giriş",
+    title: "Androide Giriş - Layout",
     content: POST_CONTENTS.android,
     date: "2024-01-25",
-    summary: "Bu kısımda Andorid ile ilgili temel bilgiler verilecektir.",
+    summary: "Bu kısımda Andorid kategorisine Layout ile giriş yapılacaktır.",
     category: "Android"
   }),
   createPost({
