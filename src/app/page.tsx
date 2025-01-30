@@ -2,17 +2,27 @@ import BlogCard from '@/components/BlogCard';
 import Sidebar from '@/components/Sidebar';
 import { posts } from '@/data/posts';
 import Link from 'next/link';
+import SocialLinks from '@/components/SocialLinks';
 
 export default function Home() {
   return (
     <div className="flex flex-col min-h-screen bg-gray-900">
       {/* Başlık */}
       <header className="w-full py-6 border-b border-gray-800">
-        <Link href="/" className="hover:text-blue-400 transition-colors">
-          <h1 className="text-4xl font-bold text-white text-center">
-            Bilo&apos;nun Not Defteri
-          </h1>
-        </Link>
+        <div className="max-w-6xl mx-auto px-4">
+          <div className="flex flex-col md:block relative">
+            <div className="text-center mb-4 md:mb-0">
+              <Link href="/" className="hover:text-blue-400 transition-colors">
+                <h1 className="text-4xl font-bold text-white">
+                  Bilo&apos;nun Not Defteri
+                </h1>
+              </Link>
+            </div>
+            <div className="flex justify-center md:absolute md:right-0 md:top-1.5 md:-mr-80">
+              <SocialLinks />
+            </div>
+          </div>
+        </div>
       </header>
 
       {/* Giriş Yazısı */}
