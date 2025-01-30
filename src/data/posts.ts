@@ -13,7 +13,7 @@ const POST_CONTENTS = {
     
 Merhaba, bu kısımda çok basit bir hesap makinesi projesi yapacağız.
 
-Bu tarz bir hesap makinesi yapmanın çok fazla yolu var, bu yazıda çok çok basit manada bir hesap makinesi yapacağız.
+Bu tarz bir hesap makinesi yapmanın çok fazla yolu var, bu yazıda çok çok basit şekilde bir hesap makinesi yapacağız. 
 
 ## Layout ve XML Kısmı
 
