@@ -9,6 +9,108 @@ const createPost = (post: Omit<Post, 'slug'>): Post => ({
 });
 
 const POST_CONTENTS = {    
+    sharedPreferences: `
+
+## SharedPreferences Kullanımı
+
+SharedPreferences, uygulamanın verilerini saklamak ve okumak için kullanılan bir yöntemdir. Bu veriler, uygulama kapatılsa dahi hafızada saklanır.
+
+Mesela basit bir oyun uygulamasında maksimum skoru saklamak için kullanılır.
+
+Basit işler için uygundur, daha kapsamlı ve karmaşık şeyler için veri tabanı kullanılır.
+
+Örneğin daha sonra değer atayacağımız bir sharedPreferences değişkeni oluşturarak başlaylaım.
+
+\`\`\`kotlin
+    lateinit var sharedPreferences: SharedPreferences
+\`\`\`
+
+Ardından onCreate fonksiyonunda sharedPreferences'i initialize ediyoruz.
+
+> onCreate fonksiyonu içinde initilize etmek önemli çünkü eğer önceden elimizde veri varsa program başlar başlamaz gözükmeli.
+
+\`\`\`kotlin
+sharedPreferences = this.getSharedPreferences("com.example.sharedpreferences",MODE_PRIVATE)
+\`\`\`
+
+> Mode_private ile sadece bu uygulama için erişilebilir hale getiriyoruz. Eğer bu uygulamadaki veriler başka bir uygulamada kullanılacak olsaydı MODE_WORLD_READABLE kullanılırdı.
+
+%99 private kullanılır.
+
+Şimdi aşağıdaki resimde bulunan uygulamanın kodunu yazalım.
+
+<img src="/images/sharedui.png" width="750" height="350" style="object-fit: cover; display: block; margin: 0 auto;" loading="lazy" alt="Blog Resmi" />
+
+### Kaydet Butonu
+İlk olarak kaydet butonumuzun onClick özelliğini kaydet butonuna bağlıyoruz.
+
+\`\`\`kotlin
+    fun kaydet (view: View){
+
+        val kullaniciGirdisi = binding.editText.text.toString()
+        if (kullaniciGirdisi == ""){
+            Toast.makeText( this@MainActivity,"İsim boş olamaz",Toast.LENGTH_SHORT).show()
+        }else{
+            sharedPreferences.edit().putString("isim", kullaniciGirdisi).apply()
+            binding.textView.text="Kaydedilen İsim: {kullaniciGirdisi}" //Süslü parantezden önce $ işareti olmalıdır.
+        }
+    }
+\`\`\`
+
+<img src="/images/sharednoisim.png" width="350" height="850" style="object-fit: cover; display: block; margin: 0 auto;" loading="lazy" alt="Blog Resmi" />
+
+Görüleceği üzere isim girilmediğinde Toast mesajı görüntülenir ve "İsim boş olamaz" yazısı görüntülenir.
+
+<img src="/images/sharedyesisim.png" width="550" height="450" style="object-fit: cover; display: block; margin: 0 auto;" loading="lazy" alt="Blog Resmi" />
+
+Görüleceği üzere isim girildiğinde textView'de "Kaydedilen İsim: {kullaniciGirdisi}" yazısı görüntülenir.
+
+Şimdi bu kayıt gerçekten sharedPreferences'de saklanıyor mu kontrol edelim, uygulamayı kapatıp tekrar açalım.
+
+<img src="/images/shareddbkontrol.png" width="570" height="450" style="object-fit: cover; display: block; margin: 0 auto;" loading="lazy" alt="Blog Resmi" />
+
+Görüleceği üzere hafızada isim var olduğu için "Kaydedilen İsim: Bilocan" yazısı görüntülenir.
+
+### Silme Butonu
+
+Şimdi silme butonumuzun kodunu yazacağız, ondan önce onCreate fonksiyonunda bir değişken oluşturacağız.
+
+\`\`\`kotlin
+    alinanKullaniciAdi = sharedPreferences.getString("isim","")
+        if(alinanKullaniciAdi==""){
+            binding.textView.text= "Daha önce girilen bir isim yok."
+        }else{
+            binding.textView.text = "Kaydedilen İsim: {alinanKullaniciAdi}"//Süslü parantezden önce $ işareti olmalıdır.
+        }
+\`\`\`
+
+> Bu kodda sharedPreferences'deki isim değişkenini alıyoruz ve eğer boş ise "Daha önce girilen bir isim yok." yazısı görüntülenir, eğer dolu ise "Kaydedilen İsim: {alinanKullaniciAdi}" yazısı görüntülenir.
+
+Şimdi silme butonumuzun onClick özelliğini sil fonksiyonuna bağlıyoruz ve kodunu yazıyoruz.
+
+\`\`\`kotlin
+    fun sil (view : View){
+        alinanKullaniciAdi = sharedPreferences.getString("isim", "")
+        if (alinanKullaniciAdi != "") {
+            sharedPreferences.edit().remove("isim").apply()
+            binding.textView.text = "İsim silindi."
+        } else {
+            binding.textView.text = "Daha önce girilen bir isim yok."
+        }
+    }
+\`\`\`
+
+<img src="/images/sharedsilisim.png" width="570" height="450" style="object-fit: cover; display: block; margin: 0 auto;" loading="lazy" alt="Blog Resmi" />
+
+Görüleceği üzere sil butonuna bastığımızda "İsim silindi." yazısı görüntülenir ve hafızadan Bilocan yazısı silinir.
+
+Şimdi hafızada isim var mı yok mu kontrol edelim, uygulamayı kapatıp tekrar açalım.
+
+<img src="/images/sharedson.png" width="570" height="450" style="object-fit: cover; display: block; margin: 0 auto;" loading="lazy" alt="Blog Resmi" />
+
+Görüleceği üzere hafızada isim kalmadığı için "Daha önce girilen bir isim yok." yazısı görüntülenir.
+
+    `,
     context: `
 
 ## Activity Context
@@ -58,15 +160,14 @@ alert.setPositiveButton("Evet") { dialog, which ->
         }
 \`\`\`
 
-> Bu şekilde de buton kodunu yazabiliriz şu şekilde de: 
+> Bu şekilde de buton kodunu yazabiliriz şu şekilde obeject sınıfından türeterek de: 
 
 \`\`\`kotlin
 alert.setNegativeButton("Hayır" , object : DialogInterface.OnClickListener{
-            override fun onClick(dialog: DialogInterface?, which: Int) {
-                Toast.makeText(this@MainActivity,"Kayıt Yapılmadı", Toast.LENGTH_LONG).show()
-            } 
-
-        })
+    override fun onClick(dialog: DialogInterface?, which: Int) {
+        Toast.makeText(this@MainActivity,"Kayıt Yapılmadı", Toast.LENGTH_LONG).show()
+        } 
+})
 \`\`\`
 
 > Dikkat: Bu kod kullanımında this@MainActivity yazmamız gerekiyor, sadece this yazarsak hata verir.
@@ -1461,6 +1562,14 @@ var camelCase = "Camel Case yazım örneği"
 };
 
 export const posts: Post[] = [
+    createPost({
+        id: 13,
+        title: "Andoridde Bilgi Saklama ve SharedPreferences",
+        content: POST_CONTENTS.sharedPreferences,
+        date: "2024-01-30",
+        summary: "Bu kısımda Andoriddeki bilgi saklama ve sharedPreferences kullanımını öğreneceğiz.",
+        category: "Android"
+      }),
     createPost({
         id: 12,
         title: "Andoridde Context ve Alert Dialog Kullanımı",
