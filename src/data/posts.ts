@@ -9,6 +9,193 @@ const createPost = (post: Omit<Post, 'slug'>): Post => ({
 });
 
 const POST_CONTENTS = {    
+    hesapMakinesi: `
+    
+Merhaba, bu kısımda çok basit bir hesap makinesi projesi yapacağız.
+
+Bu tarz bir hesap makinesi yapmanın çok fazla yolu var, bu yazıda çok çok basit manada bir hesap makinesi yapacağız.
+
+## Layout ve XML Kısmı
+
+İlk olarak Düzen kısmıyla başlayalım.
+
+Basit olsun diye constraintLayout kullandım ben, buton kısımları iç içe olacak şekilde LinearLayout kullanılarak falan da yapılabilirdi..
+
+<img src="/images/hesapMakinesi1.png" width="600" height="550" style="object-fit: cover; display: block; margin: 0 auto;" loading="lazy" alt="Blog Resmi" />
+
+> Sayıları almak için plainText yerine direkt number komponentini koyuyoruz. Böylece sayı klavyesi açılacak.
+
+> Butonlarımızın onClick özelliğini MainActivity'deki fonksiyonlara bağlayacağız. İsimlerini toplama, cikarma, carpma ve bolme olarak belirledik.
+
+Şimdi xml kısmını yazalım.
+
+\`\`\`xml
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="70dp"
+        android:layout_height="56dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="32dp"
+        android:onClick="toplama"
+        android:text="+"
+        android:textSize="24sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextNumber2" />
+
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="70dp"
+        android:layout_height="56dp"
+        android:layout_marginStart="32dp"
+        android:onClick="cikarma"
+        android:text="-"
+        android:textSize="24sp"
+        app:layout_constraintStart_toEndOf="@+id/button"
+        app:layout_constraintTop_toTopOf="@+id/button" />
+
+    <Button
+        android:id="@+id/button3"
+        android:layout_width="70dp"
+        android:layout_height="56dp"
+        android:layout_marginEnd="32dp"
+        android:onClick="carpma"
+        android:text="*"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toStartOf="@+id/button4"
+        app:layout_constraintTop_toTopOf="@+id/button2" />
+
+    <Button
+        android:id="@+id/button4"
+        android:layout_width="70dp"
+        android:layout_height="56dp"
+        android:layout_marginEnd="16dp"
+        android:onClick="bolme"
+        android:text="/"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/button" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="317dp"
+        android:layout_height="64dp"
+        android:layout_marginTop="50dp"
+        android:text="SONUÇ:"
+        android:textAlignment="center"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button2" />
+
+    <EditText
+        android:id="@+id/editTextNumber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:ems="10"
+        android:hint="İlk sayıyı giriniz"
+        android:inputType="number"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/editTextNumber2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:ems="10"
+        android:hint="İkinci sayıyı giriniz"
+        android:inputType="number"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextNumber" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+\`\`\`
+
+## MainActivity.kt Kısmı
+
+İlk olarak işe başlamadan önce view binding'i import ettik.
+
+Ardından verimliliği arttırmak adına sayi1, sayi2 ve sonuc değişkenlerini sınıfın başında tanımladık, bu şekilde her fonksiyonda kullanabiliriz.
+
+\`\`\`kotlin
+var sayi1: Double ?= null
+var sayi2: Double ?= null
+var sonuc: Double ?= null
+\`\`\`
+
+Şimdi toplama,cikarma,carpma ve bolme fonksiyonlarını yazalım.
+
+\`\`\`kotlin
+ fun toplama (view: View){
+        sayi1= binding.editTextNumber.text.toString().toDoubleOrNull()
+        sayi2= binding.editTextNumber2.text.toString().toDoubleOrNull()
+
+        if(sayi1!= null && sayi2 !=null){
+            sonuc = sayi1!!+sayi2!!
+            binding.textView.text= "Sonuc: {sonuc}"// Süslü parantezden önceki $ işareti silindi.
+        } else{
+            Toast.makeText(this@MainActivity,"Sayı kutucuğu boş bırakılamaz",Toast.LENGTH_LONG).show()
+        }
+    }
+
+    fun cikarma (view: View){
+
+        sayi1= binding.editTextNumber.text.toString().toDoubleOrNull()
+        sayi2= binding.editTextNumber2.text.toString().toDoubleOrNull()
+
+        if(sayi1!= null && sayi2 !=null){
+            sonuc = sayi1!!-sayi2!!
+            binding.textView.text= "Sonuc: {sonuc}"// Süslü parantezden önceki $ işareti silindi.
+        } else{
+            Toast.makeText(this@MainActivity,"Sayı kutucuğu boş bırakılamaz",Toast.LENGTH_LONG).show()
+        }
+    }
+
+    fun carpma (view: View){
+
+        sayi1= binding.editTextNumber.text.toString().toDoubleOrNull()
+        sayi2= binding.editTextNumber2.text.toString().toDoubleOrNull()
+
+        if(sayi1!= null && sayi2 !=null){
+            sonuc = sayi1!!*sayi2!!
+            binding.textView.text= "Sonuc: {sonuc}" // Süslü parantezden önceki $ işareti silindi.
+        } else{
+            Toast.makeText(this@MainActivity,"Sayı kutucuğu boş bırakılamaz",Toast.LENGTH_LONG).show()
+        }
+    }
+
+    fun bolme (view: View){
+
+        sayi1= binding.editTextNumber.text.toString().toDoubleOrNull()
+        sayi2= binding.editTextNumber2.text.toString().toDoubleOrNull()
+
+        if(sayi1!= null && sayi2 !=null){
+            sonuc = sayi1!!/sayi2!!
+            binding.textView.text= "Sonuc: {sonuc}" // Süslü parantezden önceki $ işareti silindi.
+        } else{
+            Toast.makeText(this@MainActivity,"Sayı kutucuğu boş bırakılamaz",Toast.LENGTH_LONG).show()
+        }
+    }
+\`\`\`
+
+> Eğer boş kutucuk bırakılırsa Toast mesajında "Sayı kutucuğu boş bırakılamaz" mesajı görüntülenir.
+
+<img src="/images/hesapMakinesi2.png" width="700" height="170" style="object-fit: cover; display: block; margin: 0 auto;" loading="lazy" alt="Blog Resmi" />
+
+
+    `,
     sharedPreferences: `
 
 ## SharedPreferences Kullanımı
@@ -1565,6 +1752,14 @@ var camelCase = "Camel Case yazım örneği"
 };
 
 export const posts: Post[] = [
+    createPost({
+        id: 14,
+        title: "Basit bir Hesap Makinesi Projesi",
+        content: POST_CONTENTS.hesapMakinesi,
+        date: "2024-01-30",
+        summary: "Bu kısımda çok basit bir hesap makinesi projesi yapacağız.",
+        category: "Android"
+      }),
     createPost({
         id: 13,
         title: "Andoridde Bilgi Saklama ve SharedPreferences",
