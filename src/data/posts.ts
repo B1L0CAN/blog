@@ -9,6 +9,207 @@ const createPost = (post: Omit<Post, 'slug'>): Post => ({
 });
 
 const POST_CONTENTS = {    
+    recyclerView: `
+
+# RecyclerView Kullanımı
+
+RecyclerView, Android'de liste veya ızgara (grid) şeklinde veri göstermek için kullanılan bir bileşendir. 
+
+- Büyük listeleri daha verimli göstermek için (Bellek tasarrufu yapar).
+- Daha esnek ve özelleştirilebilir.
+- Eski ListView'den daha gelişmiş ve hızlıdır.
+
+## Layout Kısmı
+
+İlk olarak RecyclerView'i layouta ekleyelim.
+
+<img src="/images/r1.png" width="700" height="450" style="object-fit: cover; display: block; margin: 0 auto;" loading="lazy" alt="Blog Resmi" />
+
+Ardından bir xml dosyası oluşturup  recyclerView için bir adet textView ekleyelim.
+
+<img src="/images/r2.png" width="700" height="450" style="object-fit: cover; display: block; margin: 0 auto;" loading="lazy" alt="Blog Resmi" />
+
+Ardından da görüntülemek istediğimiz asıl bilgi sayfasını oluşturup layouta ekleyelim.
+
+<img src="/images/r3.png" width="450" height="550" style="object-fit: cover; display: block; margin: 0 auto;" loading="lazy" alt="Blog Resmi" />
+
+## Kotlin Kısmı
+
+> İlk olarak view binding'i import etmeyi unutmamalıyız.
+
+Şimdi bir adet SuperKahraman adında bir sınıf oluşturup içine isim, meslek, gorsel değişkenlerini ekleyelim.
+
+\`\`\`kotlin
+package com.example.superkahramankitabi
+
+import java.io.Serializable
+
+class SuperKahraman(val isim : String, val meslek: String, val gorsel: Int) : Serializable{
+}
+\`\`\`
+
+> Not: Serializable sınıfından niçin kalıtım aldığımızı daha sonra göreceğiz.
+
+> Not: gorsel değişkeni int olarak tanımlandı çünkü drawable resimleri hafızada int değerlere atıyor.
+
+Şimdi MainActivity kısmına geçelim. 
+
+### MainActivity Kısmı
+
+Bir adet superKahramanListesi adında ArrayList oluşturalım, içeriğini daha sonra dolduracağız.
+\`\`\`kotlin
+private lateinit var superKahramanListesi : ArrayList<SuperKahraman>
+\`\`\`
+
+Şimdi onCreate fonksiyonunda superKahramanListesi'ne 4 adet SuperKahraman ekleyelim.
+
+\`\`\`kotlin
+    val superman = SuperKahraman("SuperMan","Gazeteci",R.drawable.superman)
+    val batman = SuperKahraman("BatMan","Patron",R.drawable.batman)
+    val ironman = SuperKahraman("IronMan","Zengin :D", R.drawable.ironman)
+    val spiderman= SuperKahraman("SpiderMan","Fotoğrafçı",R.drawable.spiderman)
+
+    // Şimdi bu nesneleri arrayList'e ekleyelim.
+    superKahramanListesi = arrayListOf(superman,batman,ironman,spiderman)   
+\`\`\`
+
+### Adapter Kısmı
+
+SuperKahramanAdapter adında bir sınıf oluşturup içine superKahramanListesi'ni ekleyelim.
+
+> Not: Gerekli importları unutmamalıyız. \`Alt + Enter\` kombinasyonu ile import edebiliriz.
+
+\`\`\`kotlin
+class SuperKahramanAdapter(val SuperKahramanListesi: ArrayList<SuperKahraman>): RecyclerView.Adapter<SuperKahramanAdapter.SuperKahramanViewHolder>() {
+
+    class SuperKahramanViewHolder(val binding: RecyclerRowBinding) : RecyclerView.ViewHolder(binding.root){
+
+
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SuperKahramanViewHolder {
+        val binding = RecyclerRowBinding.inflate(LayoutInflater.from(parent.context),parent,false)
+        return SuperKahramanViewHolder(binding)
+    }
+
+    override fun getItemCount(): Int {
+       return SuperKahramanListesi.size
+    }
+
+    override fun onBindViewHolder(holder: SuperKahramanViewHolder, position: Int) {
+        holder.binding.textViewRecyclerView.text= SuperKahramanListesi[position].isim
+
+        holder.itemView.setOnClickListener {
+            val intent = Intent(holder.itemView.context, TanitimAktivitesi::class.java)
+            intent.putExtra("secilenKahraman", SuperKahramanListesi[position])
+            holder.itemView.context.startActivity(intent)
+        }
+    }
+}
+\`\`\`
+
+> Not: intent içinde this yerine holder.itemView.context kullanmalıyız.
+
+> Not: \`startactivity(intent)\` yerine \`holder.itemView.context.startActivity(intent)\` kullanmalıyız.
+
+Şimdi MainActivity'e geri dönüp adapter'ı bağlayalım.
+
+\`\`\`kotlin
+    val adapter = SuperKahramanAdapter(superKahramanListesi)
+
+    binding.RecyclerView.layoutManager = LinearLayoutManager(this) //grid layout manager ızgara görünümü yapıyor
+
+    binding.RecyclerView.adapter= adapter
+\`\`\`
+
+### Tanıtım Aktivitesi Kısmı
+
+Tanıtım Aktivitesi sınıfını oluşturup bunun için de ayrı bir view binding tanımlaması yapıyoruz.
+
+Ardından adapter kısmını tanıtım aktivitesi'ne bağlıyoruz.
+
+\`\`\`kotlin
+val secilenKahraman = adapterdenGelenIntent.getSerializableExtra("secilenKahraman") as SuperKahraman
+\`\`\`
+
+> Not: Bu kullanım ileride kalkacak, yerini şu kullanıma bıracak. 
+
+\`\`\`kotlin
+val secilenKahraman = adapterdenGelenIntent.getSerializableExtra("secilenKahraman",SuperKahraman::class.java)
+\`\`\`
+
+> Not: Bu kullanım şu an için sadece API 33 ve üstünde çalışıyor.
+
+Son olarak da resim, isim ve meslek değişkenlerini bağlıyoruz.
+
+\`\`\`kotlin
+    binding.imageView.setImageResource(secilenKahraman.gorsel)
+    binding.textView.text= secilenKahraman.isim
+    binding.textView2.text= secilenKahraman.meslek
+\`\`\`
+
+Şu anda uygulamamız şu şekilde görünüyor ve çalışıyor: 
+
+<img src="/images/r4.png" width="460" height="580" style="object-fit: cover; display: block; margin: 0 auto;" loading="lazy" alt="Blog Resmi" />
+
+İlgili süper kahramanı seçtiğimizde şu şekilde görünüyor:
+
+<img src="/images/r5.png" width="760" height="500" style="object-fit: cover; display: block; margin: 0 auto;" loading="lazy" alt="Blog Resmi" />
+
+### Singleton Kullanımı
+
+Son olarak da singleton kullanımını görelim.
+
+Singleton, tek bir nesne oluşturup her yerde bu nesneyi kullanmak için kullanılır.
+
+Eğer bu projede singleton kullanmak isteseydik: 
+
+- Öncelikle MySingleton adında bir object oluşturuyoruz.
+
+\`\`\`kotlin
+object MySingleton {
+    var secilenSuperKahraman : SuperKahraman ?= null
+}
+\`\`\`
+
+- Sonrasında superKahramanAdapter sınıfında  
+
+\`\`\`kotlin
+intent.putExtra("secilenKahraman", SuperKahramanListesi[position])
+\`\`\`
+satırı yerine 
+
+\`\`\`kotlin
+MySingleton.secilenSuperKahraman=SuperKahramanListesi[position]
+\`\`\`
+satırını eklememiz gerekiyor.
+
+- Ardından da Tanıtım Aktivitesi'nde 
+
+\`\`\`kotlin
+    val secilenKahraman = adapterdenGelenIntent.getSerializableExtra("secilenKahraman") as SuperKahraman
+        binding.imageView.setImageResource(secilenKahraman.gorsel)
+        binding.textView.text= secilenKahraman.isim
+        binding.textView2.text= secilenKahraman.meslek
+\`\`\`
+
+kısmı yerine 
+
+\`\`\`kotlin
+val secilenKahraman= MySingleton.secilenSuperKahraman 
+    secilenKahraman?.let {
+        binding.imageView.setImageResource(secilenKahraman.gorsel)
+        binding.textView.text= secilenKahraman.isim
+        binding.textView2.text= secilenKahraman.meslek
+        }
+\`\`\`
+
+yazmamız gerekiyordu.
+
+> Not: let ile Nullable kontrolü yapıyoruz çünkü secilenKahraman null olabilir.
+
+    `,
+
     hesapMakinesi: `
     
 Merhaba, bu kısımda çok basit bir hesap makinesi projesi yapacağız.
@@ -1752,6 +1953,14 @@ var camelCase = "Camel Case yazım örneği"
 };
 
 export const posts: Post[] = [
+    createPost({
+        id: 15,
+        title: "Andoridde RecyclerView Kullanımı",
+        content: POST_CONTENTS.recyclerView,
+        date: "2025-01-30",
+        summary: "Bu kısımda Anroidde çok önemli bir yere sahip olan RecyclerView kullanımını öğreneceğiz.",
+        category: "Android"
+      }),
     createPost({
         id: 14,
         title: "Basit bir Hesap Makinesi Projesi",
