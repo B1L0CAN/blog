@@ -1756,7 +1756,7 @@ export const posts: Post[] = [
         id: 14,
         title: "Basit bir Hesap Makinesi Projesi",
         content: POST_CONTENTS.hesapMakinesi,
-        date: "2024-01-30",
+        date: "2025-01-30",
         summary: "Bu kısımda çok basit bir hesap makinesi projesi yapacağız.",
         category: "Android"
       }),
@@ -1764,7 +1764,7 @@ export const posts: Post[] = [
         id: 13,
         title: "Andoridde Bilgi Saklama ve SharedPreferences",
         content: POST_CONTENTS.sharedPreferences,
-        date: "2024-01-30",
+        date: "2025-01-30",
         summary: "Bu kısımda Andoriddeki bilgi saklama ve sharedPreferences kullanımını öğreneceğiz.",
         category: "Android"
       }),
@@ -1772,7 +1772,7 @@ export const posts: Post[] = [
         id: 12,
         title: "Andoridde Context ve Alert Dialog Kullanımı",
         content: POST_CONTENTS.context,
-        date: "2024-01-30",
+        date: "2025-01-30",
         summary: "Bu kısımda Andoriddeki App ve Activity Context'leri ve Alert Dialog kullanımını öğreneceğiz.",
         category: "Android"
       }),
@@ -1780,7 +1780,7 @@ export const posts: Post[] = [
         id: 11,
         title: "Andoridde Intent Kullanımı ve Sayfalar Arası Geçiş",
         content: POST_CONTENTS.intent,
-        date: "2024-01-30",
+        date: "2025-01-30",
         summary: "Bu kısımda Andoriddeki Intent Kullanımı ve Sayfalar Arası Geçiş hakkında detaylı bilgiler verilecektir.",
         category: "Android"
       }),
@@ -1788,7 +1788,7 @@ export const posts: Post[] = [
         id: 10,
         title: "Projede Yaşam Döngüsü",
         content: POST_CONTENTS.yasamDongusu,
-        date: "2024-01-29",
+        date: "2025-01-29",
         summary: "Bu kısımda Andoriddeki Yaşam Döngüsü hakkında detaylı bilgiler verilecektir.",
         category: "Android"
       }),
@@ -1796,7 +1796,7 @@ export const posts: Post[] = [
         id: 9,
         title: "Projede XML ile Kotlin Kodlarını Birleştirme - ViewBinding",
         content: POST_CONTENTS.xmlkotlin,
-        date: "2024-01-29",
+        date: "2025-01-29",
         summary: "Bu kısımda layouttaki bileşenlerimizin kodlarını kotlinde düzenlemeyi öğreneceğiz.",
         category: "Android"
       }),
@@ -1804,7 +1804,7 @@ export const posts: Post[] = [
     id: 8,
     title: "Layoutlar ve Çeşitleri - XML",
     content: POST_CONTENTS.android,
-    date: "2024-01-29",
+    date: "2025-01-29",
     summary: "Bu kısımda Andorid kategorisine Layoutlar ve XML ile giriş yapılacaktır.",
     category: "Android"
   }),
@@ -1812,7 +1812,7 @@ export const posts: Post[] = [
     id: 7,
     title: "Kotlinde Hata Yakalama",
     content: POST_CONTENTS.hata,
-    date: "2024-01-19",
+    date: "2025-01-19",
     summary: "Bu kısımda Kotlinde hata yakalama hakkında detaylı bilgiler verilecektir.",
     category: "Kotlin"
   }),
@@ -1820,7 +1820,7 @@ export const posts: Post[] = [
     id: 6,
     title: "Kotlinde Fonksiyonel Programlama",
     content: POST_CONTENTS.fonksiyonelProgramlama,
-    date: "2024-01-19",
+    date: "2025-01-19",
     summary: "Bu kısımda Kotlinde Lambda, Map ve Filter, Scope Fonksiyonları gibi fonksiyonel programlama kavramları hakkında detaylı bilgiler verilecektir.",
     category: "Kotlin"
   }),
@@ -1828,7 +1828,7 @@ export const posts: Post[] = [
     id: 5,
     title: "Kotlin'de Sınıflara ve OOP",
     content: POST_CONTENTS.oop,
-    date: "2024-01-18",
+    date: "2025-01-18",
     summary: "Kotlin'de nesne yönelimli programlama kavramlarını ve sınıfların nasıl kullanıldığını öğrenelim.",
     category: "Kotlin"
   }),
