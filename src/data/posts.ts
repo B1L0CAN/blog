@@ -9,7 +9,79 @@ const createPost = (post: Omit<Post, 'slug'>): Post => ({
 });
 
 const POST_CONTENTS = {    
+    context: `
 
+## Activity Context
+
+Activity Context, yalnızca ilgili aktiviteye bağlı olan bağlamdır. UI bileşenleriyle (AlertDialog, Toast, Intent vb.) etkileşim için kullanılır.
+
+> İlgili kütüphanesini import etmemiz gerekiyor, \`import android.widget.Toast\`. Ayrıca \`show()\` fonksiyonunu da görüntülemek için çağırmamız gerekiyor.
+
+\`\`\`kotlin
+Toast.makeText(this@MainActivity,"Uygulamaya Hoşgeldiniz",Toast.LENGTH_LONG).show()
+\`\`\`
+
+> Bu kodda this@MainActivity yerine sadece this yazabiliriz ama alışmak için this@MainActivity daha iyi olur çünkü bazı kullanımlarda sadece this yeterli olmuyor.
+## App Context
+
+App Context, uygulamanın genel yaşam döngüsüne bağlı, tüm uygulama boyunca geçerli olan bağlamdır. Genellikle servisler, bildirimler veya uzun ömürlü işlemler için kullanılır.
+
+\`\`\`kotlin
+Toast.makeText(applicationContext,"Uygulamaya Hoşgeldiniz",Toast.LENGTH_LONG).show()
+\`\`\`
+
+<img src="/images/toast.png" width="350" height="750" style="object-fit: cover; display: block; margin: 0 auto;" loading="lazy" alt="Blog Resmi" />
+
+> Görüleceği üzere iki türlü de ekranın aşağısında Toast mesajımız görüntülendi.
+
+## Alert Dialog Kullanımı
+
+Alert Dialog, uygulamanın kullanıcıya önemli bilgiler vermek veya onay istemek için kullanılan bir yöntemdir. 
+
+Yukarıda resmi olan örnekte Kaydet butonuna tıklandığında Alert Dialog görüntülemek için adını kaydet koyduğumuz onClick fonksiyonunu şu şekilde tanımlayabiliriz:
+
+\`\`\`kotlin
+val alert = AlertDialog.Builder(this@MainActivity) //applicationContext olsa hata vercekti
+    alert.setTitle("Kayıt Edilecek")
+    alert.setMessage("Kayıt işlemini yapmak istediğinize emin misiniz?")
+\`\`\`
+
+<img src="/images/alertDialog.png" width="650" height="250" style="object-fit: cover; display: block; margin: 0 auto;" loading="lazy" alt="Blog Resmi" />
+
+> Bu kodda AlertDialog.Builder fonksiyonunu kullanarak AlertDialog oluşturuyoruz ve başarılı bir şekilde AlertDialog görüntülendi.
+
+Şimdi bu pencereye buton ekleyerek işlemleri tamamlayalım. Basılan butona göre aşağıda bir toast mesajı görüntüleyelim.
+
+\`\`\`kotlin
+alert.setPositiveButton("Evet") { dialog, which ->
+           Toast.makeText(this@MainActivity,"Kayıt Tamamlandı", Toast.LENGTH_LONG).show()
+        }
+\`\`\`
+
+> Bu şekilde de buton kodunu yazabiliriz şu şekilde de: 
+
+\`\`\`kotlin
+alert.setNegativeButton("Hayır" , object : DialogInterface.OnClickListener{
+            override fun onClick(dialog: DialogInterface?, which: Int) {
+                Toast.makeText(this@MainActivity,"Kayıt Yapılmadı", Toast.LENGTH_LONG).show()
+            } 
+
+        })
+\`\`\`
+
+> Dikkat: Bu kod kullanımında this@MainActivity yazmamız gerekiyor, sadece this yazarsak hata verir.
+
+Artık butonlarımızı ekledik ve alert dialogumuzda gözükecek.
+
+<img src="/images/button.png" width="650" height="250" style="object-fit: cover; display: block; margin: 0 auto;" loading="lazy" alt="Blog Resmi" />
+
+Şimdi yazdığımız koda göre evete bastığımızda "Kayıt Tamamlandı", hayıra bastığımızda "Kayıt Yapılmadı" mesajı görüntüleniyor.
+
+<img src="/images/yesorno.png" width="650" height="750" style="object-fit: cover; display: block; margin: 0 auto;" loading="lazy" alt="Blog Resmi" />
+
+
+
+    `,
     intent: `
 
 ## Intent Kullanımı
@@ -215,7 +287,7 @@ Bu yöntemi kullanabilmek için şu adımları izlemeliyiz:
    android {
     //burada diğer android kodları var, viewBinding kodunu onların altına yazıyoruz.
     buildFeatures {
-        viewBinding true
+        viewBinding = true
     }
 }
 \`\`\`
@@ -1390,10 +1462,18 @@ var camelCase = "Camel Case yazım örneği"
 
 export const posts: Post[] = [
     createPost({
+        id: 12,
+        title: "Andoridde Context ve Alert Dialog Kullanımı",
+        content: POST_CONTENTS.context,
+        date: "2024-01-30",
+        summary: "Bu kısımda Andoriddeki App ve Activity Context'leri ve Alert Dialog kullanımını öğreneceğiz.",
+        category: "Android"
+      }),
+    createPost({
         id: 11,
         title: "Andoridde Intent Kullanımı ve Sayfalar Arası Geçiş",
         content: POST_CONTENTS.intent,
-        date: "2024-01-29",
+        date: "2024-01-30",
         summary: "Bu kısımda Andoriddeki Intent Kullanımı ve Sayfalar Arası Geçiş hakkında detaylı bilgiler verilecektir.",
         category: "Android"
       }),
