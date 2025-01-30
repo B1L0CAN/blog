@@ -8,7 +8,52 @@ const createPost = (post: Omit<Post, 'slug'>): Post => ({
   slug: slugify(post.title)
 });
 
-const POST_CONTENTS = {
+const POST_CONTENTS = {    
+
+    intent: `
+
+## Intent Kullanımı
+
+Intent, bir uygulamanın başka bir uygulamaya veri göndermek veya bir uygulamadan diğer bir uygulamaya geçiş yapmak için kullanılan bir yöntemdir.
+
+\`android.content.Intent\` kütüphanesini import etmemiz gerekiyor. Ayrıca binding importunu da unutmamalıyız.
+
+Örnek olarak bir uygulama içerisinde bir butona tıklandığında başka bir uygulamaya geçiş yapmak için kullanılır.
+
+\`\`\`kotlin
+fun sonrakiSayfa (view : View) {
+    val intent = Intent(this,SecondActivity::class.java) //this@MainActivity de olabilirdi
+    val kullaniciGirdisi= binding.editTextText2?.text.toString()
+    intent.putExtra("isim", kullaniciGirdisi)
+    startActivity(intent)
+}
+\`\`\`
+
+> Bu kodda MainActivity sınıfından SecondActivity sınıfına geçiş yapıyoruz. Bunu yaparken mainActivity'deki butonun onClick özelliğini sonrakiSayfa fonksiyonuna bağlıyoruz.
+
+Ayrıca bu geçişi yaparken mainActivity'deki editTextText2'deki metni de SecondActivity'ye gönderiyoruz. Yani mainActivity'de yazılan bir metni SecondActivity'de görüntüleyeceğiz.
+
+Bu işlem için \`putExtra\` fonksiyonunu kullanıyoruz.
+
+\`\`\`kotlin
+binding.SecondPageText.text= intent.getStringExtra("isim")
+
+/*
+Olayı  anlamak için şu şekilde yapılıyor işlemler aslında, biz bunu tek satırda hallettik.
+val maindenGelenIntent = intent
+    val yollananIsim = maindenGelenIntent.getStringExtra("isim")
+    binding.SecondPageText.text= yollananIsim
+*/
+\`\`\`
+
+> Bu kodda SecondActivity'deki SecondPageText'e mainActivity'deki editTextText2'deki metni gönderiyoruz.
+
+- Hem sayfa geçişi hem de veri gönderimi sağladığımız örnek uygulama:
+
+<img src="/images/intent.png" width="500" height="300" style="object-fit: cover; display: block; margin: 0 auto;" loading="lazy" alt="Blog Resmi" />
+
+
+`,
     yasamDongusu: `
 
 # Yaşam Döngüsü Fonksiyonları 
@@ -1345,10 +1390,18 @@ var camelCase = "Camel Case yazım örneği"
 
 export const posts: Post[] = [
     createPost({
+        id: 11,
+        title: "Andoridde Intent Kullanımı ve Sayfalar Arası Geçiş",
+        content: POST_CONTENTS.intent,
+        date: "2024-01-29",
+        summary: "Bu kısımda Andoriddeki Intent Kullanımı ve Sayfalar Arası Geçiş hakkında detaylı bilgiler verilecektir.",
+        category: "Android"
+      }),
+    createPost({
         id: 10,
         title: "Projede Yaşam Döngüsü",
         content: POST_CONTENTS.yasamDongusu,
-        date: "2024-01-28",
+        date: "2024-01-29",
         summary: "Bu kısımda Andoriddeki Yaşam Döngüsü hakkında detaylı bilgiler verilecektir.",
         category: "Android"
       }),
@@ -1356,7 +1409,7 @@ export const posts: Post[] = [
         id: 9,
         title: "Projede XML ile Kotlin Kodlarını Birleştirme - ViewBinding",
         content: POST_CONTENTS.xmlkotlin,
-        date: "2024-01-27",
+        date: "2024-01-29",
         summary: "Bu kısımda layouttaki bileşenlerimizin kodlarını kotlinde düzenlemeyi öğreneceğiz.",
         category: "Android"
       }),
@@ -1364,7 +1417,7 @@ export const posts: Post[] = [
     id: 8,
     title: "Layoutlar ve Çeşitleri - XML",
     content: POST_CONTENTS.android,
-    date: "2024-01-26",
+    date: "2024-01-29",
     summary: "Bu kısımda Andorid kategorisine Layoutlar ve XML ile giriş yapılacaktır.",
     category: "Android"
   }),
@@ -1372,7 +1425,7 @@ export const posts: Post[] = [
     id: 7,
     title: "Kotlinde Hata Yakalama",
     content: POST_CONTENTS.hata,
-    date: "2024-01-24",
+    date: "2024-01-19",
     summary: "Bu kısımda Kotlinde hata yakalama hakkında detaylı bilgiler verilecektir.",
     category: "Kotlin"
   }),
@@ -1380,7 +1433,7 @@ export const posts: Post[] = [
     id: 6,
     title: "Kotlinde Fonksiyonel Programlama",
     content: POST_CONTENTS.fonksiyonelProgramlama,
-    date: "2024-01-23",
+    date: "2024-01-19",
     summary: "Bu kısımda Kotlinde Lambda, Map ve Filter, Scope Fonksiyonları gibi fonksiyonel programlama kavramları hakkında detaylı bilgiler verilecektir.",
     category: "Kotlin"
   }),
@@ -1388,7 +1441,7 @@ export const posts: Post[] = [
     id: 5,
     title: "Kotlin'de Sınıflara ve OOP",
     content: POST_CONTENTS.oop,
-    date: "2024-01-22",
+    date: "2024-01-18",
     summary: "Kotlin'de nesne yönelimli programlama kavramlarını ve sınıfların nasıl kullanıldığını öğrenelim.",
     category: "Kotlin"
   }),
@@ -1396,7 +1449,7 @@ export const posts: Post[] = [
     id: 4,
     title: 'Kotlinde Dönüştürme(Conversion) ve Nullability',
     category: 'Kotlin',
-    date: '2025.01.16',
+    date: '2025.01.18',
     summary: 'Bu kısımda Kotlinde değişken türlerini değiştirmek için kullanılan conversion ve nullability hakkında detaylı bilgiler verilecektir',
     content: POST_CONTENTS.conversion
   }),
@@ -1404,7 +1457,7 @@ export const posts: Post[] = [
     id: 3,
     title: 'Kotlinde Karar Yapıları ve Döngüler',
     category: 'Kotlin',
-    date: '2025.01.15',
+    date: '2025.01.17',
     summary: 'Bu kısımda Kotlinde karar yapıları (if-else, when) ve döngüler (for, while, do-while, foreach) hakkında detaylı bilgiler verilecektir.',
     content: POST_CONTENTS.donguler
   }),
@@ -1412,7 +1465,7 @@ export const posts: Post[] = [
     id: 2,
     title: 'Kotlinde Diziler, Listeler, Mapler ve Setler',
     category: 'Kotlin',
-    date: '2025.01.14',
+    date: '2025.01.17',
     summary: 'Bu kısımda Kotlinde Diziler, Listeler, Mapler ve Setler hakkında detaylı bilgiler verilecektir.',
     content: POST_CONTENTS.veriYapilari
   }),
@@ -1420,7 +1473,7 @@ export const posts: Post[] = [
     id: 1,
     title: 'Kotlinde Değişken Tanımlama ve Değişken Tipleri',
     category: 'Kotlin',
-    date: '2025.01.14',
+    date: '2025.01.17',
     summary: 'Bu kısımda Kotlinde bulunan çeşitli değişken tanımlama yöntemleri ve değişken tipleri hakkında detaylı bilgiler verilecektir.',
     content: POST_CONTENTS.degiskenler
   }),
@@ -1428,7 +1481,7 @@ export const posts: Post[] = [
     id: 0,
     title: 'Blogun Amacı',
     category: 'Blogun Amacı',
-    date: '2025.01.12',
+    date: '2025.01.15',
     summary: 'Blogu neden açtım? Böyle bir blog neden var :D',
     content: POST_CONTENTS.blogunAmaci
   })
