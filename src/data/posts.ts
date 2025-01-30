@@ -117,10 +117,12 @@ class SuperKahramanAdapter(val SuperKahramanListesi: ArrayList<SuperKahraman>): 
 \`\`\`kotlin
     val adapter = SuperKahramanAdapter(superKahramanListesi)
 
-    binding.RecyclerView.layoutManager = LinearLayoutManager(this) //grid layout manager ızgara görünümü yapıyor
+    binding.RecyclerView.layoutManager = LinearLayoutManager(this)
 
     binding.RecyclerView.adapter= adapter
 \`\`\`
+
+> Not: LinearLayoutManager ile liste görünümü yapıyoruz. Eğer ızgara görünümü istiyorsak GridLayoutManager kullanmalıyız.
 
 ### Tanıtım Aktivitesi Kısmı
 
