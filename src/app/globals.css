@@ -5,3 +5,30 @@
 body {
   @apply bg-gray-900;
 }
+
+/* Kod bloklarının yüksekliğini sınırlama ve kaydırma çubuğu ekleme */
+.prose pre {
+  max-height: 400px; /* Yaklaşık 15 satıra denk gelecek yükseklik */
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #4a5568 #2d3748;
+}
+
+/* Webkit tarayıcılar için kaydırma çubuğu stilleri */
+.prose pre::-webkit-scrollbar {
+  width: 8px;
+}
+
+.prose pre::-webkit-scrollbar-track {
+  background: #2d3748;
+  border-radius: 4px;
+}
+
+.prose pre::-webkit-scrollbar-thumb {
+  background-color: #4a5568;
+  border-radius: 4px;
+}
+
+.prose pre::-webkit-scrollbar-thumb:hover {
+  background-color: #718096;
+}
