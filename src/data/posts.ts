@@ -86,6 +86,9 @@ Görüleceği üzere hafızada isim var olduğu için "Kaydedilen İsim: Bilocan
 
 > Bu kodda sharedPreferences'deki isim değişkenini alıyoruz ve eğer boş ise "Daha önce girilen bir isim yok." yazısı görüntülenir, eğer dolu ise "Kaydedilen İsim: {alinanKullaniciAdi}" yazısı görüntülenir.
 
+> getString fonksiyonu ile sharedPreferences'deki isim değişkenini alıyoruz. "isim" değişkeni aynı olmalı dikkat et, ikinci parametre de default değerdir.
+
+"isim" değişkeninde bir değer bulamaz ise defaulta bakar, defaulta "herhangi bir değer yok" yazılabilir mesela.
 Şimdi silme butonumuzun onClick özelliğini sil fonksiyonuna bağlıyoruz ve kodunu yazıyoruz.
 
 \`\`\`kotlin
