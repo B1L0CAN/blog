@@ -114,19 +114,65 @@ export default function BlogPost({ params }: { params: Promise<{ slug: string }>
       }
       return <p>{children}</p>;
     },
-    h2: ({ children }) => {
-      const id = children?.toString().toLowerCase().replace(/[^a-z0-9]+/g, '-');
+    h1: ({ children }) => {
       if (typeof children === 'string') {
+        const id = children
+          .toLowerCase()
+          .replace(/[^a-z0-9\s-]/g, '')
+          .replace(/\s+/g, '-')
+          .replace(/-+/g, '-')
+          .replace(/^-+|-+$/g, '');
+        return <h1 id={id}>{highlightText(children, highlightQuery)}</h1>;
+      }
+      return <h1>{children}</h1>;
+    },
+    h2: ({ children }) => {
+      if (typeof children === 'string') {
+        const id = children
+          .toLowerCase()
+          .replace(/[^a-z0-9\s-]/g, '')
+          .replace(/\s+/g, '-')
+          .replace(/-+/g, '-')
+          .replace(/^-+|-+$/g, '');
         return <h2 id={id}>{highlightText(children, highlightQuery)}</h2>;
       }
-      return <h2 id={id}>{children}</h2>;
+      return <h2>{children}</h2>;
     },
     h3: ({ children }) => {
-      const id = children?.toString().toLowerCase().replace(/[^a-z0-9]+/g, '-');
       if (typeof children === 'string') {
+        const id = children
+          .toLowerCase()
+          .replace(/[^a-z0-9\s-]/g, '')
+          .replace(/\s+/g, '-')
+          .replace(/-+/g, '-')
+          .replace(/^-+|-+$/g, '');
         return <h3 id={id}>{highlightText(children, highlightQuery)}</h3>;
       }
-      return <h3 id={id}>{children}</h3>;
+      return <h3>{children}</h3>;
+    },
+    h4: ({ children }) => {
+      if (typeof children === 'string') {
+        const id = children
+          .toLowerCase()
+          .replace(/[^a-z0-9\s-]/g, '')
+          .replace(/\s+/g, '-')
+          .replace(/-+/g, '-')
+          .replace(/^-+|-+$/g, '');
+        return <h4 id={id}>{highlightText(children, highlightQuery)}</h4>;
+      }
+      return <h4>{children}</h4>;
+    },
+    h5: ({ children }) => {
+      if (typeof children === 'string') {
+        const id = children
+          .toLowerCase()
+          .replace(/[^a-z0-9\s-]/g, '')
+          .replace(/\s+/g, '-')
+          .replace(/-+/g, '-')
+          .replace(/^-+|-+$/g, '');
+        return <h5 id={id}>{highlightText(children, highlightQuery)}</h5>;
+      }
+      return <h5>{children}</h5>;
     },
     img: (props: ImageProps) => {
       if (!props.src) return null;

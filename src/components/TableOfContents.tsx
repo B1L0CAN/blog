@@ -17,12 +17,19 @@ export default function TableOfContents({ content }: { content: string }) {
     const headings: Heading[] = [];
     
     lines.forEach((line) => {
-      // # ile #### arasındaki tüm başlıkları yakala
-      const match = line.match(/^(#{1,4})\s+(.+)$/);
+      // # ile ##### arasındaki tüm başlıkları yakala
+      const match = line.match(/^(#{1,5})\s+(.+)$/);
       if (match) {
         const level = match[1].length; // # sayısı
-        const text = match[2];
-        const id = text.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+        const text = match[2].trim();
+        // ID oluşturma mantığını düzelt
+        const id = text
+          .toLowerCase()
+          .replace(/[^a-z0-9\s-]/g, '') // Sadece harfleri, rakamları, boşlukları ve tire işaretlerini tut
+          .replace(/\s+/g, '-') // Boşlukları tire ile değiştir
+          .replace(/-+/g, '-') // Birden fazla tireyi tek tireye indir
+          .replace(/^-+|-+$/g, ''); // Baştaki ve sondaki tireleri kaldır
+        
         headings.push({ id, text, level });
       }
     });
