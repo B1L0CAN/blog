@@ -19,6 +19,8 @@ SQLite, Android’de local veritabanı işlemleri için kullanılan hafif bir ve
 
 SQLite’yi kullanmak için öncelikle bir adet veritabanı oluşturmamız gerekiyor.
 
+### Tablo Oluşturma
+
 \`\`\`sql
 CREATE TABLE IF NOT EXISTS oyunKatalogu (id INTEGER PRIMARY KEY, oyunIsmi VARCHAR, oyunFiyati INT);
 \`\`\`
@@ -33,6 +35,8 @@ CREATE TABLE IF NOT EXISTS oyunKatalogu (id INTEGER PRIMARY KEY, oyunIsmi VARCHA
 
 - IF NOT EXISTS komutu ile bu isimde bir tablo zaten varsa oluşturma işlemini atlayacak.
 
+### Tabloya Veri Ekleme ve Görüntüleme
+
 Şimdi bu tabloya veri ekleyelim.
 
 \`\`\`sql
@@ -44,20 +48,79 @@ INSERT INTO oyunKatalogu (oyunismi, oyunfiyati) VALUES ('Ghost of Tsushima', 750
 INSERT INTO oyunKatalogu (oyunismi, oyunfiyati) VALUES ('Counter Strike 2', 450); 
 \`\`\`
 
+- Into ile hangi tabloya ekleyeceğimizi, sonrasında hangi bileşenlere ekleyeceğimizi belirtiyoruz
+
+- Values ile de ilgili değerleri ekliyoruz.
+
+- SELECT komutu ile tablodaki verileri seçebiliyoruz. 
+
 Şimdi bu verileri görüntüleyelim.
 
 \`\`\`sql
 SELECT * FROM oyunKatalogu;
 \`\`\`  
 
-> SELECT komutu ile tablodaki verileri seçebiliyoruz. 
+- Yıldız operatörü tüm verileri seçmemizi, FROM ise hangi tablodan veri seçeceğimizi belirtir.
 
-> * tüm verileri seçmemizi, FROM ise hangi tablodan veri seçeceğimizi belirtir.
+- Yıldız yerine isim yazsaydık sadece oyun isimlerini görüntülerdi.
 
-Şu anda oluşan tablo şu şekildedir:
+Şu anda oluşan tablo bu şekilde:
 
 <img src="/images/sqlite1.png" width="750" height="200" style="object-fit: cover; display: block; margin: 0 auto;" loading="lazy" alt="Blog Resmi" />
 
+### Filtreleme
+
+- WHERE komutu ile belirli bir şartı sağlayan verileri seçebiliyoruz.
+
+\`\`\`sql
+SELECT * FROM oyunKatalogu WHERE oyunfiyati = 1500;
+\`\`\`
+
+- WHERE komutu ile belirli bir şartı sağlayan verileri seçebiliyoruz.
+
+- Mesela bu örnekte oyunKatalogu tablosundan oyunFiyatı = 1500 olan oyunları filtreledik.
+
+<img src="/images/sqlite2.png" width="750" height="100" style="object-fit: cover; display: block; margin: 0 auto;" loading="lazy" alt="Blog Resmi" />
+
+> isimden filtreleyecek olsaydık \`SELECT * FROM oyunKatalogu WHERE oyunismi = 'Red Dead Redemption 2';\` şeklinde yazardık.
+
+#### Veri Filtrelemenin Alternatif Bir Yolu
+
+\`\`\`sql
+SELECT * FROM oyunKatalogu WHERE oyunismi LIKE 'G%';
+\`\`\`
+
+- LIKE komutu ile belirli bir içeriğe sahip verileri seçebiliyoruz.
+
+- Mesela bu örnekte oyunKatalogu tablosundan oyunismi G ile başlayan oyunları filtreledik. Yani sonuç tablosunda God of War ve Ghost of Tsushima görünür.
+
+> 'G%' ile G ile başlayan oyunları seçeriz. '%G' ile G ile biten oyunları seçeriz. '%G%' ile G içeren oyunları seçeriz.
+
+### Veri Silme
+
+- DELETE FROM komutu ile belirli bir şartı sağlayan verileri sileriz.
+
+\`\`\`sql
+DELETE FROM oyunKatalogu WHERE id=2;
+\`\`\`
+
+- Mesela bu örnekte id'si 2 olan Elden Ring oyununu sildik.
+
+<img src="/images/sqlite3.png" width="750" height="170" style="object-fit: cover; display: block; margin: 0 auto;" loading="lazy" alt="Blog Resmi" />
+
+### Veri Güncelleme
+
+- UPDATE komutu ile belirli bir şartı sağlayan verileri güncelleriz.
+
+ \`\`\`sql
+ UPDATE oyunKatalogu SET oyunfiyati = 1050 WHERE oyunismi = 'Ghost of Tsushima';
+\`\`\`
+
+- Mesela bu örnekte oyunismi = 'Ghost of Tsushima' olan oyunun fiyatını 1050 olarak güncelledik.
+
+<img src="/images/sqlite4.png" width="750" height="250" style="object-fit: cover; display: block; margin: 0 auto;" loading="lazy" alt="Blog Resmi" />
+
+> Eğer WHERE filtreleme kodunu yazmasaydık tüm oyunların fiyatını 1050 olarak güncellerdi.
 
 `,
     fragment: `
