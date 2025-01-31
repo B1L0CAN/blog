@@ -9,6 +9,235 @@ const createPost = (post: Omit<Post, 'slug'>): Post => ({
 });
 
 const POST_CONTENTS = {    
+    fragment: `
+# Fragment 
+
+- Fragment, Android'de ekranlar arası geçişleri sağlayan bir yapıdır. Fragmentler Aktivitelerin içinde yaşarlar.
+
+- Aktivitelerden daha küçük ve verimli bir yapıdır.
+
+- Aktiviteleri birden fazla fragment ile daha küçük parçalara bölerek daha verimli bir şekilde kullanabiliriz
+
+- Örneğin 10 tane ekranı olan bir uygulamada 1 aktivite 10 fragment de yapabiliriz 2 aktivite 5 fragment de yapabiliriz.
+
+İlk olarak fragment, navigation ve argumentler için gerekli \`safe arguments\` gradle modüllerini ekleyelim.
+
+\`build.gradele.kts\` dosyasındaki \`pluginsin\` içine aşağıdaki kodu ekleyelim. (Proje klasörüne, module değil.)
+
+\`\`\`gradle
+id ("androidx.navigation.safeargs.kotlin") version "2.8.6" apply false
+\`\`\`
+
+Ardından da \`app\` klasöründe \`pluginsin\` içine aşağıdaki kodu ekleyelim.
+
+\`\`\`gradle
+id ("kotlin-kapt")
+id ("androidx.navigation.safeargs.kotlin")
+\`\`\`
+
+Sonrasına da yine \`app\` klasöründe dependenciesin\` içine aşağıdaki kodu ekleyelim.
+
+\`\`\`gradle
+val nav_version = "2.8.6"
+
+implementation("androidx.navigation:navigation-fragment-ktx:$nav_version")
+implementation("androidx.navigation:navigation-ui-ktx:$nav_version")
+\`\`\`
+
+Bunun yerine Android Studio şunu öneriyor bunu bir sor: 
+
+\`\`\`gradle
+implementation(libs.androidx.navigation.fragment.ktx)
+implementation(libs.androidx.navigation.ui.ktx)
+\`\`\`
+
+## Fragment Oluşturma ve Navigation Component Kullanımı
+
+Öncelikle fragmentleri activity oluşturduğumuz yerin altından boş bir fragment olarak BirinciFragment ve IkinciFragment adında oluşturuyoruz.
+
+Daha sonra fragmentlerin layoutlarını oluşturuyoruz.    
+
+<img src="/images/fragment1.png" width="600" height="550" style="object-fit: cover; display: block; margin: 0 auto;" loading="lazy" alt="Blog Resmi" />
+
+Şimdi oluşturduğumuz bu fragmentleri navigation component ile bağlayacağız.
+
+### Navigation Component Oluşturma ve Bağlantı
+
+- Navigation Component, Android Jetpack'in bir parçasıdır.
+
+> Not: Andorid Jetpack, modern android geliştirme için geliştirilmiş toplu bir kütüphanedir. Buna fragmentler de dahildir, navigationlar da dahildir vs vs.
+
+Şimdi bu işi yapmak için \`res\` klasöründe yeni bir android source file açıp \`nav_graph.xml\` klasörünü oluşturuyoruz. Kaynak tipini \`Navigation\` seçiyoruz.
+
+<img src="/images/fragment2.png" width="500" height="450" style="object-fit: cover; display: block; margin: 0 auto;" loading="lazy" alt="Blog Resmi" />
+
+Fragmentin birinden diğerine geçiş için bağlantı okunu bu şekilde oluşturuyoruz.
+
+- Kırmızı kutudaki ev işareti başlangıç noktasını belirlemek için kullanılır.
+
+## Fragmentlerin Kotlin Kısmı
+
+Fragmentlerin viewBinding oluşturma şekli aktivitelere göre biraz farklıdır.
+
+Öncelikle fragmentlerin içindeki gereksiz fonksiyonları kaldırıyoruz.
+
+\`\`\`kotlin
+class BirinciFragment : Fragment() {
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        
+    }
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
+                              savedInstanceState: Bundle?): View? {
+        return inflater.inflate(R.layout.fragment_blank, container, false)
+    }
+}
+\`\`\`
+
+Şimdi gerekli binding kodlarını ekleyelim. 
+
+\`\`\`kotlin
+private var _binding : FragmentBirinciBinding ?= null
+private val binding get() = _binding!!
+\`\`\`
+
+Bunları en başa eklemeliyiz, sonrasında onCreateView fonksiyonunda binding yapmayı unutmuyoruz.
+
+\`\`\`kotlin
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        //burada binding işlemini yapıyoruz.
+        _binding = FragmentBirinciBinding.inflate(inflater, container, false)
+        val view = binding.root
+        return view
+    }
+\`\`\`
+
+Şimdi onViewCreated fonksiyonunu override etmeyi unutmamalıyız, gerekli işlem kodlarını da ekleyelim:
+
+\`\`\`kotlin
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding.editText.setText(" ")
+        binding.button.setOnClickListener {
+            sonraki(it) // onClick ile sonraki() fonksiyonuna bağlamayıp bura yazabilirdik buton kodlarını
+        }
+        //activity  veya app context veremiyoruz, fragmen içindeyiz, requirecontext yapmamız lazım
+        Toast.makeText(requireContext(),"Hoşgeldiniz!",Toast.LENGTH_LONG).show()
+    }
+
+\`\`\`
+
+> Fragment kullandığımız için Toast mesajı kısmında app veya activity context veremiyor, this falan kullanamıyoruz. Bunun yerine requireContext() kullanmalıyız.
+
+BirinciFragment sayfasında son olarak onDestroyView fonksiyonunu override etmeyi unutmamalıyız.
+
+\`\`\`kotlin
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+\`\`\`
+
+
+## Argument Kullanımı
+
+KullaniciIsmi adında bir argüman oluşturuyoruz, hangi fragmentte oluşturmak istiyorsak ona tıklayıp argüman oluştur diyoruz.
+
+<img src="/images/fragment3.png" width="700" height="400" style="object-fit: cover; display: block; margin: 0 auto;" loading="lazy" alt="Blog Resmi" />
+
+BirinciFragment sayfasındaki buton kodunu şu şekilde yazıyoruz.
+
+\`\`\`kotlin
+// Butonumuzun onClick özelliğini bağladığımız fonksiyon
+fun sonraki (view : View){
+
+    //yazı paslamak için aşağıdaki satır ve isim parametresini ekledik
+    val isim = binding.editText.text.toString()
+
+    // Action oluşturarak navigation işlemi ile sayfalar arasında geçiş yapıyoruz.
+    val action = BirinciFragmentDirections.actionBirinciFragmentToIkinciFragment(isim)
+    Navigation.findNavController(view).navigate(action)
+}
+\`\`\`
+
+> \`BirinciFragmentDirections.actionBirinciFragmentToIkinciFragment\` kısmını biz ok çizince falan Android Studio otomatik oluşturuyor.
+
+IkinciFragment sayfasında da aşağıdaki kodu ekleyelim.
+
+\`\`\`kotlin
+
+override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        arguments?.let {
+
+            val isim = IkinciFragmentArgs.fromBundle(it).kullaniciIsmi
+
+            binding.gelenIsim.text= isim // İlk fragmentteki editText'in içinden aldığımız yazıyı ikinci fragmentteki textView'e bağlıyoruz.
+        }
+    }
+\`\`\`
+
+
+
+> \`arguments?.let { }\` ile argümanın null olup olmadığını kontrol ederek alıyoruz. \`fromBundle(it)\` ile nereden aldığımızı belirtiyoruz.
+
+Şimdi kodun uygulanmasını görelim.
+
+<img src="/images/fragment4.png" width="600" height="400" style="object-fit: cover; display: block; margin: 0 auto;" loading="lazy" alt="Blog Resmi" />
+
+Uygulama başarılı bir şekilde çalışıyor. Birinci fragment sayfasında EditText'e bir değer yazıp butona tıkladığımızda bu metin ikinci fragment sayfasında yazdırılıyor.
+
+## Yaşam Döngüsü Farkları
+
+### Aktivite Yaşam Döngüsü
+
+- onCreate(): Activity arka planda oluşturulur.
+- onStart(): Kullanıcının göreceği şekilde uygulama başlatılır.
+- onResume(): Kullanıcı uygulamayla etkileşime geçebilir.
+- onPause(): Başka bir ekrana geçildiğinde çağrılır. Örnek, sekme sayfası.
+- onStop(): Başka bir ekran açıldığında çağrılır. Örnek, ana ekrana döndüğümüzde.
+- onDestroy(): Activity kaldırıldığında çağrılır, uygulama kapandığında yani.
+
+### Fragment Yaşam Döngüsü
+
+- onAttach(): Fragment, Activity'ye bağlanır.
+- onCreate(): Fragment oluşturulur.
+- onCreateView(): UI bileşenleri oluşturulur.
+- onViewCreated(): View işlemleri burada yapılır.
+- onStart(): Kullanıcının göreceği şekilde uygulama başlatılır.
+- onResume(): Kullanıcı uygulamayla etkileşime geçebilir.
+- onPause(): Başka bir ekrana geçildiğinde çağrılır. Örnek, sekme sayfası.
+- onStop(): Başka bir ekran açıldığında çağrılır. Örnek, ana ekrana döndüğümüzde.
+- onDestroyView(): View yok edilir, ancak Fragment hala vardır.
+- onDestroy(): Fragment kaldırıldığında çağrılır.
+- onDetach(): Activity ile bağlantısı kesilir.
+
+\`Temel Farkları\`
+
+- Activity tüm ekranı yönetir, Fragment bir Activity içinde çalışır.
+- Fragment'in onCreateView() ve onViewCreated() gibi ekstra aşamaları vardır çünkü UI bileşenleri dinamik olarak oluşturulur.
+- Fragment, Activity’den bağımsız olarak var olabilir ve yeniden kullanılabilir.
+- Activity yaşam döngüsü tüm uygulamayı ilgilendirirken, Fragment yaşam döngüsü Activity’ye bağlıdır ve daha esnektir.
+
+\`Neden Önemli?\`
+
+\`\`\`kotlin
+override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding.editText.setHint(" İsminizi giriniz")
+}
+\`\`\`
+
+> Eğer biz bu kodu onViewCreated fonksiyonunda yazarsak, fragment oluşturulduğunda çağrılır.
+
+> Ancak biz bu kodu onCreate fonksiyonunda yazmış olsaydık, uygulama ve aktivite başladığında çağrılacaktı. Fakat ortada henüz fragmentler için view yoktur. Bu yüzden ya hata alırız ya da istediğimiz işlemi yapamayız.
+
+`,
+
     recyclerView: `
 
 # RecyclerView Kullanımı
@@ -1955,6 +2184,14 @@ var camelCase = "Camel Case yazım örneği"
 };
 
 export const posts: Post[] = [
+    createPost({
+        id: 16,
+        title: "Andoridde Fragment ve Navigation",
+        content: POST_CONTENTS.fragment,
+        date: "2025-01-31",
+        summary: "Bu kısımda Anroidde fragment ve navigation kullanımını öğreneceğiz.",
+        category: "Android"
+      }),
     createPost({
         id: 15,
         title: "Andoridde RecyclerView Kullanımı",
