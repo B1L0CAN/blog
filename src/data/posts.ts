@@ -9,6 +9,57 @@ const createPost = (post: Omit<Post, 'slug'>): Post => ({
 });
 
 const POST_CONTENTS = {    
+    sqlite: `
+
+SQLite, Android’de local veritabanı işlemleri için kullanılan hafif bir veritabanıdır. Uygulamaya gömülüdür, yani ek bir sunucuya ihtiyaç duymaz.
+
+> Bu kısımda sadece SQLite ile ilgili temel bilgiler olacaktır.
+
+## SQLite Kullanımı
+
+SQLite’yi kullanmak için öncelikle bir adet veritabanı oluşturmamız gerekiyor.
+
+\`\`\`sql
+CREATE TABLE IF NOT EXISTS oyunKatalogu (id INTEGER PRIMARY KEY, oyunIsmi VARCHAR, oyunFiyati INT);
+\`\`\`
+
+- Bu kod ile \`CREATE TABLE\` komutu ile oyunKatalogu adında bir tablo oluşturduk. 
+
+- Tablomuzda id adında bir integer değişken oluşturduk ve primary key olarak belirledik. Bu değer kendi otomatik artarak devam eder.
+
+- oyunIsmi adında bir string değişken oluşturduk. Oyun isimleri bu değişkende tutulacak.
+
+- oyunFiyati adında bir integer değişken oluşturduk. Oyun fiyatları bu değişkende tutulacak.
+
+- IF NOT EXISTS komutu ile bu isimde bir tablo zaten varsa oluşturma işlemini atlayacak.
+
+Şimdi bu tabloya veri ekleyelim.
+
+\`\`\`sql
+INSERT INTO oyunKatalogu (oyunismi, oyunfiyati) VALUES ('Red Dead Redemption 2', 1500);
+INSERT INTO oyunKatalogu (oyunismi, oyunfiyati) VALUES ('Elden Ring', 1200);
+INSERT INTO oyunKatalogu (oyunismi, oyunfiyati) VALUES ('God of War', 1000);
+INSERT INTO oyunKatalogu (oyunismi, oyunfiyati) VALUES ('PES 2013', 200);
+INSERT INTO oyunKatalogu (oyunismi, oyunfiyati) VALUES ('Ghost of Tsushima', 750);
+INSERT INTO oyunKatalogu (oyunismi, oyunfiyati) VALUES ('Counter Strike 2', 450); 
+\`\`\`
+
+Şimdi bu verileri görüntüleyelim.
+
+\`\`\`sql
+SELECT * FROM oyunKatalogu;
+\`\`\`  
+
+> SELECT komutu ile tablodaki verileri seçebiliyoruz. 
+
+> * tüm verileri seçmemizi, FROM ise hangi tablodan veri seçeceğimizi belirtir.
+
+Şu anda oluşan tablo şu şekildedir:
+
+<img src="/images/sqlite1.png" width="750" height="200" style="object-fit: cover; display: block; margin: 0 auto;" loading="lazy" alt="Blog Resmi" />
+
+
+`,
     fragment: `
 # Fragment 
 
@@ -2185,8 +2236,16 @@ var camelCase = "Camel Case yazım örneği"
 
 export const posts: Post[] = [
     createPost({
+        id: 17,
+        title: "SQLite Kullanımı",
+        content: POST_CONTENTS.sqlite,
+        date: "2025-01-31",
+        summary: "Bu kısımda SQLite temellerini öğreneceğiz.",
+        category: "SQLite"
+      }),
+    createPost({
         id: 16,
-        title: "Andoridde Fragment ve Navigation",
+        title: "Andoridde Fragment, Navigation ve Arguments Kullanımı",
         content: POST_CONTENTS.fragment,
         date: "2025-01-31",
         summary: "Bu kısımda Anroidde fragment ve navigation kullanımını öğreneceğiz.",
