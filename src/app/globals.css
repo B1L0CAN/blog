@@ -6,17 +6,39 @@ body {
   background-color: #111827;
 }
 
+/* Mobil görünüm için prose stilleri */
+.prose {
+  width: 100%;
+  max-width: 100%;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  hyphens: auto;
+}
+
+/* Resimler için stiller */
+.prose img {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  max-height: 80vh;
+  margin: 1.5rem auto;
+}
+
 /* Kod bloklarının yüksekliğini sınırlama ve kaydırma çubuğu ekleme */
 .prose pre {
-  max-height: 400px; /* Yaklaşık 15 satıra denk gelecek yükseklik */
+  max-height: 400px;
   overflow-y: auto;
   scrollbar-width: thin;
   scrollbar-color: #4a5568 #2d3748;
+  white-space: pre;
+  overflow-x: auto;
+  max-width: 100%;
 }
 
 /* Webkit tarayıcılar için kaydırma çubuğu stilleri */
 .prose pre::-webkit-scrollbar {
   width: 8px;
+  height: 8px;
 }
 
 .prose pre::-webkit-scrollbar-track {
