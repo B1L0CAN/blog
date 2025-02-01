@@ -16,6 +16,7 @@ import { use } from 'react';
 import { Components } from 'react-markdown';
 import type { DetailedHTMLProps, ImgHTMLAttributes } from 'react';
 import SocialLinks from '@/components/SocialLinks';
+import ScrollToTop from '@/components/ScrollToTop';
 
 interface CodeProps extends React.HTMLAttributes<HTMLElement> {
   node?: any;
@@ -223,7 +224,7 @@ export default function BlogPost({ params }: { params: Promise<{ slug: string }>
         </div>
       </header>
 
-      <article className="max-w-3xl mx-auto py-8 px-4 flex-1">
+      <article className="max-w-3xl mx-auto py-8 px-4 md:px-8 flex-1">
         <Link href="/" className="text-blue-400 hover:underline mb-4 block">
           ← Ana Sayfaya Dön
         </Link>
@@ -250,6 +251,8 @@ export default function BlogPost({ params }: { params: Promise<{ slug: string }>
 
         <PostNavigation currentPost={post} />
       </article>
+
+      <ScrollToTop />
     </div>
   );
 } 

@@ -1,9 +1,9 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
 
 body {
-  @apply bg-gray-900;
+  background-color: #111827;
 }
 
 /* Kod bloklarının yüksekliğini sınırlama ve kaydırma çubuğu ekleme */
