@@ -97,9 +97,13 @@ export default function Sidebar() {
               <ul
                 className={`overflow-hidden transition-all duration-300 ${
                   openCategory === category
-                    ? 'max-h-96 opacity-100 py-2'
+                    ? 'max-h-[40vh] overflow-y-auto scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-gray-800'
                     : 'max-h-0 opacity-0'
                 }`}
+                style={{
+                  scrollbarWidth: 'thin',
+                  scrollbarColor: '#4B5563 #1F2937'
+                }}
               >
                 {posts
                   .filter(post => post.category === category)
@@ -107,8 +111,8 @@ export default function Sidebar() {
                     <li key={post.id} className="pl-4 py-1">
                       <Link
                         href={`/posts/${post.slug}`}
-                        className="text-gray-400 hover:text-blue-400 transition-colors"
-                        onClick={() => setIsMobileMenuOpen(false)} // Mobilde link tıklandığında menüyü kapat
+                        className="text-gray-400 hover:text-blue-400 transition-colors block"
+                        onClick={() => setIsMobileMenuOpen(false)}
                       >
                         {post.title}
                       </Link>
