@@ -94,6 +94,10 @@ override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 }
 \`\`\`
 
+  <img src="/images/izin1.png" width="376" height="600" style="object-fit: cover; display: block; margin: 0 auto;" loading="lazy" alt="Blog Resmi" />
+
+- Görüleceği üzere henüz silinecek bir görsel olmadığı için sil butonu inaktif durumdadır.
+
 ## Android 13 ve Üzeri İçin
 
 Şimdi kullanıcıdan galeriye ve dahili depolamaya erişim izni istemek için kod yazıyoruz. \`fun gorselSec (view: View)\`  fonksiyonunun içerisinde 
@@ -135,7 +139,10 @@ if(ActivityCompat.shouldShowRequestPermissionRationale(requireActivity(),Manifes
 
 - Snackbar.LENGTH_INDEFINITE, long veya short gibi süreli değil.
 
+<img src="/images/izin3.png" width="250" height="750" style="object-fit: cover; display: block; margin: 0 auto;" loading="lazy" alt="Blog Resmi" />
+
 - Eğer kullanıcı daha önce izin ekranını hiç görmediyse false döner ve bir sonraki maddedeki kod ile direkt izin istenir.
+
 
 \`\`\`kotlin
 else {
@@ -144,6 +151,8 @@ else {
 \`\`\`
 
 - Eğer kullanıcı daha önce izin ekranını hiç görmemişse veya direkt izin istememiz gerekiyorsa burada izin istemeye başlıyoruz.
+
+<img src="/images/izin2.png" width="330" height="600" style="object-fit: cover; display: block; margin: 0 auto;" loading="lazy" alt="Blog Resmi" />
 
 - Eğer kullanıcı izni zaten vermişse
 
@@ -154,6 +163,7 @@ else {
 }
 \`\`\`
 
+
 - Eğer kullanıcı izni zaten vermişse direkt galeriye gitmek için intent başlatılır.
 
 - Intent.ACTION_PICK, kullanıcının galerisinden bir görsel seçmesini sağlar.
@@ -161,6 +171,9 @@ else {
 - MediaStore.Images.Media.EXTERNAL_CONTENT_URI, galeri içindeki görsellere erişmek için kullanılır.
 
 - activityResultLauncher.launch(intentToGalery), sonucu almak için galeriye yönlendirir.
+
+<img src="/images/izin4.png" width="430" height="270" style="object-fit: cover; display: block; margin: 0 auto;" loading="lazy" alt="Blog Resmi" />
+
 
 ## Andorid 13 Altı İçin
 
@@ -427,6 +440,49 @@ class TarifFragment : Fragment() {
     }
 }
 \`\`\`
+
+<img src="/images/izin5.png" width="380" height="600" style="object-fit: cover; display: block; margin: 0 auto;" loading="lazy" alt="Blog Resmi" />
+
+- Görüleceği üzere tüm bu işlemlerin sonunda galerideki bir fotoğrafı uygualamaya başarılı bir şekilde ekledik.
+
+## Androidde İzin Seviyeleri
+
+- Android'de izin seviyeleri 3 farklı seviyeye ayrılır:
+
+### Normal İzinler
+
+- Normal izinler, kullanıcı gizliliği açısından tehlikeli olmayan izinlerdir. Bu izinler, genellikle cihazın temel işlevlerine erişim sağlar ve kullanıcıdan onay istenmez. Örneğin:
+
+- Bu izinler, uygulama yüklendiğinde otomatik olarak verilmiş sayılır ve Android işletim sistemi tarafından kullanıcıya gösterilmeden uygulanır.
+
+Örnek olarak, internet erişimi verilebilir.
+
+### Tehlikeli (Dangerous) İzinler
+
+- Tehlikeli izinler, kullanıcının kişisel bilgilerine, cihazın donanımına veya diğer hassas verilere erişim sağlar.
+
+- Bu izinler, kullanıcının onayı gerektirir ve uygulama çalışırken izin isteme işlemi yapılır. Eğer kullanıcı izin verirse, uygulama ilgili kaynağa erişebilir.
+
+- Bu tür izinler için kullanıcıya bir açıklama gösterilmesi gerekebilir.
+
+Örnek olarak, kamera erişimi, konum erişimi, dosya erişimi verilebilir.
+
+### Özel İzinler
+
+- Android, bazı özel izinler için ek doğrulama gerektirebilir
+
+Mesela, SYSTEM_ALERT_WINDOW, uygulamanın ekran üzerinde başka uygulamaların üstünde görünmesini sağlar (mesaj kutuları vb.).
+
+### İzinler ile İlgili Ek Notlar
+
+- Android 6.0 (API 23) ve sonrasında uygulama başlatıldığında izin istenmesi gerekir
+
+- İzinler, kullanıcıya zorla kabul ettirilmeye çalışılır yoksa kullanamaz ama yine de bilgilendirilmesi gerekir :)
+
+- Kullanıcı verdiği izinleri kaldırabilir.
+
+- Eğer kullanıcı izin istemini reddederse, uygulama genellikle bir rationale (açıklama) göstermelidir. Bu açıklama, kullanıcıya izin istemenin nedenini ve bu iznin uygulamanın düzgün çalışması için ne kadar gerekli olduğunu anlatır. Örneğimizde var.
+
 
     `,
 
@@ -2730,7 +2786,7 @@ export const posts: Post[] = [
       }),
     createPost({
         id: 17,
-        title: "SQLite Kullanımı",
+        title: "SQLite Temelleri",
         content: POST_CONTENTS.sqlite,
         date: "2025-01-31",
         summary: "Bu kısımda SQLite temellerini öğreneceğiz.",
