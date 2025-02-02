@@ -9,6 +9,428 @@ const createPost = (post: Omit<Post, 'slug'>): Post => ({
 });
 
 const POST_CONTENTS = {    
+
+    izinler: `
+
+> Androidde kullanıcı izinleri ilk bakışta tam bir karın ağrısı gibi gözükmektedir. Gerçekten öyle mi ilerleyen süreçte göreceğiz :)
+
+> Not: Kullanıcı izinleri anlatımında kullanılan kodların tamamı daha sonra yazılacak YemekTarifi Projesinin kodlarıdır.
+
+- Kullanıcı izinleri gizlilik ve veri güvenliği açısından son derfece önemlidir.
+
+- Kullanıcı izinleri runtime'da istenir, böylece uygulama bu özelliği kullanmak istediğinde sorularak gereksiz isteklerden sakınılır. 
+
+İlk olarak uygulamanın hangi izinleri isteyeceğiniz belirtmemiz gerekiyor, Manifest dosyasında.
+
+## Manifest ve Binding İşlemleri
+
+Biz bu örnekte storage ve media izinlerini istiyoruz.
+
+\`\`\`xml
+<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"></uses-permission>
+<uses-permission android:name="android.permission.READ_MEDIA_IMAGES"></uses-permission>
+\`\`\`
+
+Sonrasında binding işlemini yapıyoruz.
+
+\`\`\`kotlin
+private var _binding : FragmentTarifBinding?= null
+private val binding get() = _binding!!
+
+override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        _binding = FragmentTarifBinding.inflate(inflater, container, false)
+        val view = binding.root
+        return view
+    }
+
+override fun onDestroyView() {
+    super.onDestroyView()
+    _binding = null  // Bellek sızıntılarını önlemek için binding temizlenir.
+}
+\`\`\`
+
+Şimdi launcher ve seçilen görsel ile ilgili tanımlamalarını yapıyoruz.
+
+\`\`\`kotlin
+private lateinit var permissionLauncher : ActivityResultLauncher<String>
+private lateinit var activityResultLauncher: ActivityResultLauncher<Intent>
+//------ 
+private var secilenGorsel : Uri?= null
+private var secilenBitmap : Bitmap?= null
+\`\`\`
+
+- permissionLauncher: Kullanıcıdan galeriye erişim izni istemek için kullanılır.
+
+- activityResultLauncher: Kullanıcı bir görsel seçtiğinde, bu sonucu almak için kullanılır.
+
+- secilenGorsel: Kullanıcının seçtiği resmin galeri içindeki yolunu (URI) tutar. URL gibi düşünülebilir.
+
+- secilenBitmap: Kullanıcının seçtiği resmin bitmap formatını tutar. Yani görsel formatını tutar.
+
+Şimdi onViewCreated fonksiyonunda butonların onClick özelliklerini bağlayıp, fragmentten gelen argümanın durumuna göre butonların aktifliklerini ayarlayıyoruz.
+
+\`\`\`kotlin
+override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    super.onViewCreated(view, savedInstanceState)
+
+    binding.imageView.setOnClickListener { gorselSec(it) }
+    binding.silButton.setOnClickListener { sil(it) }
+    binding.kaydetButton.setOnClickListener { kaydet(it) }
+
+    arguments?.let {
+        val bilgi = TarifFragmentArgs.fromBundle(it).bilgi
+
+        if (bilgi == "yeniMi?") {
+            binding.silButton.isEnabled = false
+            binding.kaydetButton.isEnabled = true
+        } else {
+            binding.silButton.isEnabled = true
+            binding.kaydetButton.isEnabled = false
+        }
+    }
+}
+\`\`\`
+
+## Android 13 ve Üzeri İçin
+
+Şimdi kullanıcıdan galeriye ve dahili depolamaya erişim izni istemek için kod yazıyoruz. \`fun gorselSec (view: View)\`  fonksiyonunun içerisinde 
+
+\`\`\`kotlin
+if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
+\`\`\`
+
+Bu kod ile Android 13 ve üzeri için (API 33 ve üstü) izin istemek için yazıyoruz, sonrasında
+
+\`\`\`kotlin
+if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.READ_MEDIA_IMAGES) != PackageManager.PERMISSION_GRANTED) {//Daha önceden izin alınmış mı kontrolü
+\`\`\`
+
+kodu ile birlikte daha önceden izin alınmış mı kontrolü yapıyoruz.
+
+- ContextCompat.checkSelfPermission metodu, ilgili iznin READ_MEDIA_IMAGES durumunu döndürür.
+ 
+- Eğer izin verilmişse direkt galeri açılır.
+
+- Eğer izin verilmemişse, != PackageManager.PERMISSION_GRANTED döner ve sonraki adımlara geçilir
+
+Sonraki adımda
+
+\`\`\`kotlin
+if(ActivityCompat.shouldShowRequestPermissionRationale(requireActivity(),Manifest.permission.READ_MEDIA_IMAGES))
+
+    Snackbar.make(view, "Yemek görseli eklemek için galeri erişimi gerekmektedir.",Snackbar.LENGTH_INDEFINITE).setAction(
+        "İzinver",View.OnClickListener {
+            permissionLauncher.launch(Manifest.permission.READ_MEDIA_IMAGES)
+        }).show()
+\`\`\`
+
+- shouldShowRequestPermissionRationale metodu, kullanıcının daha önce izin verip vermediğini kontrol eder.
+
+- Eğer kullanıcı daha önce izin vermemişse true döner ve izin istemeden önce bir açıklama yapılır.
+
+- Snackbar ile kullanıcıdan neden izin istediğimizi tekrar kullanıcıya söylüyoruz.
+
+- Snackbar.LENGTH_INDEFINITE, long veya short gibi süreli değil.
+
+- Eğer kullanıcı daha önce izin ekranını hiç görmediyse false döner ve bir sonraki maddedeki kod ile direkt izin istenir.
+
+\`\`\`kotlin
+else {
+    permissionLauncher.launch(Manifest.permission.READ_MEDIA_IMAGES)
+}
+\`\`\`
+
+- Eğer kullanıcı daha önce izin ekranını hiç görmemişse veya direkt izin istememiz gerekiyorsa burada izin istemeye başlıyoruz.
+
+- Eğer kullanıcı izni zaten vermişse
+
+\`\`\`kotlin
+else {
+    val intentToGalery = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+    activityResultLauncher.launch(intentToGalery)
+}
+\`\`\`
+
+- Eğer kullanıcı izni zaten vermişse direkt galeriye gitmek için intent başlatılır.
+
+- Intent.ACTION_PICK, kullanıcının galerisinden bir görsel seçmesini sağlar.
+
+- MediaStore.Images.Media.EXTERNAL_CONTENT_URI, galeri içindeki görsellere erişmek için kullanılır.
+
+- activityResultLauncher.launch(intentToGalery), sonucu almak için galeriye yönlendirir.
+
+## Andorid 13 Altı İçin
+
+- Aynı izinleri andorid 13 altı için farklı bir şekilde yapmamız gerekiyor.
+
+- Andorid 13 altı için olan kısım öncekiyle aynı şekilde çalışıyor, tek fark Android 13 altındaki cihazlar için farklı bir izin (READ_EXTERNAL_STORAGE) kullanılıyor olması.
+
+\`\`\`kotlin
+else{
+
+if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {//Daha önceden izin alınmış mı kontrolü
+
+    if(ActivityCompat.shouldShowRequestPermissionRationale(requireActivity(),Manifest.permission.READ_EXTERNAL_STORAGE))
+        Snackbar.make(view, "Yemek görseli eklemek için galeri erişimi gerekmektedir.",Snackbar.LENGTH_INDEFINITE).setAction(
+        "İzinver",View.OnClickListener {
+                    permissionLauncher.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
+                    }).show()
+    else{
+        permissionLauncher.launch(Manifest.permission.READ_EXTERNAL_STORAGE
+    }
+}
+else {
+    val intentToGalery = Intent(Intent.ACTION_PICK,MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+    activityResultLauncher.launch(intentToGalery)
+    }
+}
+\`\`\`
+
+## Diğer Kodlar
+
+\`fun registerLauncher()\` fonksiyonuna şunları yazıyoruz:
+
+\`\`\`kotlin
+activityResultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){result ->
+\`\`\`
+
+- registerForActivityResult metodu, bir aktivite başlatıp sonucunu almak için kullanılır.
+
+- ActivityResultContracts.StartActivityForResult() kullanarak, galeriye gitme işlemini başlatacak bir etkinlik oluşturuyoruz.
+
+- { result -> ... } kısmı, galeri dönüş verisini yakalamak için tanımlanmış bir lambda fonksiyonu.
+
+\`\`\`kotlin
+if (result.resultCode == AppCompatActivity.RESULT_OK) {
+    val intentFromResult = result.data
+\`\`\`
+
+- result.resultCode == AppCompatActivity.RESULT_OK → Kullanıcının başarılı bir şekilde bir resim seçip seçmediğini kontrol eder.
+
+- result.data → Seçilen resmin verilerini içeren Intent nesnesini döndürür.
+
+Seçilen resmi işleme ve gösterme işlemleri şu şekilde yapılır:
+
+\`\`\`kotlin
+if (intentFromResult != null) {
+    secilenGorsel = intentFromResult.data // Bu bize verinin nerde kayıtlı olduğunu gösterir
+
+    try {
+        // SDK SÜRÜMÜ 28 VE ÜSTÜYSE ŞU, DEĞİLSE ŞU KONTROLÜ SAĞLA
+        if (Build.VERSION.SDK_INT >= 28) {
+            val source = ImageDecoder.createSource(
+                requireActivity().contentResolver,
+                secilenGorsel!!
+            )
+            secilenBitmap = ImageDecoder.decodeBitmap(source)
+            binding.imageView.setImageBitmap(secilenBitmap)
+        } else {
+            secilenBitmap = MediaStore.Images.Media.getBitmap(
+                requireActivity().contentResolver,
+                secilenGorsel
+            )
+            binding.imageView.setImageBitmap(secilenBitmap)
+        }
+    } catch (e: IOException) {
+        println(e.localizedMessage)
+    }
+}
+\`\`\`
+
+- intentFromResult != null → Eğer Intent içeriği boş değilse (null değilse), kullanıcının gerçekten bir resim seçtiğini gösterir.
+
+- secilenGorsel = intentFromResult.data → Seçilen resmin URI’sini (content:// ile başlayan bir adres) alır.
+
+> Android 9 ve üzeri için ImageDecoder.createSource() ile bir görüntü kaynağı oluşturulur, ImageDecoder.decodeBitmap() ile bu kaynak bir Bitmap olarak okunur.
+
+> Andorid 9'dan eski sürümler için MediaStore.Images.Media.getBitmap() kullanılarak doğrudan Bitmap elde edilir.
+
+> try-catch bloğunda Eğer URI geçersizse veya dosya okunamazsa, IOException fırlatılır ve hata mesajı konsola yazdırılır.
+
+Son olarak da permissionLauncher değişkeninin tanımlanması gerekiyor.
+
+\`\`\`kotlin
+permissionLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()){result ->
+\`\`\`
+
+- Bu satır, kullanıcının bir izni verip vermediğini kontrol eden bir launcher (başlatıcı) kaydeder. Burada kullanılan ActivityResultContracts.RequestPermission() ile bir izin talebi yapılır.
+
+- İzin talebi sonucu alındığında, result parametresi true (izin verildi) ya da false (izin verilmedi) değerini döner.
+
+Sonrasında
+
+\`\`\`kotlin
+if (result){
+    val intentToGalery = Intent(Intent.ACTION_PICK,MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+    activityResultLauncher.launch(intentToGalery)
+}else {
+    Toast.makeText(requireContext(),"İzin verilmedi",Toast.LENGTH_LONG).show()
+}
+} //ilk satırın süslü parantezi
+\`\`\`
+
+- Eğer izin verilirse galeriye gitmek için intent başlatılır.
+
+- Eğer izin verilmezse Toast mesajı görüntülenir.
+
+> Son olarak tanımladığımız bu registerLauncher fonksiyonunu onCreate fonksiyonunda çağırmamız gerekiyor.
+
+\`\`\`kotlin
+override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
+    registerLauncher()
+}
+\`\`\`
+
+Anlattığımız her şeyin tek parça halindeki kodu:
+
+\`\`\`kotlin
+package com.example.yemektarifleri
+
+import android.Manifest
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.graphics.ImageDecoder
+import android.net.Uri
+import android.os.Build
+import android.os.Bundle
+import android.provider.MediaStore
+import androidx.fragment.app.Fragment
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
+import com.example.yemektarifleri.databinding.FragmentTarifBinding
+import com.google.android.material.snackbar.Snackbar
+import java.io.IOException
+
+class TarifFragment : Fragment() {
+
+    private var _binding: FragmentTarifBinding? = null
+    private val binding get() = _binding!!
+    
+    private lateinit var permissionLauncher: ActivityResultLauncher<String>
+    private lateinit var activityResultLauncher: ActivityResultLauncher<Intent>
+    private var secilenGorsel: Uri? = null
+    private var secilenBitmap: Bitmap? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        registerLauncher()
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        _binding = FragmentTarifBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        binding.imageView.setOnClickListener { gorselSec(it) }
+        binding.silButton.setOnClickListener { sil(it) }
+        binding.kaydetButton.setOnClickListener { kaydet(it) }
+
+        arguments?.let {
+            val bilgi = TarifFragmentArgs.fromBundle(it).bilgi
+            if (bilgi == "yeniMi?") {
+                binding.silButton.isEnabled = false
+                binding.kaydetButton.isEnabled = true
+            } else {
+                binding.silButton.isEnabled = true
+                binding.kaydetButton.isEnabled = false
+            }
+        }
+    }
+
+    fun kaydet(view: View) {}
+
+    fun sil(view: View) {}
+
+    fun gorselSec(view: View) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.READ_MEDIA_IMAGES) != PackageManager.PERMISSION_GRANTED) {
+                if (ActivityCompat.shouldShowRequestPermissionRationale(requireActivity(), Manifest.permission.READ_MEDIA_IMAGES)) {
+                    Snackbar.make(view, "Yemek görseli eklemek için galeri erişimi gerekmektedir.", Snackbar.LENGTH_INDEFINITE)
+                        .setAction("İzin ver") { permissionLauncher.launch(Manifest.permission.READ_MEDIA_IMAGES) }
+                        .show()
+                } else {
+                    permissionLauncher.launch(Manifest.permission.READ_MEDIA_IMAGES)
+                }
+            } else {
+                val intentToGalery = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+                activityResultLauncher.launch(intentToGalery)
+            }
+        } else {
+            if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                if (ActivityCompat.shouldShowRequestPermissionRationale(requireActivity(), Manifest.permission.READ_EXTERNAL_STORAGE)) {
+                    Snackbar.make(view, "Yemek görseli eklemek için galeri erişimi gerekmektedir.", Snackbar.LENGTH_INDEFINITE)
+                        .setAction("İzin ver") { permissionLauncher.launch(Manifest.permission.READ_EXTERNAL_STORAGE) }
+                        .show()
+                } else {
+                    permissionLauncher.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
+                }
+            } else {
+                val intentToGalery = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+                activityResultLauncher.launch(intentToGalery)
+            }
+        }
+    }
+
+    fun registerLauncher() {
+        activityResultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == AppCompatActivity.RESULT_OK) {
+                val intentFromResult = result.data
+                intentFromResult?.let {
+                    secilenGorsel = it.data
+                    try {
+                        if (Build.VERSION.SDK_INT >= 28) {
+                            val source = ImageDecoder.createSource(requireActivity().contentResolver, secilenGorsel!!)
+                            secilenBitmap = ImageDecoder.decodeBitmap(source)
+                            binding.imageView.setImageBitmap(secilenBitmap)
+                        } else {
+                            secilenBitmap = MediaStore.Images.Media.getBitmap(requireActivity().contentResolver, secilenGorsel)
+                            binding.imageView.setImageBitmap(secilenBitmap)
+                        }
+                    } catch (e: IOException) {
+                        println(e.localizedMessage)
+                    }
+                }
+            }
+        }
+
+        permissionLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) { result ->
+            if (result) {
+                val intentToGalery = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+                activityResultLauncher.launch(intentToGalery)
+            } else {
+                Toast.makeText(requireContext(), "İzin verilmedi", Toast.LENGTH_LONG).show()
+            }
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
+    }
+}
+\`\`\`
+
+    `,
+
+
     sqlite: `
 
 SQLite, Android’de local veritabanı işlemleri için kullanılan hafif bir veritabanıdır. Uygulamaya gömülüdür, yani ek bir sunucuya ihtiyaç duymaz.
@@ -2298,6 +2720,14 @@ var camelCase = "Camel Case yazım örneği"
 };
 
 export const posts: Post[] = [
+    createPost({
+        id: 18,
+        title: "Androidde Kullanıcı İzinleri",
+        content: POST_CONTENTS.izinler,
+        date: "2025-02-01",
+        summary: "Bu kısımda Andoriide kullanıcı izinlerinin nasıl alındığını göreceğiz.",
+        category: "Android"
+      }),
     createPost({
         id: 17,
         title: "SQLite Kullanımı",
