@@ -139,7 +139,7 @@ if(ActivityCompat.shouldShowRequestPermissionRationale(requireActivity(),Manifes
 
 - Snackbar.LENGTH_INDEFINITE, long veya short gibi süreli değil.
 
-<img src="/images/izin3.png" width="250" height="750" style="object-fit: cover; display: block; margin: 0 auto;" loading="lazy" alt="Blog Resmi" />
+<img src="/images/izin3.png" width="250" height="650" style="object-fit: cover; display: block; margin: 0 auto;" loading="lazy" alt="Blog Resmi" />
 
 - Eğer kullanıcı daha önce izin ekranını hiç görmediyse false döner ve bir sonraki maddedeki kod ile direkt izin istenir.
 
