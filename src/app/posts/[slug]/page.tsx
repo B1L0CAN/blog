@@ -208,16 +208,16 @@ export default function BlogPost({ params }: { params: Promise<{ slug: string }>
     <div className="flex flex-col min-h-screen bg-gray-900">
       {/* Başlık */}
       <header className="w-full py-6 border-b border-gray-800">
-        <div className="max-w-6xl mx-auto px-4">
-          <div className="flex flex-col md:block relative">
-            <div className="text-center mb-4 md:mb-0">
+        <div className="max-w-7xl mx-auto px-4 relative">
+          <div className="flex flex-col md:flex-row md:items-center">
+            <div className="flex-1 text-center mb-4 md:mb-0">
               <Link href="/" className="hover:text-blue-400 transition-colors">
                 <h1 className="text-4xl font-bold text-white">
                   Bilo&apos;nun Not Defteri
                 </h1>
               </Link>
             </div>
-            <div className="flex justify-center md:absolute md:right-0 md:top-1.5 md:-mr-80">
+            <div className="md:absolute md:right-4 md:top-1/2 md:-translate-y-1/2">
               <SocialLinks />
             </div>
           </div>
