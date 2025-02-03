@@ -12,9 +12,9 @@ const POST_CONTENTS = {
 
     izinler: `
 
-> Androidde kullanıcı izinleri ilk bakışta tam bir karın ağrısı gibi gözükmektedir. Gerçekten öyle mi ilerleyen süreçte göreceğiz :)
+> Androidde kullanıcı izinleri ilk bakışta çok karışık gözükmektedir. Zamanla alışacağız. :)
 
-> Not: Kullanıcı izinleri anlatımında kullanılan kodların tamamı daha sonra yazılacak YemekTarifi Projesinin kodlarıdır.
+> Not: Kullanıcı izinleri anlatımında kullanılan kodların tamamı bir YemekTarifi Projesinin kodlarıdır. 
 
 - Kullanıcı izinleri gizlilik ve veri güvenliği açısından son derfece önemlidir.
 
@@ -636,7 +636,7 @@ implementation("androidx.navigation:navigation-fragment-ktx:$nav_version")
 implementation("androidx.navigation:navigation-ui-ktx:$nav_version")
 \`\`\`
 
-Bunun yerine Android Studio şunu öneriyor bunu bir sor: 
+Bunun yerine Android Studio şunu öneriyor, eski versiyonu yok ise uygulamanın bu kullanılabilir: 
 
 \`\`\`gradle
 implementation(libs.androidx.navigation.fragment.ktx)
@@ -2769,7 +2769,7 @@ var camelCase = "Camel Case yazım örneği"
   `,
   blogunAmaci: `
 
-  Bu blogun amacı yoktur, kendi keyfi zevklerime göre yazıyorum. Sadece bir şeyler denemek istedim nasıl olacak diye o kadar :)
+  Bu blogun pek bir amacı yoktur, kendi keyfi zevklerime göre yazıyorum. Sadece bir şeyler denemek istedim ve unutmamak için bazı şeyleri not almak istedim o kadar :)
 
   <img src="/images/resim1.png" width="200" height="200" style="object-fit: cover; display: block; margin: 0 auto;" loading="lazy" alt="Blog Resmi" />
   `
