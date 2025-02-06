@@ -13,7 +13,7 @@ export default function Home() {
           <div className="flex flex-col md:flex-row md:items-center">
             <div className="flex-1 text-center mb-4 md:mb-0">
               <Link href="/" className="hover:text-blue-400 transition-colors">
-                <h1 className="text-5xl font-bold text-white">
+                <h1 className="text-4xl font-bold text-white">
                   Bilo&apos;nun Not Defteri
                 </h1>
               </Link>

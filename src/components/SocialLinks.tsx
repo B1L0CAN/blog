@@ -31,7 +31,7 @@ export default function SocialLinks() {
 
       {/* Donanım Arşivi */}
       <a
-        href="https://forum.donanimarsivi.com/uyeler/b1l0.75952/"
+        href="https://forum.donanimarsivi.com/uyeler/b1l0.75952/#about"
         target="_blank"
         rel="noopener noreferrer"
         className="text-gray-400 hover:text-blue-400 transition-colors"

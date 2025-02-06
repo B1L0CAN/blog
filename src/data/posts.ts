@@ -2780,7 +2780,7 @@ export const posts: Post[] = [
         id: 18,
         title: "Androidde Kullanıcı İzinleri",
         content: POST_CONTENTS.izinler,
-        date: "2025-02-01",
+        date: "2025-02-02",
         summary: "Bu kısımda Andoriide kullanıcı izinlerinin nasıl alındığını göreceğiz.",
         category: "Android"
       }),
