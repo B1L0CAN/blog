@@ -9,8 +9,335 @@ const createPost = (post: Omit<Post, 'slug'>): Post => ({
 });
 
 const POST_CONTENTS = {    
+    room: `
+# Room Nedir?
+
+- Room, Android’de SQLite veritabanını daha kolay ve güvenli bir şekilde yönetmek için kullanılan bir kütüphane ve Android Jetpack bileşenidir.
+
+## Room'un Avantajları:
+
+- SQL kodlarını doğrudan yazmak yerine, Kotlin veya Java nesneleri üzerinden OOP ile veritabanı işlemleri gerçekleştirilir.
+
+- DAO (Data Access Object) sayesinde karmaşık sorgular yerine doğrudan fonksiyonlar çağrılarak işlem yapılabilir.
+
+- Veri değişkenleri anlık olarak takip edilebilir.
+ 
+## Room Bileşenleri
+
+### Entity
+
+- Veritabanında saklanacak verilerin tanımlandığı sınıflardır.
+
+- Her Entity, bir tabloya karşılık gelir.
+
+- Primary key, foreign key, indexler gibi özellikler tanımlanabilir.
+
+- Entity'lerin içerisinde \`@Entity\` ifadesi  kullanılır.
+
+### DAO (Data Access Object)
+
+- Veritabanı işlemlerini gerçekleştiren arabirimdir.
+
+- SQL sorguları yerine, Kotlin/Java fonksiyonları ile veri ekleme, silme, güncelleme ve okuma işlemleri yapılır.
+
+- Room, SQL hatalarını compile-time’da kontrol eder.
+
+### Database (Veritabanı Erişim Katmanı)
+
+- Room’un veritabanını yönettiği ana sınıftır.
+
+- \`@Database\` ile tanımlanır.
+
+- Entity ve DAO’lar burada bağlanır.
+
+- Tek bir instance’ın kullanılmasını sağlamak için Singleton (Tekil Nesne) Tasarım Deseni uygulanır.
+
+## Room'un Implementasyonu
+
+> Not: Bu kısımda verilen kodlar için gerekli ve önerilen importları yapmayı unutmayınız.
+
+app/build.gradle içindeki dependencies kısmına şu tanımlamaları yapıyoruz:
+
+\`\`\`kotlin
+def room_version = "2.6.1"
+
+implementation "androidx.room:room-runtime:$room_version"
+ksp "androidx.room:room-compiler:$room_version"
+implementation "androidx.room:room-ktx:$room_version"
+implementation 'io.reactivex.rxjava3:rxandroid:3.0.2'
+implementation 'io.reactivex.rxjava3:rxjava:3.1.5'
+implementation "androidx.room:room-rxjava3:$room_version"
+\`\`\`
+
+> Projede rxJava kullanıyorsak rxJava kütüphanesini de eklememiz gerekiyor.
+
+### Entity Veri Modeli Oluşturma
+
+Aşağıdaki Tarif sınıfı, yemek tariflerini saklamak için Room'un bir Entity (veri modeli) olarak tanımlanmıştır.
+
+\`\`\`kotlin
+@Entity
+data class Tarif (
+
+    @ColumnInfo(name= "isim")
+    var isim : String,
+
+    @ColumnInfo(name= "malzeme")
+    var malzeme: String,
+
+    @ColumnInfo(name= "gorsel")
+    var gorsel: ByteArray
+
+){
+
+    @PrimaryKey(autoGenerate = true)
+    var id = 0
+}
+\`\`\`
+
+- @Entity: Tarif sınıfının Room veritabanında bir tablo olduğunu belirtir.
+
+- @ColumnInfo(name = "isim"): isim adlı sütunun veritabanındaki adını belirtir.
+
+- @PrimaryKey(autoGenerate = true): id sütunu otomatik olarak artırılan bir birincil anahtar (Primary Key) olarak belirlenmiştir. Biz uğraşmıyoruz artmasıyla falan.
+
+- gorsel: ByteArray: Görseller, veritabanına ByteArray olarak kaydedilecektir. Görsellerin sayısal değer olarak tutulduğunu unutma.
+
+### DAO Tanımlamaları
+
+DAO (Data Access Object), veritabanına erişmek ve sorgular yapmak için kullanılır.
+
+\`\`\`kotlin
+@Dao
+interface TarifDAO {
+
+    @Query("SELECT * FROM Tarif")
+    fun getAll(): Flowable<List<Tarif>>
+
+    @Query("SELECT * FROM Tarif WHERE id = :id")
+    fun findById(id: Int) : Flowable<Tarif>
+
+    @Insert
+    fun insert(tarif: Tarif): Completable
+
+    @Delete
+    fun delete(tarif: Tarif): Completable
+}
+\`\`\`
+
+> @Dao: Bu arayüzün Room veritabanı için bir DAO olduğunu belirtir.
+
+- @Query("SELECT * FROM Tarif"): Tüm tarifleri liste olarak döndürür.
+
+- @Query("SELECT * FROM Tarif WHERE id = :3"): ID’ye göre tarif bulma işlemi yapar. Örnek olarak 3 numaralı tarifin detayını almak istediğimizde böyle kullanırız.
+
+- @Insert:, @Delete, @Update falan SQLite kısmında işlendi.
+
+> Flowable (RxJava3) kullanımı, veritabanı değişikliklerini anlık olarak takip etmemizi sağlar.
+
+> Completable kullanımı, asenkron işlemler yaparken başarı veya hata durumunu yönetmemize olanak tanır.
+
+### Veritabanı Sınıfı
+
+\`\`\`kotlin
+@Database(entities = [Tarif::class], version = 1)
+abstract class TarifDatabase : RoomDatabase() {
+    abstract fun tarifDao() : TarifDAO
+}
+\`\`\`
+
+- @Database(entities = [Tarif::class], version = 1): Tarif tablosunu içeren bir veritabanı tanımladık.
+- abstract fun tarifDao(): TarifDAO: TarifDAO nesnesine erişimi sağlar.
+- RoomDatabase sınıfından türetilmiştir ve singleton pattern ile kullanılmalıdır.
+
+### Room Veritabanını Başlatma
+
+Veritabanını başlatmadan önce TarifDatabase ve TarifDAO nesnelerini tanımlamamız gerekiyor.
+
+\`\`\`kotlin
+private lateinit var db: TarifDatabase
+private lateinit var tarifDao: TarifDAO
+private val mDisposable = CompositeDisposable()
+\`\`\`
+
+- TarifDatabase ve TarifDAO nesneleri, Room veritabanına erişim için gereklidir.
+- CompositeDisposable, RxJava ile asenkron işlemleri yönetmek için kullanılır.
+
+
+- onCreate içerisinde veritabanını şöyle başlatıyoruz.
+
+\`\`\`kotlin
+db = Room.databaseBuilder(requireContext(), TarifDatabase::class.java, "Tarifler")
+    .build()
+tarifDao = db.tarifDao()
+\`\`\`
+
+- Room.databaseBuilder(...) → "Tarifler" adlı Room veritabanını oluşturur.
+- tarifDao değişkeni üzerinden veritabanına erişebiliriz.
+
+### CRUD İşlemleri
+
+#### Ekleme İşlemi (Insert)
+
+\`\`\`kotlin
+val tarif = Tarif(isim = isim, malzeme = malzeme, gorsel = byteDizisi)
+mDisposable.add(
+    tarifDao.insert(tarif)
+        .subscribeOn(Schedulers.io())  // İşlemi arka planda çalıştır
+        .observeOn(AndroidSchedulers.mainThread())  // Sonucu ana thread’de işle
+        .subscribe(this::handleResponseForInsertionAndDeletion)
+)
+\`\`\`
+
+- tarifDao.insert(tarif): Yeni tarif ekler.
+- subscribeOn(Schedulers.io()): Arka planda çalıştırır (UI thread’i meşgul etmez).
+- observeOn(AndroidSchedulers.mainThread()): Sonucu ana thread’de işler, UI’yi güncelleyebiliriz.
+
+#### Verileri Getirme (Read)
+
+\`\`\`kotlin
+private fun verileriAl() {
+    mDisposable.add(
+        tarifDao.getAll()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(this::handleResponse)
+    )
+}
+\`\`\`
+
+- tarifDao.getAll(): Veritabanındaki tüm tarifleri getirir.
+- subscribe(this::handleResponse): handleResponse() fonksiyonu, verileri UI içinde kullanmamızı sağlar.
+
+#### ID’ye Göre Veri Getirme
+
+\`\`\`kotlin
+mDisposable.add(
+    tarifDao.findById(id)
+        .subscribeOn(Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribe(this::handleResponse)
+)
+\`\`\`
+
+- findById(id): ID’ye göre spesifik bir tarif getirir.
+
+#### Güncelleme İşlemi (Update)
+
+Güncelleme işlemi için önce silip, ardından ekleyebiliriz veya \`@Update\` ile güncelleme yapabiliriz.
+
+\`\`\`kotlin
+mDisposable.add(
+    tarifDao.delete(secilenTarif!!)
+        .andThen(tarifDao.insert(guncellenmisTarif)) // Önce sil, sonra ekle
+        .subscribeOn(Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribe(this::handleResponseForInsertionAndDeletion)
+)
+\`\`\`
+
+- andThen(): Silme işlemi bittikten sonra ekleme işlemini yapar.
+
+Eğer DAO’da @Update anotasyonu ile güncelleme desteği eklersek:
+
+\`\`\`kotlin
+@Update
+fun updateTarif(tarif: Tarif): Completable
+\`\`\`
+
+\`\`\`kotlin
+mDisposable.add(
+    tarifDao.updateTarif(guncellenmisTarif)
+        .subscribeOn(Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribe()
+)
+\`\`\`
+
+- updateTarif(), veritabanındaki kaydı günceller.
+
+#### Veri Silme (Delete)
+
+\`\`\`kotlin
+if (secilenTarif != null) {
+    mDisposable.add(
+        tarifDao.delete(secilenTarif!!)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(this::handleResponseForInsertionAndDeletion)
+    )
+}
+\`\`\`
+
+- Seçilen tarif null değilse, silme işlemi bu şekilde gerçekleştirilir.
+
+> Sonuç olarak 
+
+- Room veritabanını başlattık.
+
+- CRUD işlemlerini RxJava ile asenkron hale getirdik.
+
+- Veri ekleme, okuma, güncelleme ve silme işlemlerini inceledik.
+
+- Schedulers.io() ile işlemleri arka planda çalıştırdık.
+
+# Room vs. SharedPreferences vs. SQLite
+
+Bu üç veri saklama yöntemi, Android’de farklı amaçlarla kullanılır. Hangisini seçeceğin, uygulamanın ihtiyaçlarına bağlıdır.
+
+## Room 
+
+SQL veritabanını daha basit hale getirir. Çok sayıda veriyi yönetmek için kullanılır.
+
+- SQLite’ın üzerine bir soyutlama katmanı ekler, daha kolay kullanımı bize sağlar.
+
+- DAO (Data Access Object) ile güvenli ve optimize edilmiş sorgular sağlar.
+
+- Asenkron işlem desteği sayesinde büyük veri işlemleri UI thread’i bloklamadan çalıştırılabilir.
+
+- Otomatik SQL sorgusu oluşturma ve hata kontrolleri yapar.
+
+> Karmaşık verileri ilişkisel bir şekilde saklamak ve verimli CRUD işlemleri yapmak gerektiğinde bu kullanılır, karmaşık ve çok sayıda veride kısaca.
+
+## SharedPreferences
+
+Küçük ve basit verileri (ayarlar, kullanıcı tercihleri gibi) saklamak için kullanılır.
+
+- Anahtar-değer (key-value) mantığıyla çalışır.
+
+- Genellikle boolean, int, float, String, Set<String> gibi basit verileri saklamak için uygundur.
+
+- Veriler XML dosyalarında saklanır, ilişkisel veritabanı gibi karmaşık sorgular desteklenmez.
+
+> Kullanıcı ayarları, tema tercihi, giriş bilgileri gibi basit ve hızlı erişilmesi gereken veriler için uygundur. Çok basit ve temel veriler tutulacaksa kullanılabilir. 
+
+## SQLite 
+
+Verileri tablo yapısında depolamak için kullanılır ve SQL sorgularıyla erişilir.
+
+- Room’dan farklı olarak doğrudan SQL komutları yazmayı gerektirir.
+
+- Manuel veritabanı yönetimi ve hata kontrolleri yapmak zorundasın.
+
+- Performans açısından optimize edilmemiş olabilir ve hataya daha açıktır.
+
+>  Eğer Room kullanmadan, tamamen manuel bir SQL yönetimi istiyorsan tercih edebilirsin. Ancak genellikle Room önerilir.
+
+## Özet
+
+- Basit ayarlar ve küçük veriler → SharedPreferences
+
+- İlişkisel ve büyük veri yönetimi → Room
+
+- SQL sorgularını doğrudan kullanmak istiyorsan → SQLite (ama Room daha kolay ve güvenli bir seçenek)
+
+- Yani SharedPreferences günlük küçük veriler için, Room ise büyük ve ilişkisel veriler için en iyi seçenek. SQLite ise daha düşük seviyeli bir alternatif ama genellikle Room’un sunduğu avantajlar nedeniyle tercih edilmiyor.
+
+
+    `,
 
     izinler: `
+
 
 > Androidde kullanıcı izinleri ilk bakışta çok karışık gözükmektedir. Zamanla alışacağız. :)
 
@@ -2777,6 +3104,14 @@ var camelCase = "Camel Case yazım örneği"
 
 export const posts: Post[] = [
     createPost({
+        id: 19,
+        title: "Androidde Room ve Dao",
+        content: POST_CONTENTS.room,
+        date: "2025-02-02",
+        summary: "Bu kısımda Andoriide Room ve Dao kavramlarını, diğer veri tabanları ile farklarını ele alacağız.",
+        category: "Veri Tabanı İşlemleri"
+      }),
+    createPost({
         id: 18,
         title: "Androidde Kullanıcı İzinleri",
         content: POST_CONTENTS.izinler,
@@ -2790,7 +3125,7 @@ export const posts: Post[] = [
         content: POST_CONTENTS.sqlite,
         date: "2025-01-31",
         summary: "Bu kısımda SQLite temellerini öğreneceğiz.",
-        category: "SQLite"
+        category: "Veri Tabanı İşlemleri"
       }),
     createPost({
         id: 16,
@@ -2822,7 +3157,7 @@ export const posts: Post[] = [
         content: POST_CONTENTS.sharedPreferences,
         date: "2025-01-30",
         summary: "Bu kısımda Andoriddeki bilgi saklama ve sharedPreferences kullanımını öğreneceğiz.",
-        category: "Android"
+        category: "Veri Tabanı İşlemleri"
       }),
     createPost({
         id: 12,
