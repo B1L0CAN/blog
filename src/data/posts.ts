@@ -9,6 +9,40 @@ const createPost = (post: Omit<Post, 'slug'>): Post => ({
 });
 
 const POST_CONTENTS = {    
+
+    lingo: `
+
+# Lingo Oyunu
+
+Bu kısımda kısa sürede yapmış olduğum basit bir lingo oyunu projesini göstereceğim :)
+
+İlk olarak ana sayfa ile başlayalım.
+
+<img src="/images/lingo1.png" width="350" height="750" style="object-fit: cover; display: block; margin: 0 auto;" loading="lazy" alt="Blog Resmi" />
+
+Görüleceği üzere ana sayfada sadece oyunun adı ve kaç harfli kelimeler ile oynamak istiyorsak onların butonu bulunuyor.
+
+<img src="/images/lingo2.png" width="350" height="750" style="object-fit: cover; display: block; margin: 0 auto;" loading="lazy" alt="Blog Resmi" />
+
+4 harfliler ile başlarsak böyle bir ekran göreceğiz. İlk harfi A olan bu kelimeyi bulmaya çalışalım.
+
+<img src="/images/lingo3.png" width="350" height="750" style="object-fit: cover; display: block; margin: 0 auto;" loading="lazy" alt="Blog Resmi" />
+
+Eğer eksik harf tuşlarsak custom toast mesajımız bu şekilde bize hata veriyor.
+
+<img src="/images/lingo4.png" width="350" height="750" style="object-fit: cover; display: block; margin: 0 auto;" loading="lazy" alt="Blog Resmi" />
+
+Yeşil çıkan harfler doğru harflerin doğru konumda olduğunu, sarı çıkan harfler doğru harflerin yanlış konumda olduğunu gösteriyor. Gri ise o harf kelimede yoktur.
+
+<img src="/images/lingo5.png" width="350" height="750" style="object-fit: cover; display: block; margin: 0 auto;" loading="lazy" alt="Blog Resmi" />
+
+Kelimeyi bulamadığımızda custom toast mesajımız kırmızı arka planla bize bu şekilde kaybettiniz mesajı veriyor. Aynı zamanda aşağı taraftaki gizli textView'de doğru kelimeyi, gizli butonla da sonraki seviyeye geçme seçeneğini görebiliriz.
+
+<img src="/images/lingo6.png" width="350" height="750" style="object-fit: cover; display: block; margin: 0 auto;" loading="lazy" alt="Blog Resmi" />
+
+Kelimeyi doğru bulduğumuzda ise bu şekilde custom toast mesajımız bize yeşil arka planla kazandınız mesajını veriyor. Aynı zamanda altındaki butonla da tekrar oynamak istediğimizde oyunu tekrar başlatabiliyoruz. Gizli textView burada çalışmıyor çünkü doğru kelimeyi zaten bulduk.
+
+`,
     room: `
 # Room Nedir?
 
@@ -3104,10 +3138,18 @@ var camelCase = "Camel Case yazım örneği"
 
 export const posts: Post[] = [
     createPost({
+        id: 20,
+        title: "Lingo Projesi",
+        content: POST_CONTENTS.lingo,
+        date: "2025-02-07",
+        summary: "Bu kısımda basit bir lingo oyunu projesini göstereceğim.",
+        category: "Projeler"
+      }),
+    createPost({
         id: 19,
         title: "Androidde Room ve Dao",
         content: POST_CONTENTS.room,
-        date: "2025-02-02",
+        date: "2025-02-04",
         summary: "Bu kısımda Andoriide Room ve Dao kavramlarını, diğer veri tabanları ile farklarını ele alacağız.",
         category: "Veri Tabanı İşlemleri"
       }),
