@@ -18,29 +18,29 @@ Bu kısımda kısa sürede yapmış olduğum basit bir lingo oyunu projesini gö
 
 İlk olarak ana sayfa ile başlayalım.
 
-<img src="/images/lingo1.png" width="350" height="750" style="object-fit: cover; display: block; margin: 0 auto;" loading="lazy" alt="Blog Resmi" />
+<img src="/images/lingo1.jpg" width="350" height="770" style="object-fit: cover; display: block; margin: 0 auto;" loading="lazy" alt="Blog Resmi" />
 
 Görüleceği üzere ana sayfada sadece oyunun adı ve kaç harfli kelimeler ile oynamak istiyorsak onların butonu bulunuyor.
 
-<img src="/images/lingo2.png" width="350" height="750" style="object-fit: cover; display: block; margin: 0 auto;" loading="lazy" alt="Blog Resmi" />
+<img src="/images/lingo2.jpg" width="350" height="770" style="object-fit: cover; display: block; margin: 0 auto;" loading="lazy" alt="Blog Resmi" />
 
-4 harfliler ile başlarsak böyle bir ekran göreceğiz. İlk harfi A olan bu kelimeyi bulmaya çalışalım.
+4 harfliler ile oyunu tanıtalım, ilk olarak ilgili harf kategorisinde eksik sayıda harf girişi yaptığımızda uygulamamız bize uyarı mesajı gösteriyor
 
-<img src="/images/lingo3.png" width="350" height="750" style="object-fit: cover; display: block; margin: 0 auto;" loading="lazy" alt="Blog Resmi" />
+<img src="/images/lingo3.jpg" width="350" height="750" style="object-fit: cover; display: block; margin: 0 auto;" loading="lazy" alt="Blog Resmi" />
 
-Eğer eksik harf tuşlarsak custom toast mesajımız bu şekilde bize hata veriyor.
+Aynı zamanda uygulamamız eğer kullanıcı kelimenin verilen ilk harfini yanlış girerse bu şekilde uyarı veriyor.
 
-<img src="/images/lingo4.png" width="350" height="750" style="object-fit: cover; display: block; margin: 0 auto;" loading="lazy" alt="Blog Resmi" />
+<img src="/images/lingo4.jpg" width="350" height="750" style="object-fit: cover; display: block; margin: 0 auto;" loading="lazy" alt="Blog Resmi" />
 
-Yeşil çıkan harfler doğru harflerin doğru konumda olduğunu, sarı çıkan harfler doğru harflerin yanlış konumda olduğunu gösteriyor. Gri ise o harf kelimede yoktur.
+Eklediğim ipucu butonu ile kullanıcı zorlandığı yerde kelimenin rastgele bir harfine ulaşabiliyor. İpucu butonu 10 puan eksiltiyor.
 
-<img src="/images/lingo5.png" width="350" height="750" style="object-fit: cover; display: block; margin: 0 auto;" loading="lazy" alt="Blog Resmi" />
+<img src="/images/lingo5.jpg" width="350" height="750" style="object-fit: cover; display: block; margin: 0 auto;" loading="lazy" alt="Blog Resmi" />
 
-Kelimeyi bulamadığımızda custom toast mesajımız kırmızı arka planla bize bu şekilde kaybettiniz mesajı veriyor. Aynı zamanda aşağı taraftaki gizli textView'de doğru kelimeyi, gizli butonla da sonraki seviyeye geçme seçeneğini görebiliriz.
+Kelimeyi doğru bulduğumuzda bu şekilde custom toast mesajımız bize yeşil arka planla kazandınız mesajını veriyor. Aynı zamanda altındaki gizli buton oyun bittiğinde ortaya çıkıyor ve bir sonraki levele geçmemizi sağlıyor.
 
-<img src="/images/lingo6.png" width="350" height="750" style="object-fit: cover; display: block; margin: 0 auto;" loading="lazy" alt="Blog Resmi" />
+<img src="/images/lingo6.jpg" width="350" height="750" style="object-fit: cover; display: block; margin: 0 auto;" loading="lazy" alt="Blog Resmi" />
 
-Kelimeyi doğru bulduğumuzda ise bu şekilde custom toast mesajımız bize yeşil arka planla kazandınız mesajını veriyor. Aynı zamanda altındaki butonla da tekrar oynamak istediğimizde oyunu tekrar başlatabiliyoruz. Gizli textView burada çalışmıyor çünkü doğru kelimeyi zaten bulduk.
+Kelimeyi bulamadığımızda ise custom toast mesajımız kırmızı arka planla bize bu şekilde kaybettiniz mesajı veriyor. Aynı zamanda aşağı taraftaki gizli textView'de doğru kelimeyi, gizli butonla da sonraki seviyeye geçme seçeneğini bize gösteriyor.
 
 `,
     room: `
@@ -1396,7 +1396,7 @@ yazmamız gerekiyordu.
 
     hesapMakinesi: `
     
-Merhaba, bu kısımda çok basit bir hesap makinesi projesi yapacağız.  Proje bile denmeyecek kadar basit :)
+Merhaba, bu kısımda çok basit bir hesap makinesi projesi yapacağız. Proje bile denmeyecek kadar basit :) Amaç öğrendiklerimi tekrar etmek.
 
 > Bu tarz bir hesap makinesi yapmanın çok fazla yolu var, bu yazıda çok çok basit şekilde bir hesap makinesi yapacağız.
 
@@ -3187,7 +3187,7 @@ export const posts: Post[] = [
       }),
     createPost({
         id: 14,
-        title: "Basit bir Hesap Makinesi Projesi",
+        title: "Hesap Makinesi Projesi",
         content: POST_CONTENTS.hesapMakinesi,
         date: "2025-01-30",
         summary: "Bu kısımda çok basit bir hesap makinesi projesi yapacağız.",
