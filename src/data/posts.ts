@@ -42,6 +42,8 @@ Kelimeyi doğru bulduğumuzda bu şekilde custom toast mesajımız bize yeşil a
 
 Kelimeyi bulamadığımızda ise custom toast mesajımız kırmızı arka planla bize bu şekilde kaybettiniz mesajı veriyor. Aynı zamanda aşağı taraftaki gizli textView'de doğru kelimeyi, gizli butonla da sonraki seviyeye geçme seçeneğini bize gösteriyor.
 
+> Son olarak uygulamada bahsetmediğim bir puan sistemi de mevcut, ne kadar erken bilinirse o kadar çok puan geliyor, bilinemediğinde puan kırılıyor ve ipucu alımlarında 10 puan düşüyor.
+
 > Uygulamanın tamamının kodlarını [buradan](https://github.com/B1L0CAN/LingoGame) inceleyebilirsiniz.
 `,
     room: `
