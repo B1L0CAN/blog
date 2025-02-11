@@ -1396,9 +1396,9 @@ yazmamız gerekiyordu.
 
     hesapMakinesi: `
     
-Merhaba, bu kısımda çok basit bir hesap makinesi projesi yapacağız.
+Merhaba, bu kısımda çok basit bir hesap makinesi projesi yapacağız.  Proje bile denmeyecek kadar basit :)
 
-Bu tarz bir hesap makinesi yapmanın çok fazla yolu var, bu yazıda çok çok basit şekilde bir hesap makinesi yapacağız. 
+> Bu tarz bir hesap makinesi yapmanın çok fazla yolu var, bu yazıda çok çok basit şekilde bir hesap makinesi yapacağız.
 
 ## Layout ve XML Kısmı
 
@@ -3191,7 +3191,7 @@ export const posts: Post[] = [
         content: POST_CONTENTS.hesapMakinesi,
         date: "2025-01-30",
         summary: "Bu kısımda çok basit bir hesap makinesi projesi yapacağız.",
-        category: "Android"
+        category: "Projeler"
       }),
     createPost({
         id: 13,
