@@ -46,6 +46,48 @@ Kelimeyi bulamadığımızda ise custom toast mesajımız kırmızı arka planla
 
 > Uygulamanın tamamının kodlarını [buradan](https://github.com/B1L0CAN/LingoGame) inceleyebilirsiniz.
 `,
+
+notdefteri: `
+
+
+Bu kısımda resimlere not eklemek için yaptığım uygulamayı göstereceğim.
+
+İlk olarak uygulama açıldığında alert dialog ile bize bir bilgilendirme mesajı veriyor.
+
+<img src="/images/not1.jpeg" width="270" height="800" style="object-fit: cover; display: block; margin: 0 auto;" loading="lazy" alt="Blog Resmi" />
+
+Anladım butonuna tıkladıktan sonra ana sayfadan + butonuna tıklayarak resim yükleme ekranına geçiyoruz.
+
+<img src="/images/not2.jpeg" width="270" height="800" style="object-fit: cover; display: block; margin: 0 auto;" loading="lazy" alt="Blog Resmi" />
+
+ImageView üstüne tıklayarak resim yükleme ekranına geçiyoruz. Bu kısımda bizden kullanıcı izni isteniyor.
+
+<img src="/images/not3.jpeg" width="270" height="800" style="object-fit: cover; display: block; margin: 0 auto;" loading="lazy" alt="Blog Resmi" />
+
+İzin verildiğinde ise resim yükleme ekranına geçiyoruz ve resmi yüklüyoruz. Ardından resme ait başlığı ve alacağımız notu yazıyoruz.
+
+<img src="/images/not4.jpeg" width="270" height="800" style="object-fit: cover; display: block; margin: 0 auto;" loading="lazy" alt="Blog Resmi" />
+
+Görüleceği üzere resim artık başlığıyla beraber ana sayfamızda görünüyor.
+
+<img src="/images/not5.jpeg" width="270" height="800" style="object-fit: cover; display: block; margin: 0 auto;" loading="lazy" alt="Blog Resmi" />
+
+Büyüteç ikonuna tıklayarak resmi büyütebiliriz.
+
+<img src="/images/not6.jpeg" width="270" height="800" style="object-fit: cover; display: block; margin: 0 auto;" loading="lazy" alt="Blog Resmi" />
+
+Resim ekledikçe recyclerView ile beraber resimlerimiz listeleniyor.
+
+<img src="/images/not7.jpeg" width="270" height="800" style="object-fit: cover; display: block; margin: 0 auto;" loading="lazy" alt="Blog Resmi" />
+
+Arama çubuğumuz ile de listemiz uzadığı zaman aradığımız resmi bulabiliyoruz.
+
+<img src="/images/not8.jpeg" width="270" height="800" style="object-fit: cover; display: block; margin: 0 auto;" loading="lazy" alt="Blog Resmi" />
+
+> Uygulamanın tamamının kodlarını [buradan](https://github.com/B1L0CAN/PictureNotebook) inceleyebilirsiniz.
+`,
+
+
     room: `
 # Room Nedir?
 
@@ -3141,11 +3183,19 @@ var camelCase = "Camel Case yazım örneği"
 
 export const posts: Post[] = [
     createPost({
-        id: 20,
+        id: 21,
         title: "Lingo Projesi",
         content: POST_CONTENTS.lingo,
-        date: "2025-02-07",
+        date: "2025-02-011",
         summary: "Bu kısımda basit bir lingo oyunu projesini göstereceğim.",
+        category: "Projeler"
+      }),
+      createPost({
+        id: 20,
+        title: "Resimlere Not Ekleme Uygulaması",
+        content: POST_CONTENTS.notdefteri,
+        date: "2025-02-07",
+        summary: "Bu kısımda resimlere not eklemek için yaptığım uygulamayı göstereceğim.",
         category: "Projeler"
       }),
     createPost({
