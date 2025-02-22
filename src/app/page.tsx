@@ -28,9 +28,8 @@ export default function Home() {
       {/* Giriş Yazısı */}
       <div className="w-full py-8 px-4 border-b border-gray-800">
         <p className="max-w-4xl mx-auto text-gray-300 text-center text-lg italic">
-          Merhaba, bu blog Android ve Kotlin konusunda kişisel not defterim gibi kullanılacaktır. 
-          Bir şey öğrenmek isteyen ilgili konuların dökümantasyonuna bakabilir. 
-          Amerikayı yeniden keşfetmeye gerek yok :)
+          Merhaba, bu blog Android ve Kotlin konusunda kişisel not defterim gibi kullanılacaktır.
+          Zaman zaman başka konular da ekleyebilirim, zaman ne gösterir bilinmez :) Keyifli okumalar!
         </p>
       </div>
 
