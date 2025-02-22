@@ -9,6 +9,70 @@ const createPost = (post: Omit<Post, 'slug'>): Post => ({
 });
 
 const POST_CONTENTS = {    
+    sifre: `
+
+Bu bölümde sizlere yapmış olduğum şifre yöneticisi uygulaması anlatacağım.
+
+İlk olarak uygulama açıldığında kayıt ekranı karşımıza çıkıyor. Bu kayıt ekranında belirlenen şifre ile daha sonraki girişlerimizde uygulamayı açıyoruz.
+
+<img src="/images/sifre1.jpg" width="260" height="800" style="object-fit: cover; display: block; margin: 0 auto;" loading="lazy" alt="Blog Resmi" />
+
+Daha sonra giriş ekranı karşımıza çıkıyor. Burada ilk başta kayıt olurken girdiğimiz şifre ile uygulamayı açıyoruz.
+
+<img src="/images/sifre2.jpg" width="260" height="800" style="object-fit: cover; display: block; margin: 0 auto;" loading="lazy" alt="Blog Resmi" />
+
+Daha sonra en alttaki menüden + butonuna tıklayarak yeni bir kategori ekleyebiliriz.
+
+<img src="/images/sifre3.jpg" width="260" height="800" style="object-fit: cover; display: block; margin: 0 auto;" loading="lazy" alt="Blog Resmi" />
+
+Kategoriye basılı tutup seçtiğimizde arka planı beyaz oluyor ve seçilen kategorinin başında tik işareti çıkıyor.
+
+Eklediğimiz kategoriyi düzenlemek veya silmek istersek en alttaki menüden düzenleme ve silme butonlarını kullanabiliriz. 
+
+<img src="/images/sifre4.jpg" width="260" height="800" style="object-fit: cover; display: block; margin: 0 auto;" loading="lazy" alt="Blog Resmi" />
+
+Kategorinin üstüne tıkladığımızda da ilgili kategorinin içerisindeki şifre sayfası bizi karşılıyor, sağ alttaki + butonuna tıklayarak yeni bir şifre ekleyebiliriz.
+
+<img src="/images/sifre5.jpg" width="260" height="800" style="object-fit: cover; display: block; margin: 0 auto;" loading="lazy" alt="Blog Resmi" />    
+
+Bu şekilde eklediğimiz şifreleri görüntüleyebiliyoruz. Burada sağ üstteki buton ile şifrelerimizi A'dan Z'ye veya Z'den A'ya sıralayabiliriz.
+
+Ayrıca şifrelerimizin yanında gözüken ikonlar ile sırasıyla, şifreyi düzenleme, şifreyi kopyalama, şifreyi silme ve şifreleri kaydırarak sıralama işlemlerini yapabiliriz.
+
+<img src="/images/sifre6.jpg" width="260" height="800" style="object-fit: cover; display: block; margin: 0 auto;" loading="lazy" alt="Blog Resmi" />
+
+Daha sonra ana sayfaya dönüp girdiğimiz verileri yedeklemek istersek en alttaki menüden yedekleme butonuna tıklayarak yedekleme ekranına geçebiliriz.
+
+Burada bizden yedek dosyamız için bir şifre belirlememiz istenecek, şifreyi belirleyip yedekleme işlemini yapıyoruz.
+
+Tüm yedekleme işlemlerimizi .json dosyası olarak yapıyoruz.
+
+<img src="/images/sifre7.jpg" width="260" height="800" style="object-fit: cover; display: block; margin: 0 auto;" loading="lazy" alt="Blog Resmi" />    
+
+Yedekten verileri geri yüklemek istersek en alttaki menüden geri yükleme butonuna tıklayarak geri yükleme ekranını açıp yedek dosyamızı seçiyoruz.
+
+Burada bizden yedek dosyamıza koyduğumuz şifreyi girmemiz istenecek, şifreyi girip yedekten veri çekme işlemini yapıyoruz.
+
+<img src="/images/sifre8.jpg" width="260" height="800" style="object-fit: cover; display: block; margin: 0 auto;" loading="lazy" alt="Blog Resmi" />
+
+Son olarak şifremizi güncellemek istersek sol üst köşedeki ayarlar butonundan şifremizi güncelleyebiliriz.
+
+Ayrıca sağ üstteki çıkış yap butonu ile uygulamamızı kapatabiliriz.
+
+<img src="/images/sifre9.jpg" width="260" height="800" style="object-fit: cover; display: block; margin: 0 auto;" loading="lazy" alt="Blog Resmi" />
+
+
+
+
+
+
+> Uygulamanın tamamının kodlarını [buradan](https://github.com/B1L0CAN/Password-Manager-App-v2) inceleyebilirsiniz.
+
+> Giriş çıkış sisteminin biraz daha farklı olduğu, yedeklemenin isim üzerinden gerçekleştiği ilk versiyona da [buradan](https://github.com/B1L0CAN/Password-Manager-App) ulaşabilirsiniz.
+
+
+
+    `,
 
     lingo: `
 
@@ -18,31 +82,42 @@ Bu kısımda kısa sürede yapmış olduğum basit bir lingo oyunu projesini gö
 
 İlk olarak ana sayfa ile başlayalım.
 
-<img src="/images/lingo1.jpg" width="270" height="800" style="object-fit: cover; display: block; margin: 0 auto;" loading="lazy" alt="Blog Resmi" />
+<img src="/images/lingo1.jpg" width="260" height="800" style="object-fit: cover; display: block; margin: 0 auto;" loading="lazy" alt="Blog Resmi" />
 
 Görüleceği üzere ana sayfada sadece oyunun adı ve kaç harfli kelimeler ile oynamak istiyorsak onların butonu bulunuyor.
 
-<img src="/images/lingo2.jpg" width="270" height="800" style="object-fit: cover; display: block; margin: 0 auto;" loading="lazy" alt="Blog Resmi" />
+<img src="/images/lingo2.jpg" width="260" height="800" style="object-fit: cover; display: block; margin: 0 auto;" loading="lazy" alt="Blog Resmi" />
 
 4 harfliler ile oyunu tanıtalım, ilk olarak ilgili harf kategorisinde eksik sayıda harf girişi yaptığımızda uygulamamız bize uyarı mesajı gösteriyor
 
-<img src="/images/lingo3.jpg" width="270" height="800" style="object-fit: cover; display: block; margin: 0 auto;" loading="lazy" alt="Blog Resmi" />
+<img src="/images/lingo3.jpg" width="260" height="800" style="object-fit: cover; display: block; margin: 0 auto;" loading="lazy" alt="Blog Resmi" />
 
 Aynı zamanda uygulamamız eğer kullanıcı kelimenin verilen ilk harfini yanlış girerse bu şekilde uyarı veriyor.
 
-<img src="/images/lingo4.jpg" width="270" height="800" style="object-fit: cover; display: block; margin: 0 auto;" loading="lazy" alt="Blog Resmi" />
+<img src="/images/lingo4.jpg" width="260" height="800" style="object-fit: cover; display: block; margin: 0 auto;" loading="lazy" alt="Blog Resmi" />
 
 Eklediğim ipucu butonu ile kullanıcı zorlandığı yerde kelimenin rastgele bir harfine ulaşabiliyor. İpucu butonu 10 puan eksiltiyor.
 
-<img src="/images/lingo5.jpg" width="270" height="800" style="object-fit: cover; display: block; margin: 0 auto;" loading="lazy" alt="Blog Resmi" />
+<img src="/images/lingo5.jpg" width="260" height="800" style="object-fit: cover; display: block; margin: 0 auto;" loading="lazy" alt="Blog Resmi" />
 
 Kelimeyi doğru bulduğumuzda bu şekilde custom toast mesajımız bize yeşil arka planla kazandınız mesajını veriyor. Aynı zamanda altındaki gizli buton oyun bittiğinde ortaya çıkıyor ve bir sonraki levele geçmemizi sağlıyor.
 
-<img src="/images/lingo6.jpg" width="270" height="800" style="object-fit: cover; display: block; margin: 0 auto;" loading="lazy" alt="Blog Resmi" />
+<img src="/images/lingo6.jpg" width="260" height="800" style="object-fit: cover; display: block; margin: 0 auto;" loading="lazy" alt="Blog Resmi" />
 
 Kelimeyi bulamadığımızda ise custom toast mesajımız kırmızı arka planla bize bu şekilde kaybettiniz mesajı veriyor. Aynı zamanda aşağı taraftaki gizli textView'de doğru kelimeyi, gizli butonla da sonraki seviyeye geçme seçeneğini bize gösteriyor.
 
 > Son olarak uygulamada bahsetmediğim bir puan sistemi de mevcut, ne kadar erken bilinirse o kadar çok puan geliyor, bilinemediğinde puan kırılıyor ve ipucu alımlarında 10 puan düşüyor.
+
+- Güncelleme: 22.02.2025
+
+Uygulamaya eğer kullanıcının puanı yetiyor ise bir hak daha verme özeliği eklendi.
+
+Ayrıca artık puan yetmiyor ise kullanıcı ipucu alamayacak.
+
+<img src="/images/lingo7.jpeg" width="260" height="800" style="object-fit: cover; display: block; margin: 0 auto;" loading="lazy" alt="Blog Resmi" />    
+
+<img src="/images/lingo8.jpeg" width="260" height="800" style="object-fit: cover; display: block; margin: 0 auto;" loading="lazy" alt="Blog Resmi" />    
+
 
 > Uygulamanın tamamının kodlarını [buradan](https://github.com/B1L0CAN/LingoGame) inceleyebilirsiniz.
 `,
@@ -3183,8 +3258,16 @@ var camelCase = "Camel Case yazım örneği"
 
 export const posts: Post[] = [
     createPost({
+        id: 22,
+        title: "Şifre Yöneticisi Uygulaması",
+        content: POST_CONTENTS.sifre,
+        date: "2025-02-21",
+        summary: "Bu kısımda yapmış olduğum şifre yöneticisi uygulamasını göstereceğim.",
+        category: "Projeler"
+      }),
+    createPost({
         id: 21,
-        title: "Lingo Projesi",
+        title: "Lingo Oyunu Projesi",
         content: POST_CONTENTS.lingo,
         date: "2025-02-011",
         summary: "Bu kısımda basit bir lingo oyunu projesini göstereceğim.",
