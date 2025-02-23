@@ -9,6 +9,168 @@ const createPost = (post: Omit<Post, 'slug'>): Post => ({
 });
 
 const POST_CONTENTS = {    
+    menu: `
+
+Androidde menü oluşturmak için öncelikle bir adet android resouce file oluşturuyoruz.
+
+Bu dosyanın resource type'ını menu olarak seçiyoruz ve ismini my_popup_menu olarak belirliyoruz.
+
+Oluşan xml dosyamıza şu kodları yazalım:
+
+\`\`\`kotlin
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:id="@+id/yuklemeItem" android:title="Yeni Post Oluştur"></item>
+    <item android:id="@+id/cikisItem" android:title="Çıkış Yap"></item>
+
+</menu>
+\`\`\`
+
+Oluşturduğumuz menu xml dosyasına iki adet item ekledik, bunlar yeni post oluştur ve çıkış yap butonları.
+
+Bu butonları aktifleştirmek için şu kodları yazalım:
+
+onViewCreated içerisine
+
+\`\`\`kotlin
+ binding.floatingActionButton.setOnClickListener { floatingButtonTiklandi(it)}
+\`\`\`
+
+Şimdi butonun tıklanma kodunu yazalım. Öncelikle popup menümüzü tanımlamamız gerekiyor.
+
+\`\`\`kotlin
+private lateinit var popup : PopupMenu
+\`\`\`
+
+Şimdi popup menümüzün tanımlayalım.
+
+\`\`\`kotlin
+popup = PopupMenu(requireContext(),binding.floatingActionButton)
+\`\`\`
+
+Şimdi bağlama işlemi için MenuInflater'ı tanımlamamız gerekiyor. Layoutlardaki LayoutInflater'ı menülerde MenuInflater ile değiştiriyoruz.
+
+\`\`\`kotlin
+val inflater = popup.menuInflater
+    inflater.inflate(R.menu.my_popup_menu,popup.menu)
+\`\`\`
+
+Şimdi menüye tıklandığında ne yapılacağını belirleyelim. Bunun için PopupMenu.OnMenuItemClickListener interface'ini implement ediyoruz.
+
+\`\`\`kotlin
+class FeedFragment : Fragment(), PopupMenu.OnMenuItemClickListener 
+\`\`\`
+
+onMenuItemClick fonksiyonunu override etmeyi unutmuyoruz ve onViewCreated içerisinde \`popup.setOnMenuItemClickListener(this)\` yapıyoruz.
+
+Bu kod ile birlikte menüye tıklandığında this, yani FeedFragment'ın içerisindeki onMenuItemClick fonksiyonuna atıf veriyoruz.
+
+Şimdi override ettiğimiz onMenuItemClick fonksiyonunun içerisinde menüye tıklandığında ne yapılacağının kodunu yazalım.
+
+\`\`\`kotlin
+override fun onMenuItemClick(item: MenuItem?): Boolean {
+
+        if (item?.itemId == R.id.yuklemeItem) {
+            val action = FeedFragmentDirections.actionFeedFragmentToYuklemeFragment()
+            Navigation.findNavController(requireView()).navigate(action)
+        } else if (item?.itemId == R.id.cikisItem){
+            val action = FeedFragmentDirections.actionFeedFragmentToKullaniciFragment()
+            Navigation.findNavController(requireView()).navigate(action)
+        }
+        return true
+    }
+}
+\`\`\`
+
+Neye tıklandığında ne yapılacağını belirlemek için yeni bir action oluşturup ona göre navigation yapıyoruz.
+
+> Not: Return true yapmamızın sebebi, boolen değer döndürmesi gerektiği içindir.
+
+Şimdi butonumuza tıklandığında popup menümüzün görünmesini sağlayalım.
+
+\`\`\`kotlin
+ fun floatingButtonTiklandi(view: View){
+        popup.show()
+    }
+\`\`\`
+
+<img src="/images/menu1.png" width="300" height="250" style="object-fit: cover; display: block; margin: 0 auto;" loading="lazy" alt="Blog Resmi" />
+
+> Menüdeki butonlara tıkladığımızda artık diğer fragmentlere geçiş yapıyoruz.
+
+Son olarak şimdiye kadarki tüm kodlar şu şekilde olacak: 
+
+> Not: Bu kodlar sadece menü oluşturma kısmı için geçerlidir. Herhangi bir çıkış yapma işlemi falan tanımlanmamıştır.
+
+\`\`\`kotlin
+package com.bilocan.fotografpaylasma
+
+import android.os.Bundle
+import androidx.fragment.app.Fragment
+import android.view.LayoutInflater
+import android.view.MenuItem
+import android.view.View
+import android.view.ViewGroup
+import androidx.appcompat.widget.PopupMenu
+import androidx.navigation.Navigation
+import com.bilocan.fotografpaylasma.databinding.FragmentFeedBinding
+import com.bilocan.fotografpaylasma.databinding.FragmentKullaniciBinding
+
+class FeedFragment : Fragment(), PopupMenu.OnMenuItemClickListener {
+    private var _binding: FragmentFeedBinding? = null
+    private val binding get() = _binding!!
+
+    private lateinit var popup : PopupMenu
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        _binding = FragmentFeedBinding.inflate(inflater, container, false)
+        val view = binding.root
+        return view
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding.floatingActionButton.setOnClickListener { floatingButtonTiklandi(it)}
+        popup = PopupMenu(requireContext(),binding.floatingActionButton)
+        val inflater = popup.menuInflater
+        inflater.inflate(R.menu.my_popup_menu,popup.menu)
+        popup.setOnMenuItemClickListener(this)
+    }
+
+    fun floatingButtonTiklandi(view: View){
+        popup.show()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
+    override fun onMenuItemClick(item: MenuItem?): Boolean {
+
+        if (item?.itemId == R.id.yuklemeItem) {
+            val action = FeedFragmentDirections.actionFeedFragmentToYuklemeFragment()
+            Navigation.findNavController(requireView()).navigate(action)
+        } else if (item?.itemId == R.id.cikisItem){
+            val action = FeedFragmentDirections.actionFeedFragmentToKullaniciFragment()
+            Navigation.findNavController(requireView()).navigate(action)
+        }
+        return true
+    }
+}
+\`\`\`
+
+
+    `,
     sifre: `
 
 Bu bölümde sizlere yapmış olduğum şifre yöneticisi uygulaması anlatacağım.
@@ -122,6 +284,20 @@ Ayrıca artık puan yetmiyor ise kullanıcı ipucu alamayacak.
 > Uygulamanın tamamının kodlarını [buradan](https://github.com/B1L0CAN/LingoGame) inceleyebilirsiniz.
 `,
 
+sertifika: `
+
+Bu kısımda Android ile ilgili sertifikalarımı paylaşacağım.
+
+<img src="/images/sertifika1.png" width="750" height="450" style="object-fit: cover; display: block; margin: 0 auto;" loading="lazy" alt="Blog Resmi" />    
+
+<img src="/images/sertifika2.png" width="750" height="500" style="object-fit: cover; display: block; margin: 0 auto;" loading="lazy" alt="Blog Resmi" />    
+
+<img src="/images/sertifika3.png" width="750" height="500" style="object-fit: cover; display: block; margin: 0 auto;" loading="lazy" alt="Blog Resmi" />    
+
+Kotlin ile Android Mobil Uygulama Geliştirme İleri Seviye eğitimim devam ediyor :)
+
+
+`,
 notdefteri: `
 
 
@@ -3250,7 +3426,7 @@ var camelCase = "Camel Case yazım örneği"
   `,
   blogunAmaci: `
 
-  Bu blogun pek bir amacı yoktur, kendi keyfi zevklerime göre yazıyorum. Sadece bir şeyler denemek istedim ve unutmamak için bazı şeyleri not almak istedim o kadar :)
+  Bu blogun pek bir amacı yoktur, kendi keyfi zevklerime göre yazıyorum. Sadece bir şeyler denemek ve unutmamak için bazı şeyleri not almak istedim o kadar :)
 
   <img src="/images/resim1.png" width="200" height="200" style="object-fit: cover; display: block; margin: 0 auto;" loading="lazy" alt="Blog Resmi" />
   `
@@ -3258,7 +3434,15 @@ var camelCase = "Camel Case yazım örneği"
 
 export const posts: Post[] = [
     createPost({
-        id: 22,
+        id: 24,
+        title: "Androidde Menü Oluşturma",
+        content: POST_CONTENTS.menu,
+        date: "2025-02-23",
+        summary: "Bu kısımda Androidde menüleri nasıl kullanırız onu göreceğiz.",
+        category: "Android"
+      }),
+    createPost({
+        id: 23,
         title: "Şifre Yöneticisi Uygulaması",
         content: POST_CONTENTS.sifre,
         date: "2025-02-21",
@@ -3266,12 +3450,20 @@ export const posts: Post[] = [
         category: "Projeler"
       }),
     createPost({
-        id: 21,
+        id: 22,
         title: "Lingo Oyunu Projesi",
         content: POST_CONTENTS.lingo,
         date: "2025-02-011",
         summary: "Bu kısımda basit bir lingo oyunu projesini göstereceğim.",
         category: "Projeler"
+      }),
+      createPost({
+        id: 21,
+        title: "Sertifikalar",
+        content: POST_CONTENTS.sertifika,
+        date: "2025-02-23",
+        summary: "Bu kısımda Android ile ilgilisertifikalarımı paylaşacağım.",
+        category: "Sertifikalar"
       }),
       createPost({
         id: 20,
