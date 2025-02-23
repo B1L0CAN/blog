@@ -3447,7 +3447,7 @@ export const posts: Post[] = [
         id: 22,
         title: "Lingo Oyunu Projesi",
         content: POST_CONTENTS.lingo,
-        date: "2025-02-011",
+        date: "2025-02-12",
         summary: "Bu kısımda basit bir lingo oyunu projesini göstereceğim.",
         category: "Projeler"
       }),
@@ -3471,7 +3471,7 @@ export const posts: Post[] = [
         id: 19,
         title: "Androidde Room ve Dao",
         content: POST_CONTENTS.room,
-        date: "2025-02-04",
+        date: "2025-02-02",
         summary: "Bu kısımda Andoriide Room ve Dao kavramlarını, diğer veri tabanları ile farklarını ele alacağız.",
         category: "Veri Tabanı İşlemleri"
       }),
@@ -3479,7 +3479,7 @@ export const posts: Post[] = [
         id: 18,
         title: "Androidde Kullanıcı İzinleri",
         content: POST_CONTENTS.izinler,
-        date: "2025-02-02",
+        date: "2025-02-01",
         summary: "Bu kısımda Andoriide kullanıcı izinlerinin nasıl alındığını göreceğiz.",
         category: "Android"
       }),
@@ -3511,7 +3511,7 @@ export const posts: Post[] = [
         id: 14,
         title: "Hesap Makinesi Projesi",
         content: POST_CONTENTS.hesapMakinesi,
-        date: "2025-01-30",
+        date: "2025-01-24",
         summary: "Bu kısımda çok basit bir hesap makinesi projesi yapacağız.",
         category: "Projeler"
       }),
@@ -3519,7 +3519,7 @@ export const posts: Post[] = [
         id: 13,
         title: "Andoridde Bilgi Saklama ve SharedPreferences",
         content: POST_CONTENTS.sharedPreferences,
-        date: "2025-01-30",
+        date: "2025-01-24",
         summary: "Bu kısımda Andoriddeki bilgi saklama ve sharedPreferences kullanımını öğreneceğiz.",
         category: "Veri Tabanı İşlemleri"
       }),
@@ -3527,7 +3527,7 @@ export const posts: Post[] = [
         id: 12,
         title: "Andoridde Context ve Alert Dialog Kullanımı",
         content: POST_CONTENTS.context,
-        date: "2025-01-30",
+        date: "2025-01-23",
         summary: "Bu kısımda Andoriddeki App ve Activity Context'leri ve Alert Dialog kullanımını öğreneceğiz.",
         category: "Android"
       }),
@@ -3535,7 +3535,7 @@ export const posts: Post[] = [
         id: 11,
         title: "Andoridde Intent Kullanımı ve Sayfalar Arası Geçiş",
         content: POST_CONTENTS.intent,
-        date: "2025-01-30",
+        date: "2025-01-22",
         summary: "Bu kısımda Andoriddeki Intent Kullanımı ve Sayfalar Arası Geçiş hakkında detaylı bilgiler verilecektir.",
         category: "Android"
       }),
@@ -3543,7 +3543,7 @@ export const posts: Post[] = [
         id: 10,
         title: "Projede Yaşam Döngüsü",
         content: POST_CONTENTS.yasamDongusu,
-        date: "2025-01-29",
+        date: "2025-01-21",
         summary: "Bu kısımda Andoriddeki Yaşam Döngüsü hakkında detaylı bilgiler verilecektir.",
         category: "Android"
       }),
@@ -3551,7 +3551,7 @@ export const posts: Post[] = [
         id: 9,
         title: "Projede XML ile Kotlin Kodlarını Birleştirme - ViewBinding",
         content: POST_CONTENTS.xmlkotlin,
-        date: "2025-01-29",
+        date: "2025-01-21",
         summary: "Bu kısımda layouttaki bileşenlerimizin kodlarını kotlinde düzenlemeyi öğreneceğiz.",
         category: "Android"
       }),
@@ -3559,7 +3559,7 @@ export const posts: Post[] = [
     id: 8,
     title: "Layoutlar ve Çeşitleri - XML",
     content: POST_CONTENTS.android,
-    date: "2025-01-29",
+    date: "2025-01-20",
     summary: "Bu kısımda Andorid kategorisine Layoutlar ve XML ile giriş yapılacaktır.",
     category: "Android"
   }),
@@ -3567,7 +3567,7 @@ export const posts: Post[] = [
     id: 7,
     title: "Kotlinde Hata Yakalama",
     content: POST_CONTENTS.hata,
-    date: "2025-01-19",
+    date: "2025-01-13",
     summary: "Bu kısımda Kotlinde hata yakalama hakkında detaylı bilgiler verilecektir.",
     category: "Kotlin"
   }),
@@ -3575,7 +3575,7 @@ export const posts: Post[] = [
     id: 6,
     title: "Kotlinde Fonksiyonel Programlama",
     content: POST_CONTENTS.fonksiyonelProgramlama,
-    date: "2025-01-19",
+    date: "2025-01-12",
     summary: "Bu kısımda Kotlinde Lambda, Map ve Filter, Scope Fonksiyonları gibi fonksiyonel programlama kavramları hakkında detaylı bilgiler verilecektir.",
     category: "Kotlin"
   }),
@@ -3583,7 +3583,7 @@ export const posts: Post[] = [
     id: 5,
     title: "Kotlin'de Sınıflara ve OOP",
     content: POST_CONTENTS.oop,
-    date: "2025-01-18",
+    date: "2025-01-10",
     summary: "Kotlin'de nesne yönelimli programlama kavramlarını ve sınıfların nasıl kullanıldığını öğrenelim.",
     category: "Kotlin"
   }),
@@ -3591,7 +3591,7 @@ export const posts: Post[] = [
     id: 4,
     title: 'Kotlinde Dönüştürme(Conversion) ve Nullability',
     category: 'Kotlin',
-    date: '2025.01.18',
+    date: '2025.01.09',
     summary: 'Bu kısımda Kotlinde değişken türlerini değiştirmek için kullanılan conversion ve nullability hakkında detaylı bilgiler verilecektir',
     content: POST_CONTENTS.conversion
   }),
@@ -3599,7 +3599,7 @@ export const posts: Post[] = [
     id: 3,
     title: 'Kotlinde Karar Yapıları ve Döngüler',
     category: 'Kotlin',
-    date: '2025.01.17',
+    date: '2025.01.09',
     summary: 'Bu kısımda Kotlinde karar yapıları (if-else, when) ve döngüler (for, while, do-while, foreach) hakkında detaylı bilgiler verilecektir.',
     content: POST_CONTENTS.donguler
   }),
@@ -3607,7 +3607,7 @@ export const posts: Post[] = [
     id: 2,
     title: 'Kotlinde Diziler, Listeler, Mapler ve Setler',
     category: 'Kotlin',
-    date: '2025.01.17',
+    date: '2025.01.08',
     summary: 'Bu kısımda Kotlinde Diziler, Listeler, Mapler ve Setler hakkında detaylı bilgiler verilecektir.',
     content: POST_CONTENTS.veriYapilari
   }),
@@ -3615,7 +3615,7 @@ export const posts: Post[] = [
     id: 1,
     title: 'Kotlinde Değişken Tanımlama ve Değişken Tipleri',
     category: 'Kotlin',
-    date: '2025.01.17',
+    date: '2025.01.08',
     summary: 'Bu kısımda Kotlinde bulunan çeşitli değişken tanımlama yöntemleri ve değişken tipleri hakkında detaylı bilgiler verilecektir.',
     content: POST_CONTENTS.degiskenler
   }),
@@ -3623,7 +3623,7 @@ export const posts: Post[] = [
     id: 0,
     title: 'Blogun Amacı',
     category: 'Blogun Amacı',
-    date: '2025.01.15',
+    date: '2025.01.05',
     summary: 'Blogu neden açtım? Böyle bir blog neden var :D',
     content: POST_CONTENTS.blogunAmaci
   })
