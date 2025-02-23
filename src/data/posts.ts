@@ -224,15 +224,9 @@ Ayrıca sağ üstteki çıkış yap butonu ile uygulamamızı kapatabiliriz.
 <img src="/images/sifre9.jpg" width="260" height="800" style="object-fit: cover; display: block; margin: 0 auto;" loading="lazy" alt="Blog Resmi" />
 
 
-
-
-
-
 > Uygulamanın tamamının kodlarını [buradan](https://github.com/B1L0CAN/Password-Manager-App-v2) inceleyebilirsiniz.
 
 > Giriş çıkış sisteminin biraz daha farklı olduğu, yedeklemenin isim üzerinden gerçekleştiği ilk versiyona da [buradan](https://github.com/B1L0CAN/Password-Manager-App) ulaşabilirsiniz.
-
-
 
     `,
 
@@ -294,7 +288,7 @@ Bu kısımda Android ile ilgili sertifikalarımı paylaşacağım.
 
 <img src="/images/sertifika3.png" width="750" height="500" style="object-fit: cover; display: block; margin: 0 auto;" loading="lazy" alt="Blog Resmi" />    
 
-Kotlin ile Android Mobil Uygulama Geliştirme İleri Seviye eğitimim devam ediyor :)
+BTK Akademi üzerinden "Kotlin ile Android Mobil Uygulama Geliştirme İleri Seviye" eğitimim devam ediyor :)
 
 
 `,
@@ -3461,8 +3455,8 @@ export const posts: Post[] = [
         id: 21,
         title: "Sertifikalar",
         content: POST_CONTENTS.sertifika,
-        date: "2025-02-23",
-        summary: "Bu kısımda Android ile ilgilisertifikalarımı paylaşacağım.",
+        date: "2025-02-8",
+        summary: "Bu kısımda Android ile ilgili sertifikalarımı paylaşacağım.",
         category: "Sertifikalar"
       }),
       createPost({
