@@ -9,6 +9,158 @@ const createPost = (post: Omit<Post, 'slug'>): Post => ({
 });
 
 const POST_CONTENTS = {    
+    firebase: `
+
+# Firebase
+
+Firebase, Google tarafından geliştirilen ve gerçek zamanlı çalışan bir veri tabanı yönetim aracıdır. 
+
+Küçük ve orta ölçekli uygulamalar için oldukça kullanışlı bir veri tabanı sistemidir.
+
+Firebase'i kullanmak için şu adımları izliyoruz:
+
+- Firebase konsolunda projemizi oluşturuyoruz.
+- Projemize bir uygulama ekliyoruz.
+- Uygulamamıza Firebase'i ekleyiyoruz.
+
+İlk iki adım basit ve bahsetmeye değer olmadığından bu yazıda üçüncü adıma odaklanacağım.
+
+Şimdi ilk olarak projenize Firebase'i ekleyelim.
+
+Bizim projemiz için gerekli olan dependency'leri gradle (app) klasörümüze şu şekilde ekliyoruz:
+\`\`\`kotlin
+implementation(platform("com.google.firebase:firebase-bom:32.8.1"))
+implementation("com.google.firebase:firebase-analytics")
+implementation("com.google.firebase:firebase-auth")
+implementation("com.google.firebase:firebase-firestore")
+implementation("com.google.firebase:firebase-storage")
+implementation ("com.squareup.picasso:picasso:2.71828")
+\`\`\`
+
+Firebase'in hangi özelliğini kullanacaksak onları import etmemiz gerekiyor, mesela picasso kütüphanesini de ekledik çünkü uygulamamızda resim yükleme işlemi yapıyoruz.
+
+> Not: Bu kütüphanelerin ismi yeni katalog ile birlikte değişmiştir. 
+
+Şimdi kod kısmına geçelim. Uygulamamızda basit şekilde bir kullanıcı giriş-çıkış sistemi ve bir post paylaşma sistemi oluşturacağız.
+
+İlk olarak kullanıcı giriş-çıkış sistemi için gerekli olan kodları yazalım.
+
+
+Authontecation için gerekli olan tanımlamayı yapalım, sonrasında bunu onCreate içerisinde initialize edelim.
+
+\`\`\`kotlin
+private lateinit var auth : FirebaseAuth
+
+//onCreate içerisinde initialize etmek için
+auth = Firebase.auth
+\`\`\`
+
+Şimdi kullanıcı giriş-çıkış sistemi için gerekli olan kodları yazalım.
+
+## Kayıt Yapma
+
+Öncelikle kayıt olma kısmını şu şekilde yazıyoruz, bunların hepsi Firebase Docs kısmında mevcut.
+
+\`\`\`kotlin
+fun kayitOl(view : View){
+
+    val email = binding.emailText.text.toString()
+    val password = binding.passwordText.text.toString()
+
+        if (email.isNotEmpty() && password.isNotEmpty()){
+            auth.createUserWithEmailAndPassword(email,password).addOnCompleteListener { task ->
+                if(task.isSuccessful){
+                    //kullanıcı başarıyla oluşturuldu
+                    val action = KullaniciFragmentDirections.actionKullaniciFragmentToFeedFragment()
+                    Navigation.findNavController(view).navigate(action)
+                }
+            }.addOnFailureListener { exception ->
+                Toast.makeText(requireContext(),exception.localizedMessage,Toast.LENGTH_LONG).show()
+            }
+        }
+    }
+\`\`\`
+
+- İlk olarak email ve şifreyi aldığımız değişkenleri tanımlıyoruz ve eğer bunlar boş değilse kullanıcıyı oluşturmaya çalışıyoruz.
+
+- Kullanıcı oluşturulurken şartlar sağlanıyor ise (isSuccessful) kullanıcıyı oluşturup diğer sayfaya navigation yapıyoruz.
+
+- Eğer hata alıyorsak da hata mesajını Toast ile gösteriyoruz.
+
+## Giriş Yapma
+
+Şimdi giriş yapma kısmını yapalım.
+
+\`\`\`kotlin 
+fun girisYap(view : View){
+        val email = binding.emailText.text.toString()
+        val password = binding.passwordText.text.toString()
+
+        //farklı olsun diye onSuccessListener, üstteki gibi yapabilirdik
+        if (email.isNotEmpty() && password.isNotEmpty()){
+            auth.signInWithEmailAndPassword(email,password).addOnSuccessListener {
+                val action = KullaniciFragmentDirections.actionKullaniciFragmentToFeedFragment()
+                Navigation.findNavController(view).navigate(action)
+        }.addOnFailureListener { exception ->
+            Toast.makeText(requireContext(),exception.localizedMessage,Toast.LENGTH_LONG).show()
+        }
+    }
+}
+\`\`\`
+
+- Burayı da kayıt ol gibi yapabilirdik, farklı olsun diye onSuccessListener kullanıyoruz. Kalan mantık aynı.
+
+Şimdi eğer kullanıcı girişi yapılmış ise tekrar giriş yapılmasıyla uğraşmaması için onViewCreated içerisinde kontrol edelim.
+
+\`\`\`kotlin
+override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
+    binding.kayitButton.setOnClickListener { kayitOl(it) }
+    binding.girisButton.setOnClickListener { girisYap(it) }
+
+    val activeUser = auth.currentUser
+        if (activeUser != null){
+            //kullanıcı önceden giriş yapmış, devam etsin, bidaha giriş yapılmasın
+            val action = KullaniciFragmentDirections.actionKullaniciFragmentToFeedFragment()
+            Navigation.findNavController(view).navigate(action)
+        }
+}
+\`\`\`
+
+Bu şekilde kullanıcı giriş yapmışsa direk feed fragment'ına yönlendirilmesini sağlıyoruz.
+
+Tabii ki girisyap ve kayitol fonksiyonları için binding kısmını unutmuyoruz :)
+
+## Çıkış Yapma
+
+Şimdi çıkış yapma işlemini yapalım.
+
+Bunun için FeedFragment'ımıza şu kodları yazalım:
+
+- İlk olarak tanımlama
+
+\`\`\`kotlin
+private lateinit var auth : FirebaseAuth
+
+//onCreate içerisinde initialize etmek için
+auth = Firebase.auth
+\`\`\`
+
+Çıkış yapma işlemi için de daha önce oluşturduğumuz menü kısmına sadece şu satırı ekliyoruz:
+
+\`\`\`kotlin
+auth.signOut()
+
+/* Bu kısma ekledik yani :)
+else if (item?.itemId == R.id.cikisItem){
+            auth.signOut()
+            val action = FeedFragmentDirections.actionFeedFragmentToKullaniciFragment()
+            Navigation.findNavController(requireView()).navigate(action)
+    }
+*/
+\`\`\`
+
+    `,
     menu: `
 
 Androidde menü oluşturmak için öncelikle bir adet android resouce file oluşturuyoruz.
@@ -3428,6 +3580,14 @@ var camelCase = "Camel Case yazım örneği"
 
 export const posts: Post[] = [
     createPost({
+        id: 25,
+        title: "FireBase İşlemleri",
+        content: POST_CONTENTS.firebase,
+        date: "2025-02-24",
+        summary: "Bu kısımda Androidde temel Firebase işlemlerini nasıl yapacağımızı göreceğiz.",
+        category: "Veri Tabanı İşlemleri"
+      }),
+    createPost({
         id: 24,
         title: "Androidde Menü Oluşturma",
         content: POST_CONTENTS.menu,
@@ -3513,7 +3673,7 @@ export const posts: Post[] = [
         content: POST_CONTENTS.hesapMakinesi,
         date: "2025-01-24",
         summary: "Bu kısımda çok basit bir hesap makinesi projesi yapacağız.",
-        category: "Projeler"
+        category: "Android"
       }),
     createPost({
         id: 13,
