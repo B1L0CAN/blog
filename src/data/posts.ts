@@ -9,6 +9,266 @@ const createPost = (post: Omit<Post, 'slug'>): Post => ({
 });
 
 const POST_CONTENTS = {    
+    firebasedatabase: `
+
+## Veri Tabanına Veri Ekleme
+
+Bu kısımda Andoridde Firebase üzerindeki veri tabanına nasıl erişip veri tabanına veri ekleyeceğimizi göreceğiz.
+
+İlk olarak bir tane data class oluşturuyoruz ve bu class'ın içerisinde veri tabanına yükleyeceğimiz verileri tanımlıyoruz.
+
+\`\`\`kotlin
+data class Post (val email: String, val comment : String, val downloadUrl : String )
+\`\`\`
+
+Şimdi veri tabanına erişmek için gerekli olan tanımlamaları yapalım.
+
+\`\`\`kotlin
+private lateinit var db : FirebaseFirestore
+private lateinit var auth : FirebaseAuth
+
+//onCreate içerisinde initialize etmek için
+db = Firebase.firestore
+auth = Firebase.auth
+\`\`\`
+
+Sonrasında veri tabanına yükleyeceğimiz resimler için UUID oluşturuyoruz.
+
+\`\`\`kotlin
+val uuid = UUID.randomUUID()
+val imageName = "$uuid.jpg"
+\`\`\`
+
+Sonrasında storage'a erişmek için şu kodları yazalım:
+
+\`\`\`kotlin
+val storage = Firebase.storage
+val reference = storage.reference
+val imagesReference = reference.child("images").child(imageName)
+\`\`\`
+
+Sonrasında resim yükleme işlemi için şu kodları yazalım:
+
+\`\`\`kotlin
+
+//Eğer seçilen resim kısmı boş değilse, yani varsa
+    if (selectedPicture != null) {
+        imagesReference.putFile(selectedPicture!!).addOnSuccessListener { taskSnapshot ->
+
+            //Resim yüklendikten sonra bunun dosya yolunu veriyoruz
+            val uploadedPictureReference = storage.reference.child("images").child(imageName)
+            uploadedPictureReference.downloadUrl.addOnSuccessListener { uri ->
+                val downloadUrl = uri.toString()
+\`\`\`
+
+Sonrasında veri tabanına yükleyeceğimiz verileri oluşturuyoruz.
+
+Bu veriler database'e yüklenirken HashMap ile oluşturuluyor.
+
+\`\`\`kotlin
+    val postMap = hashMapOf<String,Any>()
+        postMap.put("downloadUrl",downloadUrl)
+        postMap.put("userEmail",auth.currentUser!!.email.toString())
+        postMap.put("comment",binding.uploadCommentText.text.toString())
+        postMap.put("date", Timestamp.now())
+
+        //Veri tabanına yükleme işlemi
+    db.collection( "Posts").add(postMap).addOnCompleteListener{task ->
+
+        if (task.isComplete && task.isSuccessful) {
+            //Yükleme başarılı, önceki sayfaya dönmek için
+            val action = AddFragmentDirections.actionAddFragmentToFeedFragment()
+                Navigation.findNavController(view).navigate(action)
+}
+\`\`\`
+
+Eğer yükleme işlemi başarısız olursa hata mesajını gösteriyoruz.
+
+\`\`\`kotlin
+    addOnFailureListener{exception ->
+        Toast.makeText(requireContext(),exception.localizedMessage,Toast.LENGTH_LONG).show()
+    }
+\`\`\`
+
+Şu anda eklediğimiz resimler veri tabanında başarılı bir yüklü olarak gözüküyor.
+
+Fonksiyonun tamamı şu şekilde:
+
+\`\`\`kotlin
+fun uploadClicked(view: View) {
+    //UUID -> image name
+    val uuid = UUID.randomUUID()
+    val imageName = "$uuid.jpg"
+
+    val storage = Firebase.storage
+    val reference = storage.reference
+    val imagesReference = reference.child("images").child(imageName)
+
+    if (selectedPicture != null) {
+        imagesReference.putFile(selectedPicture!!).addOnSuccessListener { taskSnapshot ->
+
+            val uploadedPictureReference = storage.reference.child("images").child(imageName)
+            uploadedPictureReference.downloadUrl.addOnSuccessListener { uri ->
+                val downloadUrl = uri.toString()
+                println(downloadUrl)
+
+                val postMap = hashMapOf<String,Any>()
+                postMap.put("downloadUrl",downloadUrl)
+                postMap.put("userEmail",auth.currentUser!!.email.toString())
+                postMap.put("comment",binding.uploadCommentText.text.toString())
+                postMap.put("date", Timestamp.now())
+
+                db.collection( "Posts").add(postMap).addOnCompleteListener{task ->
+                    if (task.isComplete && task.isSuccessful) {
+                        //back
+                        val action = AddFragmentDirections.actionAddFragmentToFeedFragment()
+                        Navigation.findNavController(view).navigate(action)
+                    }
+                }.addOnFailureListener{exception ->
+                    Toast.makeText(requireContext(),exception.localizedMessage,Toast.LENGTH_LONG).show()
+                }
+            }
+        }
+    }
+}
+\`\`\`
+
+> Not: Storage kısmı paralı hale geldiği için kendim çalıştıramadım, veri ekleme kısmındaki kodların tamamına [buradan](https://github.com/atilsamancioglu/BTKAndroid10-FotografPaylasmaUygulamasi/blob/main/app/src/main/java/com/atilsamancioglu/fotografpaylasmauygulamasi/view/AddFragment.kt) ulaşabilirsiniz.
+
+## Veri Tabanından Veri Alma
+
+Veri tabanından veri almak için gerekli olan kodları yazalım.
+
+İlk olarak gerekli tanımlamaları yapalım, bu iş için FeedFragment'ımıza yazacağız kodları.
+
+Fakat  bundan önce bir adet adapter oluşturuyoruz.
+
+\`\`\`kotlin
+class FeedRecyclerAdapter(private val postList : ArrayList<Post>) : RecyclerView.Adapter<FeedRecyclerAdapter.PostHolder>() {
+
+    class PostHolder(val binding: RecyclerRowBinding) : RecyclerView.ViewHolder(binding.root) {
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostHolder {
+        val binding = RecyclerRowBinding.inflate(LayoutInflater.from(parent.context),parent,false)
+        return PostHolder(binding)
+    }
+
+    override fun getItemCount(): Int {
+        return postList.size
+    }
+
+    override fun onBindViewHolder(holder: PostHolder, position: Int) {
+        holder.binding.recyclerEmailText.text = postList.get(position).email
+        holder.binding.recyclerCommentText.text = postList.get(position).comment
+        Picasso.get().load(postList[position].downloadUrl).into(holder.binding.recyclerImageView)
+    }
+}
+\`\`\`
+
+İlk olarak burada da tanımlamalarımızı yapalım.
+
+\`\`\`kotlin
+private lateinit var auth : FirebaseAuth
+private lateinit var db : FirebaseFirestore
+var adapter : FeedRecyclerAdapter? = null
+val postArrayList : ArrayList<Post> = ArrayList()
+
+//onCreate içerisinde initialize etmek için
+auth = Firebase.auth
+db = Firebase.firestore
+\`\`\`
+
+Sonrasında FeedFragment'ımızda \`onCreateView()\`  içerisinde adapter'ımızı initialize edelim.
+
+\`\`\`kotlin
+adapter = FeedRecyclerAdapter(postArrayList)
+binding.recyclerView.adapter = adapter
+\`\`\`
+
+Sonrasında FeedFragment'ımızda \`fun getDataFromFirestore()\`  içerisine  şu kodları yazalım:
+
+\`\`\`kotlin
+db.collection("Posts").orderBy("date", Query.Direction.DESCENDING)
+    .addSnapshotListener { snapshot, exception ->
+        if (exception != null) {
+            Toast.makeText(requireContext(), exception.localizedMessage, Toast.LENGTH_LONG)
+                .show()
+        }
+\`\`\`   
+        
+Tarihe göre azalan sırayla postlarımızı alıyoruz. Eğer exception null değilse hata mesajını gösteriyoruz.
+
+Eğer exception null ise veri var demektir, snapshot'ın içerisinde veri var mı kontrol ediyoruz. Eğer snapshot empty değilse kodlarımızı yazıyoruz.
+        
+\`\`\`kotlin
+        else {
+            if (snapshot != null) {
+                if (!snapshot.isEmpty) {
+
+                    postArrayList.clear()
+
+                    val documents = snapshot.documents
+                    for (document in documents) {
+                        val comment = document.get("comment") as String
+                        val useremail = document.get("userEmail") as String
+                        val downloadUrl = document.get("downloadUrl") as String
+                        //val timestamp = document.get("date") as Timestamp
+                        //val date = timestamp.toDate()
+
+                        val post = Post(useremail, comment, downloadUrl)
+                        postArrayList.add(post)
+                    }
+                        //adapter'ımızı güncelliyoruz, haber veriyoruz ki veriler değişti.
+                    adapter!!.notifyDataSetChanged()
+                }
+            }
+        }
+    }
+}
+\`\`\`
+
+Fonksiyonun tamamı şu şekilde:
+
+\`\`\`kotlin
+   fun getDataFromFirestore() {
+
+        db.collection("Posts").orderBy("date", Query.Direction.DESCENDING)
+            .addSnapshotListener { snapshot, exception ->
+                if (exception != null) {
+                    Toast.makeText(requireContext(), exception.localizedMessage, Toast.LENGTH_LONG)
+                        .show()
+                } else {
+
+                    if (snapshot != null) {
+                        if (!snapshot.isEmpty) {
+
+                            postArrayList.clear()
+
+                            val documents = snapshot.documents
+                            for (document in documents) {
+                                val comment = document.get("comment") as String
+                                val useremail = document.get("userEmail") as String
+                                val downloadUrl = document.get("downloadUrl") as String
+                                //val timestamp = document.get("date") as Timestamp
+                                //val date = timestamp.toDate()
+
+                                val post = Post(useremail, comment, downloadUrl)
+                                postArrayList.add(post)
+                            }
+                            adapter!!.notifyDataSetChanged()
+
+                        }
+                    }
+
+                }
+            }
+    }
+\`\`\`
+
+> Not: Storage kısmı paralı hale geldiği için kendim çalıştıramadım, veri alma kısmındaki kodların tamamına [buradan](https://github.com/atilsamancioglu/BTKAndroid10-FotografPaylasmaUygulamasi/blob/main/app/src/main/java/com/atilsamancioglu/fotografpaylasmauygulamasi/view/FeedFragment.kt) ulaşabilirsiniz.
+
+    `,
     firebase: `
 
 # Firebase
@@ -3580,11 +3840,19 @@ var camelCase = "Camel Case yazım örneği"
 
 export const posts: Post[] = [
     createPost({
+        id: 26,
+        title: "FireBase Veri Tabanı İşlemleri",
+        content: POST_CONTENTS.firebasedatabase,
+        date: "2025-02-24",
+        summary: "Bu kısımda Androidde Firebase üzerinde nasıl veri tabanı oluşturacağımızı göreceğiz.",
+        category: "Veri Tabanı İşlemleri"
+      }),
+    createPost({
         id: 25,
-        title: "FireBase İşlemleri",
+        title: "FireBase Kullanıcı İşlemleri",
         content: POST_CONTENTS.firebase,
         date: "2025-02-24",
-        summary: "Bu kısımda Androidde temel Firebase işlemlerini nasıl yapacağımızı göreceğiz.",
+        summary: "Bu kısımda Androidde Firebase kayıt, giriş ve çıkış yapma işlemlerini göreceğiz.",
         category: "Veri Tabanı İşlemleri"
       }),
     createPost({
