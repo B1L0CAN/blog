@@ -9,6 +9,61 @@ const createPost = (post: Omit<Post, 'slug'>): Post => ({
 });
 
 const POST_CONTENTS = {    
+    api: `
+
+## Dataclass Tanımlama
+
+Bu kısımda Androidde Apiden veri almak için Dataclass tanımlamayı göreceğiz.
+
+Kullanacağımız apiye [buradan](https://raw.githubusercontent.com/atilsamancioglu/BTK20-JSONVeriSeti/refs/heads/master/besinler.json) ulaşabilirsiniz.
+
+Şimdi bu apinin içeriğini kopyalayarak \`https://app.quicktype.io/\` adresine yapıştırıyoruz.
+
+Bu site bize otomatik olarak Dataclass'ı oluşturuyor.
+
+Oluşturduğumuz Dataclass'ı kopyalıyoruz ve projemize yapıştırıyoruz.
+
+\`\`\`kotlin
+    data class Besin (
+    val isim: String,
+    val kalori: String,
+    val karbonhidrat: String,
+    val protein: String,
+    val yag: String,
+    val gorsel: String
+)
+\`\`\`
+
+Dataclassımız hazır. Fakat ->
+
+### Önemli Notlar
+
+- Eğer apiden çekilen verilerin isimlerini (keylerini) beğenmez isek, @SerializedName ile birlikte kendi isimlerimizle değiştirebilirsiniz.
+
+\`\`\`kotlin
+//val isim: String, 
+//bu ismi beğenmez isek 
+
+@SerializeName("isim")
+val besinIsim: String,
+//yaparak key ismini kendimize göre değiştirebiliriz.
+\`\`\`
+
+- Zaman zaman kullandığımız apilerde veriler eksik olabilir. Bu yüzden verilerin eksik olduğu durumları kontrol etmek gerekir. Bunu yapmak için de nullability kullanılır.
+
+\`\`\`kotlin
+val isim: String?,
+val kalori: String?,
+val karbonhidrat: String?,
+val protein: String?,
+val yag: String?,
+val gorsel: String?
+\`\`\`
+
+Yapmamız bizim için daha iyi olacaktır.
+
+Retrofit yazısı geliyor :)
+    `,
     firebasedatabase: `
 
 ## Veri Tabanına Veri Ekleme
@@ -3840,8 +3895,16 @@ var camelCase = "Camel Case yazım örneği"
 
 export const posts: Post[] = [
     createPost({
+        id: 27,
+        title: "Androidde API İçin Dataclass Tanımlama",
+        content: POST_CONTENTS.api,
+        date: "2025-03-02",
+        summary: "Bu kısımda Androidde Apiden veri almak için Dataclass tanımlamayı göreceğiz.",
+        category: "Android"
+      }),
+    createPost({
         id: 26,
-        title: "FireBase Veri Tabanı İşlemleri",
+        title: "Firebase Veri Tabanı İşlemleri",
         content: POST_CONTENTS.firebasedatabase,
         date: "2025-02-24",
         summary: "Bu kısımda Androidde Firebase üzerinde nasıl veri tabanı oluşturacağımızı göreceğiz.",
@@ -3849,7 +3912,7 @@ export const posts: Post[] = [
       }),
     createPost({
         id: 25,
-        title: "FireBase Kullanıcı İşlemleri",
+        title: "Firebase Kullanıcı İşlemleri",
         content: POST_CONTENTS.firebase,
         date: "2025-02-24",
         summary: "Bu kısımda Androidde Firebase kayıt, giriş ve çıkış yapma işlemlerini göreceğiz.",
