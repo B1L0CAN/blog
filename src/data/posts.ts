@@ -755,7 +755,7 @@ Bu kısımda Android ile ilgili sertifikalarımı paylaşacağım.
 
 <img src="/images/sertifika3.png" width="750" height="500" style="object-fit: cover; display: block; margin: 0 auto;" loading="lazy" alt="Blog Resmi" />    
 
-BTK Akademi üzerinden "Kotlin ile Android Mobil Uygulama Geliştirme İleri Seviye" eğitimim devam ediyor :)
+<img src="/images/sertifika4.png" width="750" height="500" style="object-fit: cover; display: block; margin: 0 auto;" loading="lazy" alt="Blog Resmi" />    
 
 
 `,
