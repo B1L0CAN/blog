@@ -9,6 +9,284 @@ const createPost = (post: Omit<Post, 'slug'>): Post => ({
 });
 
 const POST_CONTENTS = {    
+    extension:`
+Extension functions, mevcut sınıflara yeni işlevsellik eklemeni sağlar; bu sayede, sınıfın kaynak kodunu değiştirmeden ekstra metotlar ekleyebiliriz.
+
+## Örnek: Toast Mesajını Extension Olarak Tanımlama 
+
+Normalde, Android'de bir Toast göstermek için şöyle bir kod yazıyoruz:
+
+\`\`\`kotlin
+Toast.makeText(context, "Mesaj", Toast.LENGTH_SHORT).show()
+\`\`\`
+
+Bu kodu her seferinde tekrarlamak yerine, Context sınıfına bir extension function ekleyerek daha okunaklı bir yapı oluşturabiliriz:
+
+\`\`\`kotlin
+fun Context.showToast(message: String, duration: Int = Toast.LENGTH_SHORT) {
+    Toast.makeText(this, message, duration).show()
+}
+\`\`\`
+
+Bu extension fonksiyonu sayesinde artık herhangi bir Context örneği üzerinden doğrudan şu şekilde çağrı yapabiliriz:
+
+\`\`\`kotlin
+// Örneğin bir Activity içinde:
+showToast("Merhaba, bu toast mesajı extension ile gösterilmiştir!")
+\`\`\`
+
+### Özet
+
+- fun Context.showToast(...):
+
+Bu şekilde, Context sınıfına yeni bir metot eklemiş oluyoruz.
+
+this, fonksiyonun çağrıldığı Context nesnesine referanstır.
+
+- Varsayılan Parametre:
+
+duration: Int = Toast.LENGTH_SHORT ile, mesajın gösterim süresi varsayılan olarak kısa sürede belirlenmiştir.
+
+Ayrıca mesajımızın string olacağını da burada belirtiyoruz
+
+- Kullanım Kolaylığı:
+
+Artık her yerde Toast.makeText(...) kullanmaya gerek kalmadan, sadece showToast("Mesaj") yazarak hızlıca mesaj gösterebilirsin.
+
+> Extensionları daha birçok alanda, birçok farklı şekilde kullanabiliriz.
+
+    `,
+    retrofit: `
+Retrofit, HTTP isteklerini kolaylaştıran ve JSON gibi veri formatlarını parse etmek için Gson, Moshi gibi converter'lar kullanan popüler bir kütüphanedir. 
+
+Retrofit sayesinde API çağrılarımız daha okunabilir, sürdürülebilir ve asenkron olarak gerçekleştirilebilir.
+
+## Retrofit Tanımlamaları
+
+### API Arayüzü
+
+Öncelikle, API'den veri çekebilmek için bir arayüz tanımlıyoruz.
+
+Kullanacağımız veri seti yorum satırı olarak verilmiştir.
+
+\`\`\`kotlin
+interface BesinAPI {
+    // API URL'sine GET isteği göndererek veri çekiyoruz.
+    // https://raw.githubusercontent.com/atilsamancioglu/BTK20-JSONVeriSeti/refs/heads/master/besinler.json
+    @GET("atilsamancioglu/BTK20-JSONVeriSeti/refs/heads/master/besinler.json")
+    suspend fun getBesin(): List<Besin>
+}
+\`\`\`
+
+- suspend fun getBesin() sayesinde bu metodun bir coroutine içinde çağrılması gerektiğini anlıyoruz.
+
+- Gelen veri, önceden tanımlı Besin dataclass'ına dönüştürülür.
+
+### Retrofit Servis Sınıfı
+
+API arayüzümüzü kullanabilmek için bir Retrofit servis sınıfı oluşturuyoruz. 
+
+Bu sınıf, API çağrılarını gerçekleştirir.
+
+
+\`\`\`kotlin
+class BesinAPIService {
+
+    private val retrofit = Retrofit.Builder()
+        .baseUrl("https://raw.githubusercontent.com/")
+        .addConverterFactory(GsonConverterFactory.create()) // JSON verilerini parse etmek için Gson kullanıyoruz.
+        .build()
+        .create(BesinAPI::class.java)
+
+    suspend fun getData(): List<Besin> {
+        return retrofit.getBesin()
+    }
+}
+\`\`\`
+
+- Retrofit.Builder() ile Retrofit örneğini oluşturuyoruz.
+
+- baseUrl olarak, API'nin temel URL'sini belirtiyoruz.
+
+- addConverterFactory(GsonConverterFactory.create()) ifadesi, JSON verisinin Besin dataclass'ına otomatik dönüştürülmesini sağlar.
+
+- create(BesinAPI::class.java) metodu ile API arayüzümüzü oluşturuyoruz.
+
+- getData() fonksiyonu, API'den gelen veriyi döndüren asenkron bir metottur.
+
+### Retrofit Kullanımı
+
+Retrofit ile oluşturduğumuz servis sınıfını kullanarak API'den veri çekmek için bu işlemleri bir ViewModel içinde gerçekleştirebiliriz. 
+
+Aşağıda basit bir örnek görebilirsiniz:
+
+\`\`\`kotlin
+class BesinViewModel(application: Application) : AndroidViewModel(application) {
+
+    private val besinApiService = BesinAPIService()
+    val besinler = MutableLiveData<List<Besin>>()
+    val hataMesaji = MutableLiveData<Boolean>()
+    val yukleniyor = MutableLiveData<Boolean>()
+
+    fun verileriGetir() {
+        yukleniyor.value = true
+        viewModelScope.launch {
+            try {
+                val besinListesi = besinApiService.getData()
+                besinler.value = besinListesi
+                hataMesaji.value = false
+            } catch (e: Exception) {
+                hataMesaji.value = true
+            } finally {
+                yukleniyor.value = false
+            }
+        }
+    }
+}
+\`\`\`
+
+- ViewModel: API çağrılarını asenkron ve yaşam döngüsüne uygun şekilde yönetir.
+
+- viewModelScope.launch ile API çağrısını bir coroutine içinde gerçekleştiririz.
+
+- Gelen veri, besinler adlı LiveData'ya aktarılır; hata durumunda hataMesaji güncellenir.
+
+- Bu sayede UI, LiveData üzerinden otomatik olarak güncellenir.
+
+
+## Önemli Notlar
+
+- Coroutine Kullanımı: Retrofit API çağrıları suspend metotlar olarak tanımlandığı için coroutine kullanmanız gerekmektedir.
+
+- Error Handling: API çağrılarında hata yönetimini unutmayalım; try-catch blokları veya hata LiveData'sı ile kullanıcıya bildirimde bulunmalıyız.
+
+- Bağımlılıklar: Retrofit, Gson ve Coroutine bağımlılıklarını build.gradle dosyasına eklemeyi unutmamalıyız
+
+
+
+    `,
+
+    mvvm:`
+
+## MVVM Nedir?
+MVVM (Model-View-ViewModel), Android uygulamalarında UI kodunu iş mantığından ayırmayı amaçlayan bir mimari yapıdır.
+
+- Model: Uygulamanın veri katmanı, yani veritabanı, API, veya diğer veri kaynakları.
+
+- View: Kullanıcı arayüzü, aktiviteler, fragmentler veya XML dosyaları.
+
+- ViewModel: View ile Model arasında köprü görevi gören, UI verilerini yöneten ve iş mantığını içeriden ayıran sınıftır.
+
+### Neden MVVM Kullanmalıyız?
+
+- Bu mimari, UI ile veri ve iş mantığı arasındaki bağımlılığı azaltarak kodun okunabilirliğini ve sürdürülebilirliğini artırır.
+
+- İş mantığını ViewModel içinde topladığınız için, birim testleri yapmak daha kolaylaşır.
+
+- LiveData, StateFlow gibi yapıların kullanımı ile UI verilerindeki değişiklikleri otomatik olarak gözlemleyebiliriz.
+
+## MVVM Bileşenleri ve Kullanımı
+
+### 1. Model
+
+Verilerinizin tutulduğu ve API/Veritabanı işlemlerinin gerçekleştirildiği katmandır.
+
+\`\`\`kotlin
+data class Besin(
+    val isim: String,
+    val kalori: String,
+    val karbonhidrat: String,
+    val protein: String,
+    val yag: String,
+    val gorsel: String
+)
+\`\`\`
+
+### 2. ViewModel
+
+ViewModel, UI ile Model arasındaki veri akışını yöneten sınıftır.
+
+\`\`\`kotlin
+class BesinViewModel(application: Application) : AndroidViewModel(application) {
+
+    private val besinApiService = BesinAPIService() // Retrofit API servisi
+    val besinler = MutableLiveData<List<Besin>>()  // UI ile gözlemlenecek veri
+    val hataMesaji = MutableLiveData<Boolean>()
+    val besinYukleniyor = MutableLiveData<Boolean>()
+
+    // API'den veya veritabanından veri çekme işlemi
+    fun verileriGetir() {
+        besinYukleniyor.value = true
+        viewModelScope.launch {
+            try {
+                val gelenBesinListesi = besinApiService.getData()
+                besinler.value = gelenBesinListesi
+                hataMesaji.value = false
+            } catch (e: Exception) {
+                hataMesaji.value = true
+            } finally {
+                besinYukleniyor.value = false
+            }
+        }
+    }
+}
+\`\`\`
+
+- LiveData: UI bileşenleri, LiveData üzerinden ViewModel'deki veriyi gözlemler ve veri değiştiğinde otomatik güncellenir.
+
+- viewModelScope: Coroutine'leri yönetmek için kullanılır, böylece ViewModel'in yaşam döngüsü ile uyumlu çalışır.
+
+### 3. View
+
+View, Activity veya Fragment gibi UI bileşenleridir. Burada ViewModel ile etkileşim kurarak veri görüntülenir.
+
+\`\`\`kotlin
+class BesinListeFragment : Fragment() {
+
+    private lateinit var binding: FragmentBesinListeBinding
+    private lateinit var viewModel: BesinViewModel
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        binding = FragmentBesinListeBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        viewModel = ViewModelProvider(this).get(BesinViewModel::class.java)
+
+        // Verileri gözlemleme
+        viewModel.besinler.observe(viewLifecycleOwner) { besinListesi ->
+            // UI'yi güncelle (örneğin, RecyclerView adapterine aktar)
+        }
+
+        viewModel.verileriGetir()
+    }
+}
+\`\`\`
+
+- ViewModelProvider: ViewModel'i oluşturup, yaşam döngüsüne uygun şekilde yönetir.
+- LiveData Gözlemi: viewModel.besinler.observe() ile veri değişikliklerini UI'da anında yansıtabilirsiniz.
+
+## MVVM'nin Avantajları
+
+- Bağımsızlık: ViewModel, UI'dan tamamen bağımsız çalışır. Bu, hem test edilebilirliği artırır hem de kodun bakımını kolaylaştırır.
+
+- Yaşam Döngüsü Desteği: ViewModel, Android yaşam döngüsü ile uyumlu çalışır; örneğin, konfigürasyon değişikliklerinde veri kaybı yaşanmaz.
+
+- Veri Güncelleme: LiveData ve Flow gibi yapıların kullanımı, UI verilerinde anlık değişiklikleri kolayca yakalamanızı sağlar.
+
+## Özet 
+
+- MVVM mimarisi, Android uygulamalarında kodun düzenli, sürdürülebilir ve test edilebilir olmasını sağlar. 
+
+- Model, ViewModel ve View bileşenlerini ayırarak, her birinin sorumluluğu net bir şekilde belirlenmiş olur. 
+
+- Bu yaklaşım, uygulama geliştirme sürecini daha modüler ve esnek hale getirir.
+    `,
     api: `
 
 ## Dataclass Tanımlama
@@ -754,6 +1032,8 @@ Bu kısımda Android ile ilgili sertifikalarımı paylaşacağım.
 <img src="/images/sertifika2.png" width="750" height="500" style="object-fit: cover; display: block; margin: 0 auto;" loading="lazy" alt="Blog Resmi" />    
 
 <img src="/images/sertifika3.png" width="750" height="500" style="object-fit: cover; display: block; margin: 0 auto;" loading="lazy" alt="Blog Resmi" />    
+
+Güncelleme: 3.03.2025
 
 <img src="/images/sertifika4.png" width="750" height="500" style="object-fit: cover; display: block; margin: 0 auto;" loading="lazy" alt="Blog Resmi" />    
 
@@ -3894,6 +4174,30 @@ var camelCase = "Camel Case yazım örneği"
 };
 
 export const posts: Post[] = [
+    createPost({
+        id: 30,
+        title: "Androidde Extension Kullanımı",
+        content: POST_CONTENTS.extension,
+        date: "2025-03-05",
+        summary: "Bu kısımda Androidde Extension kullanımını göreceğiz.",
+        category: "Android"
+      }),
+    createPost({
+        id: 29,
+        title: "Androidde MVVM",
+        content: POST_CONTENTS.mvvm,
+        date: "2025-03-05",
+        summary: "Bu kısımda Androidde MVVM mimarisini göreceğiz.",
+        category: "Android"
+      }),
+    createPost({
+        id: 28,
+        title: "Androidde Retrofit Kullanımı",
+        content: POST_CONTENTS.retrofit,
+        date: "2025-03-03",
+        summary: "Bu kısımda Androidde Retrofit kullanımını göreceğiz.",
+        category: "Android"
+      }),
     createPost({
         id: 27,
         title: "Androidde API İçin Dataclass Tanımlama",
