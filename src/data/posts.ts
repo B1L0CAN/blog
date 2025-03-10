@@ -12,7 +12,7 @@ const POST_CONTENTS = {
     extension:`
 Extension functions, mevcut sınıflara yeni işlevsellik eklemeni sağlar; bu sayede, sınıfın kaynak kodunu değiştirmeden ekstra metotlar ekleyebiliriz.
 
-## Örnek: Toast Mesajını Extension Olarak Tanımlama 
+## Örnek A: Toast Mesajını Extension Olarak Tanımlama 
 
 Normalde, Android'de bir Toast göstermek için şöyle bir kod yazıyoruz:
 
@@ -35,7 +35,7 @@ Bu extension fonksiyonu sayesinde artık herhangi bir Context örneği üzerinde
 showToast("Merhaba, bu toast mesajı extension ile gösterilmiştir!")
 \`\`\`
 
-### Özet
+### Özet A
 
 - fun Context.showToast(...):
 
@@ -53,7 +53,36 @@ Ayrıca mesajımızın string olacağını da burada belirtiyoruz
 
 Artık her yerde Toast.makeText(...) kullanmaya gerek kalmadan, sadece showToast("Mesaj") yazarak hızlıca mesaj gösterebilirsin.
 
+## Örnek B: dp to px Extension Fonksiyonu
+
+Android'de tasarım yaparken boyutları dp (density-independent pixels) cinsinden belirtiriz çünkü bu, farklı ekran yoğunluklarına göre uyum sağlar. 
+
+Ancak, bazı durumlarda gerçek piksel değerlerine ihtiyacımız olur. Bu fonksiyon, dp değerini, cihazın ekran yoğunluğuna (density) göre piksele çevirir.
+
+Özetle: dp değeri * ekran yoğunluğu = piksel değeri.
+
+Şimdi bu işi extension ile nasıl yapacağımızı görelim: 
+
+\`\`\`kotlin
+fun Context.dpToPx(dp: Int): Int {
+    return (dp * resources.displayMetrics.density).toInt()
+}
+\`\`\`
+
+Herhangi bir aktivite veya fragment içerisinde bu fonksiyonu kullanmak için:
+
+\`\`\`kotlin
+val marginInPx = applicationContext.dpToPx(16)
+\`\`\`
+
+### Özet B
+
+- resources.displayMetrics.density ifadesi, cihazın ekran yoğunluğunu verir.
+
+- dp * density sonucu, dp'nin piksel karşılığını verir ve toInt() ile tamsayıya dönüştürülür.
+
 > Extensionları daha birçok alanda, birçok farklı şekilde kullanabiliriz.
+
 
     `,
     retrofit: `
