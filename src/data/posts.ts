@@ -9,6 +9,70 @@ const createPost = (post: Omit<Post, 'slug'>): Post => ({
 });
 
 const POST_CONTENTS = {    
+    smartIrSy: `
+Merhaba, bu sayfada sizlere arkadaşlarım ile birlikte MicroProcessors dersi için geliştirdiğimiz Akıllı Sulama Sistemini tanıtacağım.
+
+# Sistem Tanımı
+
+Bu uygulama ile birlikte kullanıcı, sulama alanından uzakta olsa bile sistemini uzaktan kontrol edebilmektedir. 
+Android tabanlı mobil uygulama sayesinde kullanıcı, sulama vanasını açıp kapatabilir, toprak nemi, ortam sıcaklığı, hava nemi ve yağış durumu gibi sensör verilerini anlık olarak görüntüleyebilir. 
+Ayrıca uygulama üzerinde tutulan log kayıtları sayesinde, geçmiş sulama işlemlerine ve sensör değerlerine dair bilgilere de ulaşmak mümkündür.
+
+Sistem, ESP32 mikrodenetleyici kartı kullanılarak geliştirilmiştir ve enerji ihtiyacını güneş panelinden sağlamaktadır. 
+Donanım bileşenleri arasında toprak nem sensörü, DHT22 sıcaklık-nem sensörü, yağmur sensörü, su pompası ve selenoid vana bulunmaktadır. 
+Tüm bu bileşenler Firebase Realtime Database üzerinden mobil uygulama ile haberleşmektedir.
+ 
+
+## Sistemimizin Fotoğrafları
+
+> Not: Ben bu resimleri sunumdan sonra çektiğim için biraz amatörce oldu :)
+
+<img src="/images/SIS4.jpeg" width="600" height="450" style="object-fit: cover; display: block; margin: 0 auto;" loading="lazy" alt="Blog Resmi" />
+
+- Proje kapsamı temel olarak solda görülen boş kaptan sağdaki topraklı kaba suyun akışını sağlamak, bunu da mobil cihaz kontrolü ile yapabilmek.
+
+- Resmin sol altında görülen kısım, güneş paneli bağlantısını yaptığımız kısım, sunumdan sonra çektiğim için paneli sökmüştük.
+
+- Resmin sağ üstünde, yani toprağın üstünde görülen şeyler sağdan soldan sırasıyla; Yağmur sensörü, DHT22 sıcaklık-nem sensörü, toprak nem sensörü.
+
+- Mavi akvaryum taşlarının altında ise bizim selenoid vanalarımız bulunuyor.
+
+- Ortada ve aşağıda gözüken, kabloların bağlı olduğu şey bizim kontrol kartımız, yani ESP32 devremiz.
+
+<img src="/images/SIS5.jpeg" width="350" height="400" style="object-fit: cover; display: block; margin: 0 auto;" loading="lazy" alt="Blog Resmi" />
+
+- Burada da suyun akışını sağlayabildiğimiz su pompasını görüyoruz.
+
+## Mobil Uygulama
+
+Şimdi de mobil uygulamamızı göstereyim.
+
+<img src="/images/SIS1.jpeg" width="250" height="500" style="object-fit: cover; display: block; margin: 0 auto;" loading="lazy" alt="Blog Resmi" />
+
+- Ana menünün üst tarafında hava durumumuzu görüyoruz. Bu hava durumu önceki iki gün ile sonraki iki günün de dahil olduğu bir hava durumu ekranı gösteriyor.
+
+- Hava durumunun hemen altında ise sensörlerden gelen verileri okuyabildiğimiz kısmı görüyoruz. Bu veriler ESP32 tarafından Firebase'e gönderilmekte ve Firebase'den bu verileri alarak görüntüleyebilmekteyiz.
+
+<img src="/images/SIS6.png" width="250" height="300" style="object-fit: cover; display: block; margin: 0 auto;" loading="lazy" alt="Blog Resmi" />
+
+- Onun hemen altında ise vanayı açıp kapatabildiğimiz, ayrıca log ekranına geçebildiğimiz kısım bulunuyor.
+
+<img src="/images/SIS2.jpeg" width="250" height="500" style="object-fit: cover; display: block; margin: 0 auto;" loading="lazy" alt="Blog Resmi" />
+
+- Vanayı açtığımızda bu veri Firabase'e gönderiliyor ve ESP32 kartı bu güncellemeyi alarak vanamızı açıyor.
+
+<img src="/images/SIS7.png" width="550" height="150" style="object-fit: cover; display: block; margin: 0 auto;" loading="lazy" alt="Blog Resmi" />
+
+- Log ekranına geçtiğimizde ise aşağıdaki gibi bir ekran görüyoruz.
+
+<img src="/images/SIS3.jpeg" width="250" height="500" style="object-fit: cover; display: block; margin: 0 auto;" loading="lazy" alt="Blog Resmi" />
+
+- Dediğim gibi, sistem kapalı olduğu için şu an veriler değişmedi fakat esp ile anlık haberleşerek bu verilerin güncellenmesi de başarılı bir şekilde sağlandı.
+
+> Uygulamanın tamamının kodlarını [buradan](https://github.com/B1L0CAN/Smart-Irrigation-System) inceleyebilirsiniz.
+
+> Uygulamanın tanıtım videosunu [buradan](https://www.youtube.com/watch?v=HgPWbnkD3RU&ab_channel=B1L0) izleyebilirsiniz.
+`,
     extension:`
 Extension functions, mevcut sınıflara yeni işlevsellik eklemeni sağlar; bu sayede, sınıfın kaynak kodunu değiştirmeden ekstra metotlar ekleyebiliriz.
 
@@ -1000,6 +1064,8 @@ Ayrıca sağ üstteki çıkış yap butonu ile uygulamamızı kapatabiliriz.
 
 > Uygulamanın tamamının kodlarını [buradan](https://github.com/B1L0CAN/Password-Manager-App-v2) inceleyebilirsiniz.
 
+> Uygulamanın tanıtım videosunu [buradan](https://www.youtube.com/watch?v=o5lBT15C5OE&pp=0gcJCbAJAYcqIYzv) izleyebilirsiniz.
+
 > Giriş çıkış sisteminin biraz daha farklı olduğu, yedeklemenin isim üzerinden gerçekleştiği ilk versiyona da [buradan](https://github.com/B1L0CAN/Password-Manager-App) ulaşabilirsiniz.
 
     `,
@@ -1050,6 +1116,8 @@ Ayrıca artık puan yetmiyor ise kullanıcı ipucu alamayacak.
 
 
 > Uygulamanın tamamının kodlarını [buradan](https://github.com/B1L0CAN/LingoGame) inceleyebilirsiniz.
+
+> Uygulamanın tanıtım videosunu [buradan](https://www.youtube.com/watch?v=ANXRFL90FkE&ab_channel=B1L0) izleyebilirsiniz.
 `,
 
 sertifika: `
@@ -4203,6 +4271,14 @@ var camelCase = "Camel Case yazım örneği"
 };
 
 export const posts: Post[] = [
+    createPost({
+        id: 31,
+        title: "Akıllı Sulama Sistemi",
+        content: POST_CONTENTS.smartIrSy,
+        date: "2025-06-01",
+        summary: "Bu kısımda Akıllı Sulama Sistemi uygulamamızı tanıtacağım.",
+        category: "Projeler"
+      }),
     createPost({
         id: 30,
         title: "Androidde Extension Kullanımı",
